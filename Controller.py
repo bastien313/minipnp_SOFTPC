@@ -230,40 +230,25 @@ class DirectCtrl:
         """
         self._driver.feederMakeStep(self.ihm.feederChoice)
 
-    @deprecated
-    def scanFeederRequest(self):
-        """
-        Caled by ihm button scan.
-        Scan feeder available in pnp hardware.
-        Update the list of feeder in ihm
-        :return:
-        """
-        dic = self._driver.feederUpdate()
-        self.ihm._deleteFeederList()
-
-        if len(dic):
-            for key in dic.keys():
-                self.ihm.addFeederList(key)
-            self.ihm.feederChoice = list(dic.keys())[0]
-            self.displayFeederData()
-
     def getCoordDriver(self):
         return self._driver.getHardwarePos()
 
     def openCom(self, comPort, serialSpeed):
         self._driver.hardwareConnect(comPort, serialSpeed)
-        #self._driver.statusModeDisable()
-        self._driver.sendMachineConf(self._machineConf)
-        self._driver.statusModeEnable()
-        #self._driver.setMaxSpeed()
-        #self._driver.setStepConf()
-        #self._driver.setAccel()
-        self._driver.motorEnable()
+        if self._driver.isConnected():
+            #self._driver.statusModeDisable()
+            self._driver.sendMachineConf(self._machineConf)
+            self._driver.statusModeEnable()
+            #self._driver.setMaxSpeed()
+            #self._driver.setStepConf()
+            #self._driver.setAccel()
+            self._driver.motorEnable()
 
     def closeCom(self):
-        self._driver.motorDisable()
-        self._driver.statusModeDisable()
-        self._driver.hardwareDisconnect()
+        if self._driver.isConnected():
+            self._driver.motorDisable()
+            self._driver.statusModeDisable()
+            self._driver.hardwareDisconnect()
 
 
 class BoardController:
@@ -318,17 +303,6 @@ class BoardController:
     def saveAsBoard(self, path):
         self.board.saveAs(path)
 
-    @deprecated
-    def getFeederList(self):
-        """
-        return the list of availble feeder.
-        :return:
-        """
-        feedList = []
-        for fName in self.__machineConf.feederList:
-            feedList.append(fName)
-        # feedList = ['tati','toto','tata']
-        return feedList
 
     def __longjobError(self, status):
         self.logger.printCout('Long job error: ' + self.__longJob.getStateDescription())

@@ -16,6 +16,7 @@ class serialManager():
         self._timeThread = 0# Intervallometre(0.02, self.__recpetion)
         #self._timeThread.stop()
         self._logger = logger
+        self.killThread = False
         self._funcPipe = {0:lambda:None, 1:lambda:None}
 
 
@@ -44,7 +45,7 @@ class serialManager():
         Proces low level recption of serial port.
         :return:
         """
-        while True:
+        while not self.killThread:
             if self._ser:
                 byteIn = self._ser.read(size=100)
                 byteIn = byteIn.decode("utf-8")
@@ -71,6 +72,8 @@ class serialManager():
         :return: 1 if succes 0 otherwise
         """
         self._bufferLineInput = []
+        if type(self._ser) is serial.Serial:
+            self._ser.close()
         try:
             self._ser = serial.Serial(comPort, speed, timeout=0)
         except ValueError:
@@ -87,16 +90,15 @@ class serialManager():
         #self._timeThread.setDaemon(True)
         #self._timeThread.encore = True
         #self._timeThread.start()
+        self.killThread = False
         self._timeThread = threading.Thread(target=self.__recpetion)
         self._timeThread.start()
         return 1
 
     def closeSerial(self):
-        self._ser = 0
         if self._timeThread:
-            self._timeThread = 0
-        self._timeThread = 0
-        if self._ser:
+            self.killThread = True
+        if type(self._ser) is serial.Serial:
             self._ser.close()
 
     def isConnected(self):
