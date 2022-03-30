@@ -185,10 +185,10 @@ def boardSave(board, fileName):
     etree.SubElement(brd, "Ysize").text = "{}".format(board.ySize)
     etree.SubElement(brd, "Zsize").text = "{}".format(board.zSize)
     etree.SubElement(brd, "angleCorr").text = "{}".format(board.angleCorr)
-    etree.SubElement(brd, "r1x").text = "{}".format(board.corr.posref[0])
-    etree.SubElement(brd, "r1y").text = "{}".format(board.corr.posref[1])
-    etree.SubElement(brd, "r2x").text = "{}".format(board.corr.posref[2])
-    etree.SubElement(brd, "r2y").text = "{}".format(board.corr.posref[3])
+    etree.SubElement(brd, "r1x").text = "{}".format(board.ref1RealPos['X'])
+    etree.SubElement(brd, "r1y").text = "{}".format(board.ref1RealPos['Y'])
+    etree.SubElement(brd, "r2x").text = "{}".format(board.ref2RealPos['X'])
+    etree.SubElement(brd, "r2y").text = "{}".format(board.ref2RealPos['Y'])
     etree.SubElement(brd, "filtValue").text = board.filter['value']
     etree.SubElement(brd, "filtRef").text = board.filter['ref']
     etree.SubElement(brd, "filtPackage").text = board.filter['package']
@@ -235,18 +235,15 @@ def boarLoad(path, logger):
     board = brr.Board(brd.find('name').text, logger)
     board.path = path
 
-    board.xOffset = float(xe.getXmlValue(brd, 'Xoff', 0.0))
-    board.yOffset = float(xe.getXmlValue(brd, 'Yoff', 0.0))
     board.xSize = float(xe.getXmlValue(brd, 'Xsize', 0.0))
     board.ySize = float(xe.getXmlValue(brd, 'Ysize', 0.0))
     board.zSize = float(xe.getXmlValue(brd, 'Zsize', 0.0))
-    board.angleCorr = float(xe.getXmlValue(brd, 'angleCorr', 0.0))
     board.ref1 = xe.getXmlValue(brd, 'ref1', 'null')
     board.ref2 = xe.getXmlValue(brd, 'ref2', 'null')
-    board.corr.posref[0] = float(xe.getXmlValue(brd, 'r1x', 0.0))
-    board.corr.posref[1] = float(xe.getXmlValue(brd, 'r1y', 0.0))
-    board.corr.posref[2] = float(xe.getXmlValue(brd, 'r2x', 0.0))
-    board.corr.posref[3] = float(xe.getXmlValue(brd, 'r2y', 0.0))
+    board.ref1RealPos['X'] = float(xe.getXmlValue(brd, 'r1x', 0.0))
+    board.ref1RealPos['Y'] = float(xe.getXmlValue(brd, 'r1y', 0.0))
+    board.ref2RealPos['X'] = float(xe.getXmlValue(brd, 'r2x', 0.0))
+    board.ref2RealPos['Y'] = float(xe.getXmlValue(brd, 'r2y', 0.0))
 
     board.filter['value'] = xe.getXmlValue(brd, 'filtValue', '')
     board.filter['value'] = '' if board.filter['value'] is None else board.filter['value']

@@ -965,7 +965,8 @@ class CtrlFrame(tk.Frame):
         self.controller.cDec()
 
     def getContinueState(self):
-        return self._contEnaVar.get()
+        #return self._contEnaVar.get()
+        return False
 
     posX = property(fset=_setPosX)
     posY = property(fset=_setPosY)
@@ -1060,187 +1061,6 @@ class ImportFrame(tk.Frame):
         self._controller.createFromCsv(self._nameVar.get(), self._pathFile, self._sepVar.get(), self._slVar.get(),
                                        dicConf)
         self._masterIHM.initBoardMenu()
-
-
-class valueFrame(tk.Frame):
-    """Frame used for regroup component by value."""
-
-    def __init__(self, valueStr, controller, fenetre, **kwargs):
-        tk.Frame.__init__(self, fenetre, **kwargs)
-        self._cmpList = []
-        self.controller = controller
-        # self.board = board
-
-        self._valueFrame = tk.Frame(self)
-        self._cmpFrame = tk.Frame(self)
-
-        self._valVar = tk.StringVar(self, valueStr)
-        self._modVar = tk.StringVar(self, "")
-        self._refVar = tk.StringVar(self, "")
-        self._modelVar = tk.StringVar(self, "")
-        self._xVar = tk.DoubleVar(self, 0.0)
-        self._yVar = tk.DoubleVar(self, 0.0)
-        self._tVar = tk.DoubleVar(self, 0.0)
-        self._isPlaceVar = tk.IntVar(self, 0)
-        self._isEnableVar = tk.IntVar(self, 0)
-
-        self._valEntry = tk.Entry(self._valueFrame, textvariable=self._valVar, width=8)
-        self._refEntry = tk.Entry(self._valueFrame, textvariable=self._refVar, width=8)
-        self._modEntry = tk.Entry(self._valueFrame, textvariable=self._modVar, width=8)
-        self._modelEntry = tk.Entry(self._valueFrame, textvariable=self._modelVar, width=8)
-        self._xEntry = tk.Entry(self._valueFrame, textvariable=self._xVar, width=8)
-        self._yEntry = tk.Entry(self._valueFrame, textvariable=self._yVar, width=8)
-        self._tEntry = tk.Entry(self._valueFrame, textvariable=self._tVar, width=8)
-
-        self._isPlaced = tk.Checkbutton(self._valueFrame, text='Placed', variable=self._isPlaceVar,
-                                        command=self.__placedEvent)
-        self._isEnable = tk.Checkbutton(self._valueFrame, text='Enable', variable=self._isEnableVar,
-                                        command=self.__enableEvent)
-        self._place = tk.Button(self._valueFrame, text='Place')
-        self._pickup = tk.Button(self._valueFrame, text='Pick')
-        self._rolBtn = tk.Button(self._valueFrame, text='+', command=self.__rollMangment)
-
-        # self._listFeeder = self.controller.getFeederList()
-        self._listFeeder = ('1', '2', '3')
-        if len(self._listFeeder):
-            self._feederVar = tk.StringVar(self._valueFrame, self._listFeeder[0])
-        else:
-            self._feederVar = tk.StringVar('')
-        self._selFeeder = tk.OptionMenu(self._valueFrame, self._feederVar, *self._listFeeder)
-        self._selFeeder.config(width=8, height=1)
-        self._feederVar.trace_id = self._feederVar.trace('w', self.__feederChange)
-
-        self._rolBtn.grid(row=0, column=0)
-        self._valEntry.grid(row=0, column=1)
-        self._refEntry.grid(row=0, column=2)
-        self._modEntry.grid(row=0, column=3)
-        self._modelEntry.grid(row=0, column=4)
-        self._selFeeder.grid(row=0, column=5)
-        self._xEntry.grid(row=0, column=6)
-        self._yEntry.grid(row=0, column=7)
-        self._tEntry.grid(row=0, column=8)
-        self._isPlaced.grid(row=0, column=9)
-        self._isEnable.grid(row=0, column=10)
-        self._place.grid(row=0, column=11)
-        self._pickup.grid(row=0, column=12)
-
-        self._valueFrame.grid(row=0, column=0)
-        self._cmpFrame.grid(row=1, column=0)
-
-        self.__createCmp()
-        self.__paramUpdate()
-
-    def __feederChange(self, *args):
-        print("enterglobfeed")
-        if self._feederVar.get() != '...':
-            for cmp in self.controller.getCmpFromValue(self._valVar.get()):
-                cmp.feeder = self._feederVar.get()
-        self.componentUpdate()
-
-    def __createCmp(self):
-        """
-        Créate all component with board data
-        :return:
-        """
-        id = 0
-        for cmp in self.controller.getCmpFromValue(self._valVar.get()):
-            self._cmpList.append(componentFrame(self, self.controller, self._cmpFrame))
-            self._cmpList[id].update(cmp)
-            id += 1
-
-    def __paramUpdate(self):
-        """
-        See all component and update parameters with it.
-        :return:
-        """
-        cmpList = self.controller.getCmpFromValue(self._valVar.get())
-
-        self._isEnableVar.set(1)
-        for cmp in cmpList:
-            if cmp.isEnable == 0:
-                self._isEnableVar.set(0)
-
-        self._isPlaceVar.set(1)
-        for cmp in cmpList:
-            if cmp.isPlaced == 0:
-                self._isPlaceVar.set(0)
-
-        self._modVar.set(cmpList[0].package)
-        for cmp in cmpList:
-            if cmp.package != cmpList[0].package:
-                self._modVar.set('...')
-
-        self._modelVar.set(cmpList[0].model)
-        for cmp in cmpList:
-            if cmp.model != cmpList[0].model:
-                self._modelVar.set('...')
-
-        self._feederVar.trace_vdelete("w", self._feederVar.trace_id)
-        self._feederVar.set(cmpList[0].feeder)
-        for cmp in cmpList:
-            if cmp.feeder != cmpList[0].feeder:
-                self._feederVar.set('...')
-        self._feederVar.trace_id = self._feederVar.trace("w", self.__feederChange)
-
-    def componentUpdate(self):
-        """
-        Update all parameters of component
-        :return:
-        """
-        id = 0
-        for cmp in self.controller.getCmpFromValue(self._valVar.get()):
-            self._cmpList[id].update(cmp)
-            id += 1
-
-        self.__paramUpdate()
-
-    def __enableEvent(self):
-        """
-        Called when enable checkbox is clicked
-        Check or uncheck all associated component.
-        """
-        if self._isEnableVar.get():
-            self.controller.enableValue(self._valVar.get())
-        else:
-            self.controller.disableValue(self._valVar.get())
-
-        self.componentUpdate()
-
-    def __placedEvent(self):
-        """
-        Called when placed checkbox is clicked
-        Check or uncheck all associated component.
-        """
-        if self._isPlaceVar.get():
-            self.controller.setIsPlacedValue(self._valVar.get())
-        else:
-            self.controller.resetIsPlacedValue(self._valVar.get())
-
-        self.componentUpdate()
-
-    def __rollMangment(self):
-        """Function called by roll button"""
-        if self._rolBtn['text'] == '+':
-            self.__unroll()
-            self._rolBtn['text'] = '-'
-        else:
-            self.__roll()
-            self._rolBtn['text'] = '+'
-
-    def __roll(self):
-        """Remove all component of cmpFrame"""
-        self._cmpFrame.grid_forget()
-
-    def __unroll(self):
-        """Display all component"""
-        self.componentUpdate()
-        id = 0
-        for cmp in self._cmpList:
-            cmp.grid(row=id, column=0)
-            id += 1
-
-        self._valueFrame.grid(row=0, column=0)
-        self._cmpFrame.grid(row=1, column=0)
 
 
 class componentFrame(tk.Frame):
@@ -1608,9 +1428,6 @@ class BoardFrame(tk.Frame):
         self._sizeX = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
         self._sizeY = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
         self._sizeZ = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
-        self._offsetX = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
-        self._offsetY = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
-        self._offsetT = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
 
         self._rootCmpFrame.grid(row=1, column=1)
         self.jobFrame.grid(row=0, column=1)
@@ -1629,9 +1446,6 @@ class BoardFrame(tk.Frame):
         self._sizeX.grid(row=1, column=1)
         self._sizeY.grid(row=1, column=2)
         self._sizeZ.grid(row=1, column=3)
-        self._offsetX.grid(row=2, column=1)
-        self._offsetY.grid(row=2, column=2)
-        self._offsetT.grid(row=2, column=4)
 
         self._ref1 = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
         self._ref2 = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
@@ -1641,7 +1455,6 @@ class BoardFrame(tk.Frame):
         self._ref2Y = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
         self._ref1updt = tk.Button(self._referenceFrame, command=self.__getPosRef1, text='Get Pos')
         self._ref2updt = tk.Button(self._referenceFrame, command=self.__getPosRef2, text='Get Pos')
-        self._reCalc = tk.Button(self._referenceFrame, command=self.__calcCorrector, text='Calc Corrector')
 
         tk.Label(self._referenceFrame, text="N°1").grid(row=1, column=0)
         tk.Label(self._referenceFrame, text="N°2").grid(row=2, column=0)
@@ -1656,26 +1469,26 @@ class BoardFrame(tk.Frame):
         self._ref2Y.grid(row=2, column=3)
         self._ref1updt.grid(row=1, column=4)
         self._ref2updt.grid(row=2, column=4)
-        self._reCalc.grid(row=1, column=5, rowspan=2)
 
     def setboardParam(self, board):
         self._sizeX.var = board.xSize
         self._sizeY.var = board.ySize
         self._sizeZ.var = board.zSize
-        self._offsetX.var = board.xOffset
-        self._offsetY.var = board.yOffset
-        self._offsetT.var = board.angleCorr
         self._ref1.var = board.ref1
         self._ref2.var = board.ref2
-        self._ref1X.var = board.corr.posref[0]
-        self._ref1Y.var = board.corr.posref[1]
-        self._ref2X.var = board.corr.posref[2]
-        self._ref2Y.var = board.corr.posref[3]
+        self._ref1X.var = board.ref1RealPos['X']
+        self._ref1Y.var = board.ref1RealPos['Y']
+        self._ref2X.var = board.ref2RealPos['X']
+        self._ref2Y.var = board.ref2RealPos['Y']
 
+        """ 
+        bizare???
         self.controller.board.ref1X = self._ref1X.var
         self.controller.board.ref1Y = self._ref1Y.var
         self.controller.board.ref2X = self._ref2X.var
         self.controller.board.ref2Y = self._ref2Y.var
+        """
+
 
     def __paramBoardChange(self, *args):
         """
@@ -1686,15 +1499,12 @@ class BoardFrame(tk.Frame):
         self.controller.board.xSize = self._sizeX.var
         self.controller.board.ySize = self._sizeY.var
         self.controller.board.zSize = self._sizeZ.var
-        self.controller.board.xOffset = self._offsetX.var
-        self.controller.board.yOffset = self._offsetY.var
-        self.controller.board.angleCorr = self._offsetT.var
         self.controller.board.ref1 = self._ref1.var
         self.controller.board.ref2 = self._ref2.var
-        self.controller.board.ref1X = self._ref1X.var
-        self.controller.board.ref1Y = self._ref1Y.var
-        self.controller.board.ref2X = self._ref2X.var
-        self.controller.board.ref2Y = self._ref2Y.var
+        self.controller.board.ref1RealPos['X'] = self._ref1X.var
+        self.controller.board.ref1RealPos['Y'] = self._ref1Y.var
+        self.controller.board.ref2RealPos['X'] = self._ref2X.var
+        self.controller.board.ref2RealPos['Y'] = self._ref2Y.var
 
         self._boardDraw.drawBoard(self.controller.board, self.controller.modList)
 
@@ -1714,12 +1524,6 @@ class BoardFrame(tk.Frame):
         """
         self._rootCmpFrame.componentHaveChanged(ref)
 
-    def __calcCorrector(self):
-
-        if self.controller.board.buildCorrector([self._ref1X.var, self._ref1Y.var],
-                                                [self._ref2X.var, self._ref2Y.var]):
-            self.setboardParam(self.controller.board)
-            self.__paramBoardChange()
 
     def __getPosRef1(self):
         try:

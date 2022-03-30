@@ -138,10 +138,7 @@ class StripFeeder(Feeder):
 
         # Get angle aof reference, real and theoretical
         theoreticalAngleLastPoint = math.atan(theoreticalPosLastPoint['Y'] / theoreticalPosLastPoint['X'])
-        #print(theoreticalPosLastPoint['Y'] / theoreticalPosLastPoint['X'])
-        #print(math.degrees(theoreticalAngleLastPoint))
         realAngleLastPoint = math.atan(realPosLastPoint['Y'] / realPosLastPoint['X'])
-        #print(math.degrees(realAngleLastPoint))
 
         # compute angle offset of real referance position
         angleOffset = realAngleLastPoint - theoreticalAngleLastPoint
@@ -161,7 +158,6 @@ class StripFeeder(Feeder):
         correctedCmpPos['Y'] += self.pos['Y']
         # Apply ofset for machine coord
         correctedCmpPos['C'] = math.degrees(angleOffset)
-        #print('Coorected: {} {} {}'.format(correctedCmpPos['X'], correctedCmpPos['Y'],correctedCmpPos['C'] ))
         return correctedCmpPos
 
     def setPosition(self, positionDict):

@@ -14,6 +14,7 @@ class ParamCtrl:
         self._driver = driver
         self._machineConf = machineConf
 
+    @deprecated
     def setAccel(self, accelData):
         """
         Set acceleration in machine conf and sent it to hardware
@@ -25,6 +26,7 @@ class ParamCtrl:
         self._machineConf.setAccel(accelData)
         self._driver.setAccel(accelData)
 
+    @deprecated
     def setStepConf(self, stepData):
         """
         Set axis step in machine conf and sent it to hardware
@@ -36,6 +38,7 @@ class ParamCtrl:
         self._machineConf.setStep(stepData)
         self._driver.setStepConf(stepData)
 
+    @deprecated
     def setMaxSpeed(self, speedData):
         """
         Set maximum speed of axis in machine conf and sent it to hardware
@@ -47,6 +50,7 @@ class ParamCtrl:
         self._machineConf.setSpeed(speedData)
         self._driver.setMaxSpeed(speedData)
 
+    @deprecated
     def setScanRef(self, scanData):
         """
         Set scan referance position in machine conf.
@@ -55,6 +59,7 @@ class ParamCtrl:
         """
         self._machineConf.scanPosition = scanData
 
+    @deprecated
     def setBoardRef(self, boardData):
         """
         Set board referance position in machine conf.
@@ -63,6 +68,7 @@ class ParamCtrl:
         """
         self._machineConf.boardRefPosition = boardData
 
+    @deprecated
     def setTrashRef(self, trashPos):
         """
         Set trash referance position in machine conf.
@@ -71,6 +77,7 @@ class ParamCtrl:
         """
         self._machineConf.trashPosRefPosition = trashPos
 
+    @deprecated
     def setHeadZ(self, zPos):
         """
         Set z head in machine conf.
@@ -78,7 +85,7 @@ class ParamCtrl:
         :return:
         """
         self._machineConf.zHead = zPos
-
+    @deprecated
     def readConf(self):
         """
         Return all configuration  of hardware exept feeder.
@@ -205,11 +212,11 @@ class DirectCtrl:
 
     def evControl(self):
         if not self._jobRunningCb():
-            self._driver.ctrlPump(self.ihm.evState)
+            self._driver.ctrlEv(self.ihm.evState)
 
     def pumpControl(self):
         if not self._jobRunningCb():
-            self._driver.ctrlEv(self.ihm.pumpState)
+            self._driver.ctrlPump(self.ihm.pumpState)
 
     def continueControl(self):
         if not self._jobRunningCb():
@@ -239,52 +246,6 @@ class DirectCtrl:
                 self.ihm.addFeederList(key)
             self.ihm.feederChoice = list(dic.keys())[0]
             self.displayFeederData()
-
-    @deprecated
-    def displayFeederData(self, *args):
-        """
-        Caled by ihm option menu change.
-        Display data relative to feeder selected in ihm.
-        :param args, useless:
-        :return:
-        """
-        strChoice = self.ihm.feederChoice
-        if len(strChoice):
-            feed = self._driver.feederList[strChoice]
-            self.ihm.userModifiactionFeederState('normal')
-        else:
-            feed = feeder(0, [0, 0, 0, 0, 0, 0])
-            self.ihm.userModifiactionFeederState('disable')
-        self.ihm.setFeederValue(feed)
-
-    @deprecated
-    def feederGoto(self):
-        """
-        Caled by ihm Goto button.
-        Move pnp hardware to feeder position
-        :return:
-        """
-        self._driver.feederGoTo(self.ihm.feederChoice)
-
-    @deprecated
-    def feederSave(self):
-        """
-        Caled by ihm Save button.
-        Save data relative to feeder in flash
-        :return:
-        """
-        self._driver.feederConfigure(self.ihm.feederChoice, self.ihm.getFeederDataInfo())
-        self._driver.feederFlashSave(self.ihm.feederChoice)
-
-        # def feederUpdate(self,*args):
-        """
-        Called by trace assosciated to feeder var.
-        Update feeder data in pnpController
-        :param args, useless:
-        :return:
-        """
-
-    #   self._driver.feederConfigure(self.ihm.feederChoice,self.ihm.getFeederDataInfo())
 
     def getCoordDriver(self):
         return self._driver.getHardwarePos()
@@ -350,95 +311,6 @@ class BoardController:
 
         self.logger.printCout(self.board.__str__())
 
-    @deprecated
-    def getCmpFromValue(self, value):
-        """
-        Return a list of cmp with assosciated value
-        :param value:
-        :return:
-        """
-        return self.board.getCmpFromValue(value)
-
-    @deprecated
-    def getCmpFromString(self, str):
-        """
-        Return cmpObject referenced by string
-        :param str:
-        :return:
-        """
-        return self.board.cmpDic[str]
-
-    @deprecated
-    def enableCmp(self, cmpStr):
-        """
-        Enable the placement of cmpStr
-        :param cmpStr is the reference of component (string):
-        """
-        self.board[cmpStr].isEnable = 1
-
-    @deprecated
-    def disableCmp(self, cmpStr):
-        """
-        Disable the placement of cmpStr
-        :param cmpStr is the reference of component (string):
-        """
-        self.board[cmpStr].isEnable = 0
-
-    @deprecated
-    def enableValue(self, value):
-        """
-        Enable the placement of set of component assosiated to value
-        :param value is the reference of value (string):
-        """
-        for cmp in self.board.cmpDic.values():
-            if cmp.value == value:
-                self.enableCmp(cmp.ref)
-
-    @deprecated
-    def disableValue(self, value):
-        """
-        Disable the placement of set of component assosiated to value
-        :param value is the reference of value (string):
-        """
-        for cmp in self.board.cmpDic.values():
-            if cmp.value == value:
-                self.disableCmp(cmp.ref)
-
-    @deprecated
-    def setIsPlacedCmp(self, cmpStr):
-        """
-        Enable the placement of cmpStr
-        :param cmpStr is the reference of component (string):
-        """
-        self.board[cmpStr].isPlaced = 1
-
-    @deprecated
-    def resetIsPlacedCmp(self, cmpStr):
-        """
-        Disable the placement of cmpStr
-        :param cmpStr is the reference of component (string):
-        """
-        self.board[cmpStr].isPlaced = 0
-
-    @deprecated
-    def setIsPlacedValue(self, value):
-        """
-        Enable the placement of set of component assosiated to value
-        :param value is the reference of value (string):
-        """
-        for cmp in self.board.cmpDic.values():
-            if cmp.value == value:
-                self.setIsPlacedCmp(cmp.ref)
-
-    @deprecated
-    def resetIsPlacedValue(self, value):
-        """
-        Disable the placement of set of component assosiated to value
-        :param value is the reference of value (string):
-        """
-        for cmp in self.board.cmpDic.values():
-            if cmp.value == value:
-                self.resetIsPlacedCmp(cmp.ref)
 
     def saveBoard(self):
         self.board.save()
@@ -446,6 +318,7 @@ class BoardController:
     def saveAsBoard(self, path):
         self.board.saveAs(path)
 
+    @deprecated
     def getFeederList(self):
         """
         return the list of availble feeder.
@@ -594,12 +467,13 @@ class BoardController:
         # Get position of board origin
         # boardOrigin = self.driver.readBoardRef()
 
-        cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
-        cmpPos = misc.Point4D(x=cmpPos[0],
-                              y=cmpPos[1],
-                              z=self.__machineConf.boardRefPosition['Z'] + model.height,
-                              c=cmp.rot + self.board.corr.angleCorr)
-
+        #cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
+        #cmpPos = misc.Point4D(x=cmpPos[0],
+        #                      y=cmpPos[1],
+        #                      z=self.__machineConf.boardRefPosition['Z'] + model.height,
+        #                      c=cmp.rot + self.board.corr.angleCorr)
+        cmpPos = self.board.getMachineCmpPos(ref)
+        cmpPos['Z'] = self.__machineConf.boardRefPosition['Z'] + model.height
         cmpJob = job.PickAndPlaceJob(pnpDriver=self.driver, feeder=feeder,
                                      placePos=cmpPos, model=model, zLift=self.__machineConf.zLift,
                                      name='Pick and place {}'.format(ref))
@@ -643,9 +517,10 @@ class BoardController:
         # Get position of board origin
         boardOrigin = self.driver.readBoardRef()
 
-        cmp = self.board[ref]
+        #cmp = self.board[ref]
         # Get corected position relative to board origin
-        cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
+        #cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
+        cmpPos = self.board.getMachineCmpPos(ref)
         # Move component relative to machine origin
         #cmpPos[0] += float(boardOrigin['X'])
         #cmpPos[1] += float(boardOrigin['Y'])
@@ -657,7 +532,7 @@ class BoardController:
         # Build job.
         goToJob = job.Job(self.driver)
         goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift}, speed=self.__machineConf.axisConfArray['Z'].speed))
-        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos[0], 'Y': cmpPos[1]}, speed=self.__machineConf.axisConfArray['X'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['X']}, speed=self.__machineConf.axisConfArray['X'].speed))
         goToJob.jobConfigure()
 
         if self.__littleJob.isRunning():
