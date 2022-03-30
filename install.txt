@@ -1,0 +1,5 @@
+pip install pyserial
+pip install tkscrolledframe
+pip install lxml
+pip install deprecated
+pip install pillow
