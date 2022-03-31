@@ -489,7 +489,6 @@ class BoardController:
             return 0
 
         # Get position of board origin
-        boardOrigin = self.driver.readBoardRef()
 
         #cmp = self.board[ref]
         # Get corected position relative to board origin
@@ -506,7 +505,9 @@ class BoardController:
         # Build job.
         goToJob = job.Job(self.driver)
         goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift}, speed=self.__machineConf.axisConfArray['Z'].speed))
-        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['X']}, speed=self.__machineConf.axisConfArray['X'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['Y']}, speed=self.__machineConf.axisConfArray['X'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.boardRefPosition['Z'] + 1},
+                                    speed=self.__machineConf.axisConfArray['X'].speed))
         goToJob.jobConfigure()
 
         if self.__littleJob.isRunning():
@@ -518,8 +519,9 @@ class BoardController:
             return 0
 
         # Run job
-        self.__littleJob = job.ThreadJobExecutor(goToJob, errorFunc= self.__littlejobError, endFunc= self.__endLittleJob)
-        self.__littleJob.start()
+        if self.driver.isConnected():
+            self.__littleJob = job.ThreadJobExecutor(goToJob, errorFunc= self.__littlejobError, endFunc= self.__endLittleJob)
+            self.__littleJob.start()
 
     def goToFeeder(self, idFeed, idCmp, idStrip):
         feeder = self.__machineConf.getFeederById(idFeed)
@@ -544,7 +546,8 @@ class BoardController:
             return 0
 
         # Run job
-        self.__littleJob = job.ThreadJobExecutor(job=goToJob, errorFunc= self.__littlejobError, endFunc= self.__endLittleJob)
+        self.__littleJob = job.ThreadJobExecutor(job=goToJob, errorFunc= self.__littlejobError, endFunc= self.__endLittleJob,
+                                                 driver=self.driver)
         self.__littleJob.start()
 
 class DtbController:

@@ -110,7 +110,7 @@ class Board:
         Return the machine coord position of component.
         :return:
         """
-        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posY, 'Y': self.cmpDic[self.ref1].posY}
+        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posX, 'Y': self.cmpDic[self.ref1].posY}
         theoreticalPosRef2 = {'X': self.cmpDic[self.ref2].posX, 'Y': self.cmpDic[self.ref2].posY}
         realPosRef1 = self.ref1RealPos
         realPosRef2 = self.ref2RealPos
@@ -125,7 +125,7 @@ class Board:
         realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
         angleOffset = realAngleLastPoint - theoreticalAngle
 
-        cmpPosTheoretical = {'X': self.cmpDic[ref], 'Y': self.cmpDic[ref]}
+        cmpPosTheoretical = {'X': self.cmpDic[ref].posX, 'Y': self.cmpDic[ref].posY}
         cmpPosTheoreticalRecaled = {'X': cmpPosTheoretical['X'] - theoreticalPosRef1['X'],
                                     'Y': cmpPosTheoretical['Y'] - theoreticalPosRef1['Y']}
 
@@ -141,7 +141,7 @@ class Board:
         correctedCmpPos['X'] += realPosRef1['X']
         correctedCmpPos['Y'] += realPosRef1['Y']
         correctedCmpPos['C'] = self.cmpDic[ref].rot + math.degrees(angleOffset)
-
+        print(correctedCmpPos)
         return correctedCmpPos
 
     def __calcAngle(self):

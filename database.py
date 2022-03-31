@@ -179,12 +179,9 @@ def boardSave(board, fileName):
     etree.SubElement(brd, "name").text = board.name
     etree.SubElement(brd, "ref1").text = board.ref1
     etree.SubElement(brd, "ref2").text = board.ref2
-    etree.SubElement(brd, "Xoff").text = "{}".format(board.xOffset)
-    etree.SubElement(brd, "Yoff").text = "{}".format(board.yOffset)
     etree.SubElement(brd, "Xsize").text = "{}".format(board.xSize)
     etree.SubElement(brd, "Ysize").text = "{}".format(board.ySize)
     etree.SubElement(brd, "Zsize").text = "{}".format(board.zSize)
-    etree.SubElement(brd, "angleCorr").text = "{}".format(board.angleCorr)
     etree.SubElement(brd, "r1x").text = "{}".format(board.ref1RealPos['X'])
     etree.SubElement(brd, "r1y").text = "{}".format(board.ref1RealPos['Y'])
     etree.SubElement(brd, "r2x").text = "{}".format(board.ref2RealPos['X'])

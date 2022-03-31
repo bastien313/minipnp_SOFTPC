@@ -461,7 +461,7 @@ class PickAndPlaceJob(Job):
         super().__init__(name)
         self._driver = pnpDriver
         self._ZpickupPos = feeder.getComponentPosition()['Z']
-        self._placePos = Point4D().fromDict(placePos) if type(placePos) is dict else placePos
+        self._placePos = placePos
         self._model = model
         self._taskList = [
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='{} Start Z lift.'.format(ref)),
@@ -477,19 +477,19 @@ class PickAndPlaceJob(Job):
             WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.pickupSpeed, name='{} Pick Z up.'.format(ref)),
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
-            MoveTask(self._driver, {'X': self._placePos.x, 'Y': self._placePos.y}, speed=model.moveSpeed,
+            MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y']}, speed=model.moveSpeed,
                      name='{} Go to component position.'.format(ref)),
             PumpStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
-            MoveTask(self._driver, {'C': self._placePos.c}, speed=model.moveSpeed, coordMode='R',
+            MoveTask(self._driver, {'C': self._placePos['C']}, speed=model.moveSpeed, coordMode='R',
                      name='{} Go to component position C.'.format(ref)),
-            MoveTask(self._driver, {'Z': placePos.z + model.height}, speed=model.placeSpeed,
+            MoveTask(self._driver, {'Z': placePos['Z'] + model.height}, speed=model.placeSpeed,
                      name='{} Place Z down.'.format(ref)),
             EvStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
             PumpStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
             # WaitTask(0.5, name='{}Pump.'.format(ref)),
             WaitTask(model.placeDelay / 1000.0, name='{} Place delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='{} End Z lift.'.format(ref)),
-            MoveTask(self._driver, {'C': self._placePos.c * -1.0}, speed=model.moveSpeed, coordMode='R',
+            MoveTask(self._driver, {'C': self._placePos['C'] * -1.0}, speed=model.moveSpeed, coordMode='R',
                      name='{} ReplaceC.'.format(ref))
         ]
         self.jobConfigure()

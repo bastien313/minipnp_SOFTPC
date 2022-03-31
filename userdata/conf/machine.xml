@@ -86,14 +86,14 @@
         <yEndPos>233.798</yEndPos>
         <yEndPos>233.798</yEndPos>
         <stripAddress>0</stripAddress>
-        <idAddress>33</idAddress>
+        <idAddress>45</idAddress>
       </feeder_1>
       <feeder_2>
         <name>100nF</name>
         <type>stripfeeder</type>
         <xPos>230.498</xPos>
         <yPos>37.5002</yPos>
-        <zPos>-29.7</zPos>
+        <zPos>-29.9</zPos>
         <stripAmount>3</stripAmount>
         <componentPerStrip>50</componentPerStrip>
         <cmpStep>4.0</cmpStep>
@@ -102,7 +102,7 @@
         <yEndPos>233.5</yEndPos>
         <yEndPos>233.5</yEndPos>
         <stripAddress>1</stripAddress>
-        <idAddress>0</idAddress>
+        <idAddress>18</idAddress>
       </feeder_2>
     </feeder>
   </machine>

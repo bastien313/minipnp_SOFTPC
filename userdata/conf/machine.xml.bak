@@ -10,7 +10,7 @@
     <boardRef_position>
       <X>0.0</X>
       <Y>0.0</Y>
-      <Z>0.0</Z>
+      <Z>-31.3933</Z>
     </boardRef_position>
     <trash_position>
       <X>0.0</X>
@@ -19,24 +19,24 @@
     </trash_position>
     <axis>
       <X>
-        <step>1.0</step>
-        <speed>1.0</speed>
-        <accel>1.0</accel>
+        <step>1066.660034</step>
+        <speed>33.33</speed>
+        <accel>200.0</accel>
       </X>
       <Y>
-        <step>1.0</step>
-        <speed>1.0</speed>
-        <accel>1.0</accel>
+        <step>1066.660034</step>
+        <speed>33.33</speed>
+        <accel>200.0</accel>
       </Y>
       <Z>
-        <step>1.0</step>
-        <speed>1.0</speed>
-        <accel>1.0</accel>
+        <step>1066.660034</step>
+        <speed>33.33</speed>
+        <accel>200.0</accel>
       </Z>
       <C>
-        <step>1.0</step>
-        <speed>1.0</speed>
-        <accel>1.0</accel>
+        <step>11.4182</step>
+        <speed>10.0</speed>
+        <accel>2.1</accel>
       </C>
     </axis>
     <feeder>
@@ -75,19 +75,35 @@
       <feeder_1>
         <name>test</name>
         <type>stripfeeder</type>
-        <xPos>304.5769</xPos>
-        <yPos>213.7907</yPos>
-        <zPos>-29.6777</zPos>
-        <stripAmount>1</stripAmount>
-        <componentPerStrip>38</componentPerStrip>
+        <xPos>302.1806</xPos>
+        <yPos>37.8977</yPos>
+        <zPos>-29.9</zPos>
+        <stripAmount>3</stripAmount>
+        <componentPerStrip>50</componentPerStrip>
         <cmpStep>4.0</cmpStep>
-        <stripStep>1.0</stripStep>
-        <xEndPos>302.1919</xEndPos>
-        <yEndPos>65.9892</yEndPos>
-        <yEndPos>65.9892</yEndPos>
+        <stripStep>16.6</stripStep>
+        <xEndPos>337.6662</xEndPos>
+        <yEndPos>233.798</yEndPos>
+        <yEndPos>233.798</yEndPos>
         <stripAddress>0</stripAddress>
-        <idAddress>0</idAddress>
+        <idAddress>45</idAddress>
       </feeder_1>
+      <feeder_2>
+        <name>100nF</name>
+        <type>stripfeeder</type>
+        <xPos>230.498</xPos>
+        <yPos>37.5002</yPos>
+        <zPos>-29.9</zPos>
+        <stripAmount>3</stripAmount>
+        <componentPerStrip>50</componentPerStrip>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>16.6</stripStep>
+        <xEndPos>265.9845</xEndPos>
+        <yEndPos>233.5</yEndPos>
+        <yEndPos>233.5</yEndPos>
+        <stripAddress>1</stripAddress>
+        <idAddress>19</idAddress>
+      </feeder_2>
     </feeder>
   </machine>
 </root>
