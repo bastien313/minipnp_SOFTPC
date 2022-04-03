@@ -85,6 +85,7 @@ class ParamCtrl:
         :return:
         """
         self._machineConf.zHead = zPos
+
     @deprecated
     def readConf(self):
         """
@@ -112,7 +113,7 @@ class DirectCtrl:
         self._feedRequest = {'X': False, 'Y': False, 'Z': False, 'C': False}
 
     def IHMposUpdate(self, positionString):
-        #coord = self._driver.coordParse(positionString)
+        # coord = self._driver.coordParse(positionString)
         self.ihm.posX = float(positionString['X'][1:])
         self.ihm.posY = float(positionString['Y'][1:])
         self.ihm.posZ = float(positionString['Z'][1:])
@@ -132,14 +133,15 @@ class DirectCtrl:
                 self._driver.watchDogEnable()
                 dist *= -1.0 if invert else 1.0
                 self._feedRequest[axis] = True
-                self._driver.moveAxis(moveData={axis: dist}, mode='R', speedMode='H', speed=self._machineConf.axisConfArray[axis].speed)
+                self._driver.moveAxis(moveData={axis: dist}, mode='R', speedMode='H',
+                                      speed=self._machineConf.axisConfArray[axis].speed)
                 self.ihm.after(100, self.watchDogFeed)
             else:
                 if not self._driver.isBusy():
                     self._driver.watchDogDisable()
                     dist *= -1.0 if invert else 1.0
-                    self._driver.moveAxis(moveData={axis: dist}, mode='R', speedMode='H', speed=self._machineConf.axisConfArray[axis].speed)
-
+                    self._driver.moveAxis(moveData={axis: dist}, mode='R', speedMode='H',
+                                          speed=self._machineConf.axisConfArray[axis].speed)
 
     def xpPress(self, *args):
         self.move(axis='X', dist=9999999.0 if self.ihm.getContinueState() else self.ihm.stepX, invert=False)
@@ -189,7 +191,6 @@ class DirectCtrl:
                 self._driver.stopAxis('C')
                 self._feedRequest['C'] = False
 
-
     def homeAll(self):
         if not self._jobRunningCb():
             self._driver.homeAxis('ALL')
@@ -236,12 +237,12 @@ class DirectCtrl:
     def openCom(self, comPort, serialSpeed):
         self._driver.hardwareConnect(comPort, serialSpeed)
         if self._driver.isConnected():
-            #self._driver.statusModeDisable()
+            # self._driver.statusModeDisable()
             self._driver.sendMachineConf(self._machineConf)
             self._driver.statusModeEnable()
-            #self._driver.setMaxSpeed()
-            #self._driver.setStepConf()
-            #self._driver.setAccel()
+            # self._driver.setMaxSpeed()
+            # self._driver.setStepConf()
+            # self._driver.setAccel()
             self._driver.motorEnable()
 
     def closeCom(self):
@@ -280,7 +281,7 @@ class BoardController:
         f = open(pathFile, "r")
         self.board.importFromCSV(f, separator, startLine, dicConf)
         f.close()
-        #self.board.assosciateCmpModel(self.modList)
+        # self.board.assosciateCmpModel(self.modList)
         self.ihm.setboardParam(self.board)
         self.ihm.bomCreate(self.board)
         self.enableSaveFunc('normal')
@@ -296,13 +297,11 @@ class BoardController:
 
         self.logger.printCout(self.board.__str__())
 
-
     def saveBoard(self):
         self.board.save()
 
     def saveAsBoard(self, path):
         self.board.saveAs(path)
-
 
     def __longjobError(self, status):
         self.logger.printCout('Long job error: ' + self.__longJob.getStateDescription())
@@ -323,7 +322,6 @@ class BoardController:
     def __jobNotify(self, str):
         self.ihm.jobFrame.jobDescription(str)
         self.logger.printCout('Job: ' + str)
-
 
     def __buildLongJob(self):
         """
@@ -375,8 +373,6 @@ class BoardController:
         self.ihm.jobFrame.buildButtonState(0)
         self.__littleJob.start()
 
-
-
     def __pauseJob(self):
         if self.__littleJob.is_alive():
             self.__littleJob.stop()
@@ -413,7 +409,7 @@ class BoardController:
         self.board[ref].isPlaced = 1
         self.logger.printCout('{} is placed'.format(ref))
         self.ihm.cmpHaveChanged(ref)
-        #self.ihm.componentUpdate()
+        # self.ihm.componentUpdate()
 
     def __buildPickAndPlaceJob(self, ref):
         """
@@ -437,12 +433,12 @@ class BoardController:
 
         cmp = self.board[ref]
         feeder = self.__machineConf.getFeederById(int(self.board[ref].feeder))
-        #feeder = self.__machineConf.feederList[int(self.board[ref].feeder)]
+        # feeder = self.__machineConf.feederList[int(self.board[ref].feeder)]
         # Get position of board origin
         # boardOrigin = self.driver.readBoardRef()
 
-        #cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
-        #cmpPos = misc.Point4D(x=cmpPos[0],
+        # cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
+        # cmpPos = misc.Point4D(x=cmpPos[0],
         #                      y=cmpPos[1],
         #                      z=self.__machineConf.boardRefPosition['Z'] + model.height,
         #                      c=cmp.rot + self.board.corr.angleCorr)
@@ -476,7 +472,6 @@ class BoardController:
         self.__littleJob = job.ThreadJobExecutor(cmpJob, self.__jobNotify, self.__littlejobError, self.__endLittleJob)
         self.__startLittleJob()
 
-
     def goToCmp(self, ref):
         """
         Go to XY component place.
@@ -488,24 +483,14 @@ class BoardController:
             self.logger.printCout("Ref {} is not on board".format(ref))
             return 0
 
-        # Get position of board origin
-
-        #cmp = self.board[ref]
-        # Get corected position relative to board origin
-        #cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
         cmpPos = self.board.getMachineCmpPos(ref)
-        # Move component relative to machine origin
-        #cmpPos[0] += float(boardOrigin['X'])
-        #cmpPos[1] += float(boardOrigin['Y'])
-
-        # move to postion X,Y
-        #model = cmp.model
-        #self.driver.moveAxis({'X': cmpPos[0], 'Y': cmpPos[1]}, speedMode='H')
 
         # Build job.
         goToJob = job.Job(self.driver)
-        goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift}, speed=self.__machineConf.axisConfArray['Z'].speed))
-        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['Y']}, speed=self.__machineConf.axisConfArray['X'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['Y']},
+                                    speed=self.__machineConf.axisConfArray['X'].speed))
         goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.boardRefPosition['Z'] + 1},
                                     speed=self.__machineConf.axisConfArray['X'].speed))
         goToJob.jobConfigure()
@@ -520,21 +505,19 @@ class BoardController:
 
         # Run job
         if self.driver.isConnected():
-            self.__littleJob = job.ThreadJobExecutor(goToJob, errorFunc= self.__littlejobError, endFunc= self.__endLittleJob)
+            self.__littleJob = job.ThreadJobExecutor(goToJob, errorFunc=self.__littlejobError,
+                                                     endFunc=self.__endLittleJob)
             self.__littleJob.start()
 
-    def goToFeeder(self, idFeed, idCmp, idStrip):
-        feeder = self.__machineConf.getFeederById(idFeed)
-        # Get position of board origin
-        # boardOrigin = self.driver.readBoardRef()
-
-        #print(feeder.getPositionById(cmpId=idCmp,stripId=idStrip))
-        # Build job.
-        cmpPos = feeder.getPositionById(cmpId=idCmp, stripId=idStrip)
+    def goTo(self, posData):
         goToJob = job.Job(self.driver)
-        goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift}, speed= self.__machineConf.axisConfArray['Z'].speed))
-        goToJob.append(job.MoveTask(self.driver,{'X':cmpPos['X'], 'Y':cmpPos['Y']}, speed= self.__machineConf.axisConfArray['X'].speed))
-        goToJob.append(job.MoveTask(self.driver, {'Z': cmpPos['Z']}, speed= self.__machineConf.axisConfArray['Z'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'X': posData['X'], 'Y': posData['Y']},
+                                    speed=self.__machineConf.axisConfArray['X'].speed))
+        goToJob.append(
+            job.MoveTask(self.driver, {'Z': posData['Z']}, speed=self.__machineConf.axisConfArray['Z'].speed))
+
         goToJob.jobConfigure()
 
         if self.__littleJob.isRunning():
@@ -546,9 +529,41 @@ class BoardController:
             return 0
 
         # Run job
-        self.__littleJob = job.ThreadJobExecutor(job=goToJob, errorFunc= self.__littlejobError, endFunc= self.__endLittleJob,
+        self.__littleJob = job.ThreadJobExecutor(job=goToJob, errorFunc=self.__littlejobError,
+                                                 endFunc=self.__endLittleJob,
                                                  driver=self.driver)
-        self.__littleJob.start()
+        self.__startLittleJob()
+
+    def goToFeeder(self, idFeed, idCmp, idStrip):
+        feeder = self.__machineConf.getFeederById(idFeed)
+        # Get position of board origin
+        # boardOrigin = self.driver.readBoardRef()
+
+        # print(feeder.getPositionById(cmpId=idCmp,stripId=idStrip))
+        # Build job.
+        cmpPos = feeder.getPositionById(cmpId=idCmp, stripId=idStrip)
+        goToJob = job.Job(self.driver)
+        goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['Y']},
+                                    speed=self.__machineConf.axisConfArray['X'].speed))
+        goToJob.append(job.MoveTask(self.driver, {'Z': cmpPos['Z']}, speed=self.__machineConf.axisConfArray['Z'].speed))
+        goToJob.jobConfigure()
+
+        if self.__littleJob.isRunning():
+            self.logger.printCout("Little job already running")
+            return 0
+
+        if self.__longJob.isRunning():
+            self.logger.printCout("Long job already running")
+            return 0
+
+        # Run job
+        self.__littleJob = job.ThreadJobExecutor(job=goToJob, errorFunc=self.__littlejobError,
+                                                 endFunc=self.__endLittleJob,
+                                                 driver=self.driver)
+        self.__startLittleJob()
+
 
 class DtbController:
     def __init__(self, logger, modList):

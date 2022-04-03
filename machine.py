@@ -5,6 +5,8 @@ import xmledit as xe
 import logger as lg
 import Corrector as cr
 
+class FeederNotFound(Exception):
+    pass
 
 class MotorConf:
     """
@@ -88,106 +90,106 @@ class Feeder:
         etree.SubElement(feederRoot, 'zPos').text = str(self.pos['Z'])
         return feederRoot
 
+class CompositeFeeder(Feeder):
+    def __init__(self, paramList, saveMachineFunction):
+        Feeder.__init__(self, paramList, saveMachineFunction)
+        self.type = 'compositefeeder'
+        self.feederList = paramList['feederList'] if 'feederList' in paramList else []
+        self._precedentFeederPickup = 0 # last feeder which user request position.
+
+    def saveInLxml(self, rootLxml):
+        feederRoot = Feeder.saveInLxml(self, rootLxml)
+        etree.SubElement(feederRoot, 'feederListStr').text = self.feederListToStr()
+        return feederRoot
+
+    def getPositionById(self, cmpId, feederId):
+        if feederId < len(self.feederList):
+            return self.feederList[feederId].getPositionById(cmpId)
+        raise FeederNotFound
+
+    def getComponentPosition(self):
+        """
+        Get the position of the next component to be picked up.
+        :return: position of component {'X': posx, 'Y': posy, 'Z':posz, 'C': theta correction}
+        """
+        for idFeeder in range(len(self.feederList)):
+            if self.feederList[idFeeder].haveComponent():
+                self._precedentFeederPickup = self.feederList[idFeeder]
+                return self.feederList[idFeeder].getComponentPosition()
+        raise FeederNotFound
+
+    def haveComponent(self):
+        for feeder in self.feederList:
+            if feeder.haveComponent():
+                return True
+        return False
+
+    def prepareNextComponent(self):
+        """
+        Remove one component from feeder.
+        Call this when the machine pickup the component.
+        :return: 0 if more component are présent, otherwise return 1
+        """
+        if self.haveComponent():
+            self._precedentFeederPickup.prepareNextComponent()
+            return 0 if self.haveComponent() else 1
+        return 1
+
+    def feederListToStr(self):
+        feederListStr = ''
+        for feeder in self.feederList:
+            feederListStr += '{}|'.format(feeder.id)
+        return feederListStr[:-1]
+
 
 class StripFeeder(Feeder):
     def __init__(self, paramList, saveMachineFunction):
         Feeder.__init__(self, paramList, saveMachineFunction)
         self.type = 'stripfeeder'
-        self.stripAmount = int(paramList['stripAmount']) if 'stripAmount' in paramList else 1
         self.componentPerStrip = int(paramList['componentPerStrip']) if 'componentPerStrip' in paramList else 1
-        self.cmpStep = float(paramList['cmpStep']) if 'cmpStep' in paramList else 1.0
-        self.stripStep = float(paramList['stripStep']) if 'stripStep' in paramList else 1.0
         self.endPos = {'X': float(paramList['xEndPos']) if 'xEndPos' in paramList else 1.0,
                        'Y': float(paramList['yEndPos']) if 'yEndPos' in paramList else 1.0}
 
         # Adress of next component to be picked up
-        self.componentAddress = {'strip': int(paramList['stripAddress']) if 'stripAddress' in paramList else 0,
-                                 'id': int(paramList['idAddress']) if 'idAddress' in paramList else 0}
-        #self.corrector = cr.Corrector()
-        #self.__buildCorrector()
+        self.nextComponent = int(paramList['idAddress']) if 'idAddress' in paramList else 0
 
     def saveInLxml(self, rootLxml):
         feederRoot = Feeder.saveInLxml(self, rootLxml)
-        etree.SubElement(feederRoot, 'stripAmount').text = str(self.stripAmount)
         etree.SubElement(feederRoot, 'componentPerStrip').text = str(self.componentPerStrip)
-        etree.SubElement(feederRoot, 'cmpStep').text = str(self.cmpStep)
-        etree.SubElement(feederRoot, 'stripStep').text = str(self.stripStep)
+        etree.SubElement(feederRoot, 'nextComponent').text = str(self.nextComponent)
         etree.SubElement(feederRoot, 'xEndPos').text = str(self.endPos['X'])
         etree.SubElement(feederRoot, 'yEndPos').text = str(self.endPos['Y'])
         etree.SubElement(feederRoot, 'yEndPos').text = str(self.endPos['Y'])
-        etree.SubElement(feederRoot, 'stripAddress').text = str(self.componentAddress['strip'])
-        etree.SubElement(feederRoot, 'idAddress').text = str(self.componentAddress['id'])
 
-    def __buildCorrector(self):
-        """
-        Compute the corrector value.
-        :return:
-        """
-        print('NTM')
-        self.corrector.buildCorrector(ref1=[self.pos['X'], self.pos['Y']], pos2=[self.endPos['X'], self.endPos['Y']],
-                                      pos1=[self.pos['X'], self.pos['Y']],
-                                      ref2=[self.pos['X'] + self.stripStep * float(self.stripAmount - 1),
-                                            self.pos['Y'] + self.cmpStep * float(self.componentPerStrip - 1)])
 
-    def __getCorrectedPosition(self, cmpPosTheoretical):
-        #print('Theor: {} {}'.format(cmpPosTheoretical['X'], cmpPosTheoretical['Y']))
-        # Get position of reference, real and theoretical
+
+
+    def __getCorrectedPositionLinear(self, cmpId):
+        xRamp = (self.endPos['X'] - self.pos['X']) / (self.componentPerStrip-1)
+        yRamp = (self.endPos['Y'] - self.pos['Y']) / (self.componentPerStrip-1)
+
+        correctedCmpPos = {}
+        correctedCmpPos['X'] = self.pos['X'] + cmpId * xRamp
+        correctedCmpPos['Y'] = self.pos['Y'] + cmpId * yRamp
+
+
         theoreticalPosLastPoint = {'X':self.stripStep * float(self.stripAmount - 1),
                                    'Y':self.cmpStep * float(self.componentPerStrip - 1)}  # Ramene la referance a 0
         realPosLastPoint = {'X': self.endPos['X']- self.pos['X'], 'Y': self.endPos['Y']- self.pos['Y']}
 
         # Get angle aof reference, real and theoretical
-        theoreticalAngleLastPoint = math.atan(theoreticalPosLastPoint['Y'] / theoreticalPosLastPoint['X'])
-        realAngleLastPoint = math.atan(realPosLastPoint['Y'] / realPosLastPoint['X'])
+        theoreticalAngleLastPoint = math.atan(theoreticalPosLastPoint['Y'] / (theoreticalPosLastPoint['X']+0.000001))
+        realAngleLastPoint = math.atan(realPosLastPoint['Y'] / (realPosLastPoint['X']+0.000001))
 
         # compute angle offset of real referance position
         angleOffset = realAngleLastPoint - theoreticalAngleLastPoint
-        # Hypothenuse was always true
-        cmpPosTheoretical['X'] -= self.pos['X']
-        cmpPosTheoretical['Y'] -= self.pos['Y']
-        cmpHypot = math.sqrt(
-            cmpPosTheoretical['X']  * cmpPosTheoretical['X']  + cmpPosTheoretical['Y'] * cmpPosTheoretical['Y'])
 
-        theoreticalAngleCmp = math.atan2(cmpPosTheoretical['Y'] , cmpPosTheoretical['X'])
-        realAngleCmp = theoreticalAngleCmp + angleOffset
-
-        # Copute corrected position
-        correctedCmpPos = {'X': math.cos(realAngleCmp) * cmpHypot, 'Y': math.sin(realAngleCmp) * cmpHypot}
-
-        correctedCmpPos['X'] += self.pos['X']
-        correctedCmpPos['Y'] += self.pos['Y']
-        # Apply ofset for machine coord
         correctedCmpPos['C'] = math.degrees(angleOffset)
+
         return correctedCmpPos
 
-    def setPosition(self, positionDict):
-        """
-        Set the first pickup position.
-        And recalculate corrector
-        :param positionDict: Dictionary contain position {'X': posx, 'Y': posy, 'Z':posz}
-        :return:
-        """
-        Feeder.setPosition(positionDict)
-        #self.__buildCorrector()
-
-    def setEndPosition(self, positionDict):
-        """
-        Set the last pickup position.
-        And recalculate corrector
-        :param positionDict: Dictionary contain position {'X': posx, 'Y': posy, 'Z':posz}
-        :return:
-        """
-        self.endPos = positionDict
-        #self.__buildCorrector()
-
-    def getPositionById(self, cmpId, stripId):
-        theoricalPosition = {'X':self.pos['X'] + (self.stripStep * float(stripId)),
-                             'Y':self.pos['Y'] + (self.cmpStep * float(cmpId))}
-        recalculatePosition = self.__getCorrectedPosition(theoricalPosition)
-        #recalculatePosition = self.corrector.pointCorrection(theoricalPosition)
-        #thetaCorrection = self.corrector.angleCorr
-        # recalculatePosition = theoricalPosition
-        # thetaCorrection = 0
+    def getPositionById(self, cmpId):
+        recalculatePosition = self.__getCorrectedPositionLinear(cmpId)
         return {'X': recalculatePosition['X'], 'Y': recalculatePosition['Y'], 'Z': self.pos['Z'], 'C': recalculatePosition['C']}
 
     def getComponentPosition(self):
@@ -195,7 +197,7 @@ class StripFeeder(Feeder):
         Get the position of the next component to be picked up.
         :return: position of component {'X': posx, 'Y': posy, 'Z':posz, 'C': theta correction}
         """
-        return self.getPositionById(self.componentAddress['id'], self.componentAddress['strip'])
+        return self.getPositionById(self.nextComponent)
 
     def prepareNextComponent(self):
         """
@@ -204,16 +206,20 @@ class StripFeeder(Feeder):
         :return: 0 if more component are présent, otherwise return 1
         """
         if self._haveComponent:
-            self.componentAddress['id'] += 1
+            self.nextComponent += 1
 
-            if self.componentAddress['id'] >= self.componentPerStrip:  # Change strip
-                self.componentAddress['id'] = 0
-                self.componentAddress['strip'] += 1
+            if self.nextComponent >= self.componentPerStrip:  # Change strip
+                self.nextComponent = 0
+                self._haveComponent = False
 
-            if self.componentAddress['strip'] > self.stripAmount:  # It was the last component.
-                self.componentAddress['strip'] = 0
-                self.__haveComponent = False
             self.saveMachineFunction()
+            return 0 if self._haveComponent else 1
+        return 1
+
+    def reload(self):
+        self.nextComponent = 0
+        self._haveComponent = True
+
 
 
 class ReelFeeder(Feeder):
@@ -395,6 +401,9 @@ class MachineConf:
             self.addFeeder(ReelFeeder(feederData, self.saveToXml))
         elif feederData['type'] == 'stripfeeder':
             self.addFeeder(StripFeeder(feederData, self.saveToXml))
+        elif feederData['type'] == 'compositefeeder':
+            feederData['feederList'] = self.makeFilteredFeederList(feederData['feederListStr'])
+            self.addFeeder(CompositeFeeder(feederData, self.saveToXml))
 
     def __axisLoadFromXml(self, axis, axisRoot):
         """
@@ -479,6 +488,21 @@ class MachineConf:
                 return feeder
         self.logger.printCout('Mconf: feeder {} not found'.format(idFeeder))
 
+    def makeFilteredFeederList(self, strFilt):
+        """
+        Return a feder list of feeder contained in strFilt ex: '1|3|5'
+        :param strFilt:
+        :return:
+        """
+        strSplit = strFilt.split('|')
+        feederListOut = []
+        for idFeed in strSplit:
+            feeder = self.getFeederById(int(idFeed))
+            if feeder:
+                feederListOut.append(feeder)
+            else:
+                self.logger.printCout('Filtered list feeder not found {}'.format(idFeed))
+        return feederListOut
 
 log = lg.logger()
 mach = MachineConf('userdata/conf/machine.xml', log)

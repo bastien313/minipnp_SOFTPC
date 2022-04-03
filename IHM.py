@@ -162,6 +162,19 @@ class BoarDrawing(tk.Frame):
             self.__drawRotatedCmp(cmp, modelList, board)
             self._c.configure(scrollregion=self._c.bbox("all"))
 
+class ValidWindow(tk.Toplevel):
+    """
+    Create a windows with Yes or no button(text can be changed) and a user frame.
+    Yer or no button call the user callback with True text if yes is pressed or False if no is pressed.
+    """
+    def __init__(self, frame, userFrame, callBack=lambda x:None, yesText='Yes', noText='No', **kwargs):
+        tk.Toplevel.__init__(self, frame, **kwargs)
+        btnFrame = tk.Frame(self)
+        tk.Button(btnFrame, text=yesText, command=lambda: callBack(True)).grid(row=0, column=0)
+        tk.Button(btnFrame, text=noText, command=lambda: callBack(False)).grid(row=0, column=1)
+        userFrame.grid(row=0, column=0)
+        btnFrame.grid(row=1, column=0)
+
 
 class entryWindow():
     def __init__(self, frame, name, lstLab, listEntry, cbValid, cbDiscart):
@@ -262,20 +275,92 @@ class completeEntry(tk.Entry):
 
     var = property(fset=_setVar, fget=_getVar)
 
-
-class StripFeederFrame(tk.Frame):
-    def __init__(self, fenetre, feederData, machine, logger, **kwargs):
-        tk.Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
-
+class CompositeFeederFrame(tk.Frame):
+    def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+        self._controller = controller
         identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
         parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
         btnFram = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
-        testFrame = tk.LabelFrame(self, text="Test", labelanchor='n', padx=10, pady=10)
+        testFrame = tk.LabelFrame(self, text="Pick", labelanchor='n', padx=10, pady=10)
 
-        identificationFrame.grid(row=0, column=0)
-        parametersFrame.grid(row=1, column=0)
-        btnFram.grid(row=2, column=0)
-        testFrame.grid(row=2, column=1)
+        identificationFrame.grid(row=0, column=0,columnspan=2, sticky='ew')
+        parametersFrame.grid(row=1, column=0,columnspan=2)
+        btnFram.grid(row=2, column=0, sticky='ew')
+        testFrame.grid(row=2, column=1, sticky='ew')
+
+        self.__mother = fenetre
+        self.__machine = machine
+        self.__logger = logger
+        self.id = completeEntry(identificationFrame, trashFunc, varType='int')
+        self.id.var = feederData.id
+        self.id['width'] = 10
+        self.type = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.type.var = feederData.type
+        self.type['state'] = 'disable'
+        self.type['width'] = 20
+        self.name = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.name.var = feederData.name
+        self.name['width'] = 50
+
+        tk.Label(identificationFrame, text="Id").grid(row=0, column=0)
+        self.id.grid(row=1, column=0)
+        tk.Label(identificationFrame, text="Type").grid(row=0, column=1)
+        self.type.grid(row=1, column=1)
+        tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
+        self.name.grid(row=1, column=2)
+
+        self.feederDesc = completeEntry(parametersFrame, trashFunc, varType='str')
+        self.feederDesc.var = feederData.feederListToStr()
+        self.feederDesc['width'] = 50
+
+        tk.Label(parametersFrame, text="Composition").grid(row=0, column=0)
+        self.feederDesc.grid(row=0, column=1)
+
+        tk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
+        tk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
+
+        self.pickId = completeEntry(testFrame, trashFunc, varType='int')
+        self.stripId = completeEntry(testFrame, trashFunc, varType='int')
+        self.pickId.var = 0
+        self.stripId.var = 0
+
+        tk.Label(testFrame, text="Cmp").grid(row=0, column=0)
+        self.pickId.grid(row=0, column=1)
+        tk.Label(testFrame, text="Cmp").grid(row=1, column=0)
+        self.pickId.grid(row=1, column=1)
+        tk.Button(testFrame, command=self.__pick, text='Pick').grid(row=2, column=0, padx=10, sticky='ew')
+
+    def __save(self):
+        newFeeder = mch.CompositeFeeder({'id': self.id.var, 'name': self.name.var,
+                                     'feederList':self.__machine.makeFilteredFeederList(self.feederDesc.var)},
+                                    self.__machine.saveToXml)
+        self.__machine.addFeeder(newFeeder)
+        self.__machine.saveToXml()
+        self.__mother.updateFeederListOm()
+
+    def __delete(self):
+        self.__machine.deleteFeeder(self.id.var)
+        self.__machine.saveToXml()
+        self.__mother.updateFeederListOm()
+        self.__mother.displayFeeder(0)
+
+    def __pick(self):
+        self.__mother.pick(self.id.var, self.pickId.var, self.stripId.var)
+
+class StripFeederFrame(tk.Frame):
+    def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+        self._controller = controller
+        identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
+        parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
+        btnFram = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
+        testFrame = tk.LabelFrame(self, text="Pick", labelanchor='n', padx=10, pady=10)
+
+        identificationFrame.grid(row=0, column=0,columnspan=2, sticky='ew')
+        parametersFrame.grid(row=1, column=0,columnspan=2)
+        btnFram.grid(row=2, column=0, sticky='ew')
+        testFrame.grid(row=2, column=1, sticky='ew')
 
         posFirstCmpFrame = tk.LabelFrame(parametersFrame, text="First component", labelanchor='n', padx=10, pady=10)
         posLastCmpFrame = tk.LabelFrame(parametersFrame, text="Last component", labelanchor='n', padx=10, pady=10)
@@ -283,18 +368,18 @@ class StripFeederFrame(tk.Frame):
 
         posFirstCmpFrame.grid(row=0, column=0)
         posLastCmpFrame.grid(row=0, column=1)
-        otherParam.grid(row=0, column=2)
+        otherParam.grid(row=0, column=2, sticky='ns')
 
         self.__mother = fenetre
         self.__machine = machine
         self.__logger = logger
         self.id = completeEntry(identificationFrame, trashFunc, varType='int')
         self.id.var = feederData.id
-        self.id['width'] = 20
+        self.id['width'] = 10
         self.type = completeEntry(identificationFrame, trashFunc, varType='str')
         self.type.var = feederData.type
         self.type['state'] = 'disable'
-        self.type['width'] = 30
+        self.type['width'] = 20
         self.name = completeEntry(identificationFrame, trashFunc, varType='str')
         self.name.var = feederData.name
         self.name['width'] = 50
@@ -312,6 +397,8 @@ class StripFeederFrame(tk.Frame):
         self.yFirst.var = feederData.pos['Y']
         self.zFirst = completeEntry(posFirstCmpFrame, trashFunc, varType='float')
         self.zFirst.var = feederData.pos['Z']
+        btnFirstGo = tk.Button(posFirstCmpFrame, text='Go to', command=self.__goToFirst)
+        btnFirstGet = tk.Button(posFirstCmpFrame, text='Get Pos.', command=self.__getPosFirst)
 
         tk.Label(posFirstCmpFrame, text="X").grid(row=0, column=0)
         self.xFirst.grid(row=0, column=1)
@@ -319,48 +406,47 @@ class StripFeederFrame(tk.Frame):
         self.yFirst.grid(row=1, column=1)
         tk.Label(posFirstCmpFrame, text="Z").grid(row=2, column=0)
         self.zFirst.grid(row=2, column=1)
+        btnFirstGo.grid(row=3, column=1,pady=5)
+        btnFirstGet.grid(row=3, column=0,pady=5)
 
+        self.step = completeEntry(posLastCmpFrame, trashFunc, varType='float')
         self.xLast = completeEntry(posLastCmpFrame, trashFunc, varType='float')
         self.xLast.var = feederData.endPos['X']
         self.yLast = completeEntry(posLastCmpFrame, trashFunc, varType='float')
         self.yLast.var = feederData.endPos['Y']
+        btnLastGo = tk.Button(posLastCmpFrame, text='Go To', command=self.__goToLast)
+        btnLastGet = tk.Button(posLastCmpFrame, text='Get Pos.', command=self.__getPosLast)
 
         tk.Label(posLastCmpFrame, text="X").grid(row=0, column=0)
         self.xLast.grid(row=0, column=1)
         tk.Label(posLastCmpFrame, text="Y").grid(row=1, column=0)
         self.yLast.grid(row=1, column=1)
+        tk.Label(posLastCmpFrame, text="").grid(row=2, column=0)
+        tk.Label(posLastCmpFrame, text="").grid(row=2, column=1)
+        btnLastGo.grid(row=3, column=1,pady=5)
+        btnLastGet.grid(row=3, column=0,pady=5)
 
-        self.stripAmount = completeEntry(otherParam, trashFunc, varType='int')
-        self.stripAmount.var = feederData.stripAmount
         self.componentPerStrip = completeEntry(otherParam, trashFunc, varType='int')
         self.componentPerStrip.var = feederData.componentPerStrip
-        self.stripStep = completeEntry(otherParam, trashFunc, varType='float')
-        self.stripStep.var = feederData.stripStep
         self.cmpStep = completeEntry(otherParam, trashFunc, varType='float')
-        self.cmpStep.var = feederData.cmpStep
+        self.cmpStep.var=4.0
+        btnTheorCalc = tk.Button(otherParam, text='Theor. Calc', command=self.__theorCalc)
 
-        tk.Label(otherParam, text="Strip nb").grid(row=0, column=0)
-        self.stripAmount.grid(row=0, column=1)
-        tk.Label(otherParam, text="Cmp/strip").grid(row=1, column=0)
-        self.componentPerStrip.grid(row=1, column=1)
-        tk.Label(otherParam, text="Strip step").grid(row=2, column=0)
-        self.stripStep.grid(row=2, column=1)
-        tk.Label(otherParam, text="Cmp step").grid(row=3, column=0)
-        self.cmpStep.grid(row=3, column=1)
+        tk.Label(otherParam, text="Cmp/strip").grid(row=0, column=0)
+        self.componentPerStrip.grid(row=0, column=1)
+        tk.Label(otherParam, text="Cmp step").grid(row=1, column=0)
+        self.cmpStep.grid(row=1, column=1)
+        btnTheorCalc.grid(row=2, column=1)
 
-        tk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0)
-        tk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1)
+        tk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
+        tk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
 
         self.pickId = completeEntry(testFrame, trashFunc, varType='int')
-        self.stripId = completeEntry(testFrame, trashFunc, varType='int')
         self.pickId.var = 0
-        self.stripId.var = 0
 
-        tk.Label(testFrame, text="Strip").grid(row=0, column=0)
-        self.stripId.grid(row=0, column=1)
-        tk.Label(testFrame, text="Cmp").grid(row=1, column=0)
-        self.pickId.grid(row=1, column=1)
-        tk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=2)
+        tk.Label(testFrame, text="Cmp").grid(row=0, column=0)
+        self.pickId.grid(row=0, column=1)
+        tk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=2, padx=10)
 
     def __save(self):
         newFeeder = mch.StripFeeder({'id': self.id.var, 'name': self.name.var,
@@ -381,14 +467,42 @@ class StripFeederFrame(tk.Frame):
         self.__mother.displayFeeder(0)
 
     def __pick(self):
-        self.__mother.pick(self.id.var, self.pickId.var, self.stripId.var)
+        self.__mother.pick(self.id.var, self.pickId.var)
 
+    def __goToFirst(self):
+        self._controller.goTo({'X':self.xFirst, 'Y':self.yFirst, 'Z':self.zFirst})
+    def __goToLast(self):
+        self._controller.goTo({'X':self.xLast, 'Y':self.yLast, 'Z':self.zFirst})
+
+    def __getPosFirst(self):
+        try:
+            pos = self.controller.driver.readHardwarePos()
+        except:
+            self.controller.logger.printCout("Devise does not responding")
+        else:
+            self.xFirst.var = pos['X']
+            self.yFirst.var = pos['Y']
+            self.zFirst.var = pos['Z']
+
+    def __getPosLast(self):
+        try:
+            pos = self.controller.driver.readHardwarePos()
+        except:
+            self.controller.logger.printCout("Devise does not responding")
+        else:
+            self.xLast.var = pos['X']
+            self.yLast.var = pos['Y']
+
+    def __theorCalc(self):
+        self.xLast.var = self.xFirst.var
+        self.yLast.var = self.yFirst.var + self.cmpStep.var * (self.componentPerStrip.var-1)
 
 class FeederFrame(tk.Frame):
     def __init__(self, fenetre, machineConf, logger, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
 
-        self.__newBtn = tk.Button(self, command=self.__addFeeder, text='New')
+        self._motherFrame = fenetre
+        self.__newBtn = tk.Button(self, command=self.__newFeederBtn, text='New')
         self.controller = controller
         self.__machineConf = machineConf
         self.__logger = logger
@@ -396,7 +510,8 @@ class FeederFrame(tk.Frame):
         self.__strFeeder = tk.StringVar(self)
         self.__strFeeder.set(self.__feederList[0])
 
-        self.__feederOm = tk.OptionMenu(self, self.__addFeeder, *self.__feederList)
+
+        self.__feederOm = tk.OptionMenu(self, self.__strFeeder, *self.__feederList)
 
         self.__feederFrame = tk.Frame(self, width=500, height=500)
 
@@ -409,7 +524,7 @@ class FeederFrame(tk.Frame):
 
     def __changeFeederTrace(self, *args):
         """
-        Called when string of option me nu change
+        Called when string of option menu change
         :param args:
         :return:
         """
@@ -427,16 +542,51 @@ class FeederFrame(tk.Frame):
             menu.add_command(label=string,
                              command=lambda value=string: self.__strFeeder.set(value))
 
-    def __addFeeder(self):
+    def __newFeederBtn(self):
         """
-        Créate feeder 0 on machine (feeder list)
-        Anad display it on IHM.
-        :param strFeeder:
+        Called by btn newFeeder.
+        Display new feeder winwdows and go to __addFeeder if Ok is pressed else go to __cancelNewFeeder
         :return:
         """
-        newFeeder = mch.StripFeeder({},self.__machineConf.saveToXml)
+        self._newFeedWindow = tk.Toplevel(self._motherFrame)
+        self._newFeedWindow.title('Add feeder')
+        #newFeedFrame = tk.Frame(newFeedWindow)
+
+        listeOptions = ('Strip', 'Composite')
+        self._newFeederTypeSel = tk.StringVar()
+        self._newFeederTypeSel.set(listeOptions[0])
+        self._newFeederId = completeEntry(self._newFeedWindow, trashFunc, varType='int')
+        om = tk.OptionMenu(self._newFeedWindow, self._newFeederTypeSel, *listeOptions)
+        om.configure(width=12)
+
+        tk.Label(self._newFeedWindow, text='Type: ').grid(row=0, column=0,sticky='ew')
+        om.grid(row=0, column=1,sticky='ew')
+        tk.Label(self._newFeedWindow, text='Id: ').grid(row=1, column=0,sticky='ew')
+        self._newFeederId.grid(row=1, column=1,sticky='ew')
+        tk.Button(self._newFeedWindow, text='Cancel', command=self._newFeedWindow.destroy).grid(row=2, column=0,sticky='ew')
+        tk.Button(self._newFeedWindow, text='Ok', command=self.__addFeeder).grid(row=2, column=1,sticky='ew')
+        self._newFeedWindow.grab_set() #Lock focus en new window
+
+    def __addFeeder(self):
+        """
+        Called when create button was pressed in the new feeder windows
+        :return:
+        """
+        self._newFeedWindow.destroy()
+
+        if self.__machineConf.getFeederById(self._newFeederId.var):
+            MsgBox = tk.messagebox.askokcancel('Feeder confirm', 'Id {} already exist.\nContiniue?'.format(self._newFeederId.var), icon='warning')
+            if not MsgBox:
+                return
+
+        if self._newFeederTypeSel.get() == 'Strip':
+            newFeeder = mch.StripFeeder({'id': self._newFeederId.var}, self.__machineConf.saveToXml)
+        elif self._newFeederTypeSel.get() == 'Composite':
+            newFeeder = mch.CompositeFeeder({'id': self._newFeederId.var}, self.__machineConf.saveToXml)
+
         self.__machineConf.addFeeder(newFeeder)
         self.__strFeeder.set(str(newFeeder.id))
+        self.displayFeeder(newFeeder.id)
 
     def displayFeeder(self, feederId):
         """
@@ -448,14 +598,18 @@ class FeederFrame(tk.Frame):
         for feeder in self.__machineConf.feederList:
             if feeder.id == feederId:
                 if feeder.type == 'stripfeeder':
-                    self.__feederFrame = StripFeederFrame(self, feeder, self.__machineConf, self.__logger)
+                    self.__feederFrame = StripFeederFrame(self, feeder, self.__machineConf, self.__logger, self.controller)
+                    self.__feederFrame.grid(row=1, column=0, columnspan=3)
+                    return
+                elif feeder.type == 'compositefeeder':
+                    self.__feederFrame = CompositeFeederFrame(self, feeder, self.__machineConf, self.__logger, self.controller)
                     self.__feederFrame.grid(row=1, column=0, columnspan=3)
                     return
                 else:
                     self.__logger.printCout(feeder.type + ': type cannot be loaded in IHM.')
         self.__logger.printCout('{} Feeder not found'.format(feederId))
 
-    def pick(self, idFeed, cmpid, idStrip):
+    def pick(self, idFeed, cmpid, idStrip=0):
         self.controller.goToFeeder(idFeed=idFeed, idCmp=cmpid, idStrip=idStrip)
 
 

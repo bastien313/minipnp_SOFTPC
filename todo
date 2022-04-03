@@ -1,5 +1,6 @@
 fin de feeder ne bloque pas le pgramme
-revoir correction composants sur pcb.
+revoir correction composants sur pcb OK? correction lineaire a faire?.
 Coorection feeder sur une seule ligne et non les 3(plusieurs).
 ajouter get pos sur page feeder
 BUG OUVERTURE FERMETURE PORT, problelme thread?
+supprimer la msie en file gcode.

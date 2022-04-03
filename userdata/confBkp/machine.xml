@@ -46,11 +46,15 @@
         <xPos>1.0</xPos>
         <yPos>1.0</yPos>
         <zPos>1.0</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>1</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>1.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>1.0</xEndPos>
         <yEndPos>1.0</yEndPos>
         <yEndPos>1.0</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>0</idAddress>
       </feeder_0>
       <feeder_2>
         <name>noname</name>
@@ -58,11 +62,15 @@
         <xPos>247.1931</xPos>
         <yPos>37.2012</yPos>
         <zPos>-30.5</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>249.2931</xEndPos>
         <yEndPos>232.8043</yEndPos>
         <yEndPos>232.8043</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>6</idAddress>
       </feeder_2>
       <feeder_3>
         <name>noname</name>
@@ -70,11 +78,15 @@
         <xPos>263.7888</xPos>
         <yPos>37.9034</yPos>
         <zPos>-30.6</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>265.9742</xEndPos>
         <yEndPos>233.1849</yEndPos>
         <yEndPos>233.1849</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>18</idAddress>
       </feeder_3>
       <feeder_4>
         <name>noname</name>
@@ -82,11 +94,15 @@
         <xPos>302.2781</xPos>
         <yPos>38.0027</yPos>
         <zPos>-30.7</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>304.5638</xEndPos>
         <yEndPos>233.483</yEndPos>
         <yEndPos>233.483</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>18</idAddress>
       </feeder_4>
       <feeder_5>
         <name>noname</name>
@@ -94,11 +110,15 @@
         <xPos>318.6545</xPos>
         <yPos>38.0018</yPos>
         <zPos>-30.8</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>321.501</xEndPos>
         <yEndPos>233.6808</yEndPos>
         <yEndPos>233.6808</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>18</idAddress>
       </feeder_5>
       <feeder_6>
         <name>noname</name>
@@ -106,11 +126,15 @@
         <xPos>335.5446</xPos>
         <yPos>38.0018</yPos>
         <zPos>-30.9</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>337.635</xEndPos>
         <yEndPos>233.6808</yEndPos>
         <yEndPos>233.6808</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>18</idAddress>
       </feeder_6>
       <feeder_1>
         <name>noname</name>
@@ -118,20 +142,16 @@
         <xPos>230.4989</xPos>
         <yPos>37.5884</yPos>
         <zPos>-29.9</zPos>
+        <stripAmount>1</stripAmount>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
+        <cmpStep>4.0</cmpStep>
+        <stripStep>1.0</stripStep>
         <xEndPos>232.8839</xEndPos>
         <yEndPos>233.0911</yEndPos>
         <yEndPos>233.0911</yEndPos>
+        <stripAddress>0</stripAddress>
+        <idAddress>20</idAddress>
       </feeder_1>
-      <feeder_11>
-        <name>noname</name>
-        <type>compositefeeder</type>
-        <xPos>1.0</xPos>
-        <yPos>1.0</yPos>
-        <zPos>1.0</zPos>
-        <feederListStr>1|3|4</feederListStr>
-      </feeder_11>
     </feeder>
   </machine>
 </root>
