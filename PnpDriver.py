@@ -50,19 +50,20 @@ class serialManager():
                 byteIn = self._ser.read(size=100)
                 byteIn = byteIn.decode("utf-8")
                 for byte in byteIn:
+                    self._actualLine += byte
                     if byte == self._endLine:
                         if self._actualLine[0] == '0':
-                            self._funcPipe[0](self._actualLine[1:])
+                            self._funcPipe[0](self._actualLine[1:-1])
                         elif self._actualLine[0] == '1':
-                            self._funcPipe[1](self._actualLine[1:])
+                            self._funcPipe[1](self._actualLine[1:-1])
                         else:
                             if len(self._actualLine):
-                                self._logger.printCout('Pipe {} on {} doesnt exist, data discarded'.format(self._actualLine[0]), self._actualLine)
+                                self._logger.printCout('Pipe {} on {} doesnt exist, data discarded'.format(self._actualLine[0], self._actualLine))
                             else:
                                 self._logger.printCout('Void command')
                         self._actualLine = ""
-                    else:
-                        self._actualLine += byte
+
+            time.sleep(0.02)
 
     def openSerial(self, comPort, speed):
         """
@@ -158,9 +159,11 @@ class pnpDriver:
         #self.logger.printDirectConsole('RX: ' + data)
 
     def hardwareConnect(self, comPort, speed):
+        self._GcodeLine = ''
         return self._serManage.openSerial(comPort, speed)
 
     def hardwareDisconnect(self):
+        self._GcodeLine = ''
         self._serManage.closeSerial()
 
     def __setCoordMode(self, mode):

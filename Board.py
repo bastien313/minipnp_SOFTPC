@@ -145,7 +145,7 @@ class Board:
         return correctedCmpPos
 
     def __calcAngle(self):
-        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posY, 'Y': self.cmpDic[self.ref1].posY}
+        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posX, 'Y': self.cmpDic[self.ref1].posY}
         theoreticalPosRef2 = {'X': self.cmpDic[self.ref2].posX, 'Y': self.cmpDic[self.ref2].posY}
         realPosRef1 = self.ref1RealPos
         realPosRef2 = self.ref2RealPos

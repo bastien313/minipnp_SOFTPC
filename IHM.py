@@ -137,7 +137,8 @@ class BoarDrawing(tk.Frame):
         else:
             angle = math.radians(cmp.rot)
         """
-        angle = math.radians(cmp.rot + board.angleCorr)
+        #angle = math.radians(cmp.rot + board.angleCorr)
+        angle = math.radians(cmp.rot)
         # angle = math.radians(270.0)
         cos_val = math.cos(angle)
         sin_val = math.sin(angle)
@@ -452,9 +453,8 @@ class StripFeederFrame(tk.Frame):
         newFeeder = mch.StripFeeder({'id': self.id.var, 'name': self.name.var,
                                      'xPos': self.xFirst.var, 'yPos': self.yFirst.var, 'zPos': self.zFirst.var,
                                      'xEndPos': self.xLast.var, 'yEndPos': self.yLast.var,
-                                     'stripAmount': self.stripAmount.var,
                                      'componentPerStrip': self.componentPerStrip.var,
-                                     'cmpStep': self.cmpStep.var, 'stripStep': self.stripStep.var},
+                                     'cmpStep': self.cmpStep.var},
                                       self.__machine.saveToXml)
         self.__machine.addFeeder(newFeeder)
         self.__machine.saveToXml()
@@ -470,15 +470,15 @@ class StripFeederFrame(tk.Frame):
         self.__mother.pick(self.id.var, self.pickId.var)
 
     def __goToFirst(self):
-        self._controller.goTo({'X':self.xFirst, 'Y':self.yFirst, 'Z':self.zFirst})
+        self._controller.goTo({'X':self.xFirst.var, 'Y':self.yFirst.var, 'Z':self.zFirst.var})
     def __goToLast(self):
-        self._controller.goTo({'X':self.xLast, 'Y':self.yLast, 'Z':self.zFirst})
+        self._controller.goTo({'X':self.xLast.var, 'Y':self.yLast.var, 'Z':self.zFirst.var})
 
     def __getPosFirst(self):
         try:
-            pos = self.controller.driver.readHardwarePos()
+            pos = self._controller.driver.readHardwarePos()
         except:
-            self.controller.logger.printCout("Devise does not responding")
+            self._controller.logger.printCout("Devise does not responding")
         else:
             self.xFirst.var = pos['X']
             self.yFirst.var = pos['Y']
@@ -486,9 +486,9 @@ class StripFeederFrame(tk.Frame):
 
     def __getPosLast(self):
         try:
-            pos = self.controller.driver.readHardwarePos()
+            pos = self._controller.driver.readHardwarePos()
         except:
-            self.controller.logger.printCout("Devise does not responding")
+            self._controller.logger.printCout("Devise does not responding")
         else:
             self.xLast.var = pos['X']
             self.yLast.var = pos['Y']

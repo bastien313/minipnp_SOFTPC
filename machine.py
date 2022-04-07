@@ -151,7 +151,7 @@ class StripFeeder(Feeder):
                        'Y': float(paramList['yEndPos']) if 'yEndPos' in paramList else 1.0}
 
         # Adress of next component to be picked up
-        self.nextComponent = int(paramList['idAddress']) if 'idAddress' in paramList else 0
+        self.nextComponent = int(paramList['nextComponent']) if 'nextComponent' in paramList else 0
 
     def saveInLxml(self, rootLxml):
         feederRoot = Feeder.saveInLxml(self, rootLxml)
@@ -173,8 +173,8 @@ class StripFeeder(Feeder):
         correctedCmpPos['Y'] = self.pos['Y'] + cmpId * yRamp
 
 
-        theoreticalPosLastPoint = {'X':self.stripStep * float(self.stripAmount - 1),
-                                   'Y':self.cmpStep * float(self.componentPerStrip - 1)}  # Ramene la referance a 0
+        theoreticalPosLastPoint = {'X':0,
+                                   'Y':math.sqrt(xRamp*xRamp + yRamp*yRamp) * float(self.componentPerStrip - 1)}  # Ramene la referance a 0
         realPosLastPoint = {'X': self.endPos['X']- self.pos['X'], 'Y': self.endPos['Y']- self.pos['Y']}
 
         # Get angle aof reference, real and theoretical
@@ -188,7 +188,7 @@ class StripFeeder(Feeder):
 
         return correctedCmpPos
 
-    def getPositionById(self, cmpId):
+    def getPositionById(self, cmpId, stripId=0):
         recalculatePosition = self.__getCorrectedPositionLinear(cmpId)
         return {'X': recalculatePosition['X'], 'Y': recalculatePosition['Y'], 'Z': self.pos['Z'], 'C': recalculatePosition['C']}
 

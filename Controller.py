@@ -541,7 +541,7 @@ class BoardController:
 
         # print(feeder.getPositionById(cmpId=idCmp,stripId=idStrip))
         # Build job.
-        cmpPos = feeder.getPositionById(cmpId=idCmp, stripId=idStrip)
+        cmpPos = feeder.getPositionById(idCmp, idStrip)
         goToJob = job.Job(self.driver)
         goToJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))

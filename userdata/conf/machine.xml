@@ -91,14 +91,14 @@
       <feeder_5>
         <name>noname</name>
         <type>stripfeeder</type>
-        <xPos>318.6545</xPos>
-        <yPos>38.0018</yPos>
-        <zPos>-30.8</zPos>
+        <xPos>321.0</xPos>
+        <yPos>233.3</yPos>
+        <zPos>-30.5</zPos>
         <componentPerStrip>50</componentPerStrip>
-        <nextComponent>0</nextComponent>
-        <xEndPos>321.501</xEndPos>
-        <yEndPos>233.6808</yEndPos>
-        <yEndPos>233.6808</yEndPos>
+        <nextComponent>28</nextComponent>
+        <xEndPos>319.0</xEndPos>
+        <yEndPos>38.0</yEndPos>
+        <yEndPos>38.0</yEndPos>
       </feeder_5>
       <feeder_6>
         <name>noname</name>
@@ -124,14 +124,78 @@
         <yEndPos>233.0911</yEndPos>
         <yEndPos>233.0911</yEndPos>
       </feeder_1>
+      <feeder_7>
+        <name>noname</name>
+        <type>stripfeeder</type>
+        <xPos>302.0878</xPos>
+        <yPos>235.4049</yPos>
+        <zPos>-30.0</zPos>
+        <componentPerStrip>100</componentPerStrip>
+        <nextComponent>84</nextComponent>
+        <xEndPos>299.8922</xEndPos>
+        <yEndPos>38.0018</yEndPos>
+        <yEndPos>38.0018</yEndPos>
+      </feeder_7>
+      <feeder_8>
+        <name>noname</name>
+        <type>stripfeeder</type>
+        <xPos>318.53</xPos>
+        <yPos>235.4049</yPos>
+        <zPos>-30.3</zPos>
+        <componentPerStrip>100</componentPerStrip>
+        <nextComponent>28</nextComponent>
+        <xEndPos>316.4922</xEndPos>
+        <yEndPos>38.0018</yEndPos>
+        <yEndPos>38.0018</yEndPos>
+      </feeder_8>
+      <feeder_9>
+        <name>noname</name>
+        <type>stripfeeder</type>
+        <xPos>335.1</xPos>
+        <yPos>235.4049</yPos>
+        <zPos>-30.5</zPos>
+        <componentPerStrip>100</componentPerStrip>
+        <nextComponent>84</nextComponent>
+        <xEndPos>333.0</xEndPos>
+        <yEndPos>37.4</yEndPos>
+        <yEndPos>37.4</yEndPos>
+      </feeder_9>
+      <feeder_10>
+        <name>noname</name>
+        <type>stripfeeder</type>
+        <xPos>373.5</xPos>
+        <yPos>235.0</yPos>
+        <zPos>-30.5</zPos>
+        <componentPerStrip>100</componentPerStrip>
+        <nextComponent>83</nextComponent>
+        <xEndPos>371.5</xEndPos>
+        <yEndPos>37.8</yEndPos>
+        <yEndPos>37.8</yEndPos>
+      </feeder_10>
       <feeder_11>
         <name>noname</name>
-        <type>compositefeeder</type>
-        <xPos>1.0</xPos>
-        <yPos>1.0</yPos>
-        <zPos>1.0</zPos>
-        <feederListStr>1|3|4</feederListStr>
+        <type>stripfeeder</type>
+        <xPos>390.1</xPos>
+        <yPos>235.0</yPos>
+        <zPos>-30.5</zPos>
+        <componentPerStrip>100</componentPerStrip>
+        <nextComponent>28</nextComponent>
+        <xEndPos>388.1</xEndPos>
+        <yEndPos>37.8</yEndPos>
+        <yEndPos>37.8</yEndPos>
       </feeder_11>
+      <feeder_12>
+        <name>noname</name>
+        <type>stripfeeder</type>
+        <xPos>406.7</xPos>
+        <yPos>235.0</yPos>
+        <zPos>-30.5</zPos>
+        <componentPerStrip>100</componentPerStrip>
+        <nextComponent>28</nextComponent>
+        <xEndPos>404.7</xEndPos>
+        <yEndPos>37.0</yEndPos>
+        <yEndPos>37.0</yEndPos>
+      </feeder_12>
     </feeder>
   </machine>
 </root>

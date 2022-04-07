@@ -4,3 +4,8 @@ Coorection feeder sur une seule ligne et non les 3(plusieurs).
 ajouter get pos sur page feeder
 BUG OUVERTURE FERMETURE PORT, problelme thread?
 supprimer la msie en file gcode.
+remplacer la valeur 2 dans  def __getCorrectedPositionLinear(self, cmpId):
+Bug creation composants
+SOFT EMBARQUER se plante sur le status?? passer sur DMA usart?
+la lsite des port serie ne se rafraichit pas snas redemarer le programme.
+Ajouter la pssibiliter le metre of les axes independameent + metre off C quand on lutilise pas.

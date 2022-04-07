@@ -214,7 +214,7 @@ class MoveTask(SimpleTask):
     Send Move request and wait while machine is moving.
     """
 
-    def __init__(self, pnpDriver, coord, speed=None, speedMode='P', coordMode='A', name=''):
+    def __init__(self, pnpDriver, coord, speed, speedMode='P', coordMode='A', name=''):
         """
         :param pnpDriver: driver class for build gcode and send to device.
         :param coord: coord where we go. dict{'X':val,.....}
