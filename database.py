@@ -5,17 +5,17 @@ import xmledit as xe
 
 class Model:
     def __init__(self, dicConf):
-        self.name = dicConf['NAME']
-        self.width = dicConf['WIDTH']
-        self.length = dicConf['LENGTH']
-        self.height = dicConf['HEIGHT']
-        self.scanHeight = dicConf['SCAN_HEIGHT']
-        self.aliasList = dicConf['ALIAS']
-        self.pickupSpeed = dicConf['PISPE']
-        self.placeSpeed = dicConf['PLSPE']
-        self.pickupDelay = dicConf['PIDEL']
-        self.placeDelay = dicConf['PLDEL']
-        self.moveSpeed = dicConf['MVSPE']
+        self.name = dicConf['NAME'] if 'NAME' in dicConf else ' '
+        self.width = dicConf['WIDTH'] if 'WIDTH' in dicConf else 1.0
+        self.length = dicConf['LENGTH'] if 'LENGTH' in dicConf else 1.0
+        self.height = dicConf['HEIGHT'] if 'HEIGHT' in dicConf else 1.0
+        self.scanHeight = dicConf['SCAN_HEIGHT'] if 'SCAN_HEIGHT' in dicConf else 0.5
+        self.aliasList = dicConf['ALIAS'] if 'ALIAS' in dicConf else ''
+        self.pickupSpeed = dicConf['PISPE'] if 'PISPE' in dicConf else 20.0
+        self.placeSpeed = dicConf['PLSPE'] if 'PLSPE' in dicConf else 20.0
+        self.pickupDelay = dicConf['PIDEL'] if 'PIDEL' in dicConf else 200.0
+        self.placeDelay = dicConf['PLDEL'] if 'PLDEL' in dicConf else 200.0
+        self.moveSpeed = dicConf['MVSPE'] if 'MVSPE' in dicConf else 20.0
 
     def aliasRemove(self, aliasStr):
         try:

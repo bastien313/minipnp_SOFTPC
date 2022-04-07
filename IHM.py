@@ -431,13 +431,17 @@ class StripFeederFrame(tk.Frame):
         self.componentPerStrip.var = feederData.componentPerStrip
         self.cmpStep = completeEntry(otherParam, trashFunc, varType='float')
         self.cmpStep.var=4.0
+        self.nextCmp = completeEntry(otherParam, trashFunc, varType='int')
+        self.nextCmp.var=feederData.nextComponent
         btnTheorCalc = tk.Button(otherParam, text='Theor. Calc', command=self.__theorCalc)
 
         tk.Label(otherParam, text="Cmp/strip").grid(row=0, column=0)
         self.componentPerStrip.grid(row=0, column=1)
         tk.Label(otherParam, text="Cmp step").grid(row=1, column=0)
         self.cmpStep.grid(row=1, column=1)
-        btnTheorCalc.grid(row=2, column=1)
+        tk.Label(otherParam, text="Next cmp").grid(row=2, column=0)
+        self.nextCmp.grid(row=2, column=1)
+        btnTheorCalc.grid(row=3, column=1)
 
         tk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
         tk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
@@ -454,7 +458,7 @@ class StripFeederFrame(tk.Frame):
                                      'xPos': self.xFirst.var, 'yPos': self.yFirst.var, 'zPos': self.zFirst.var,
                                      'xEndPos': self.xLast.var, 'yEndPos': self.yLast.var,
                                      'componentPerStrip': self.componentPerStrip.var,
-                                     'cmpStep': self.cmpStep.var},
+                                     'cmpStep': self.cmpStep.var, 'nextComponent':self.cmpStep.var},
                                       self.__machine.saveToXml)
         self.__machine.addFeeder(newFeeder)
         self.__machine.saveToXml()

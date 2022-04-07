@@ -133,5 +133,20 @@
       <moveSpeed>100.0</moveSpeed>
       <alias/>
     </Null>
+    <kik>
+      <name>kik</name>
+      <width>0.0</width>
+      <length>0.0</length>
+      <height>0.0</height>
+      <scanHeight>0.0</scanHeight>
+      <pickupSpeed>20.0</pickupSpeed>
+      <placeSpeed>20.0</placeSpeed>
+      <pickupDelay>200.0</pickupDelay>
+      <placeDelay>200.0</placeDelay>
+      <moveSpeed>20.0</moveSpeed>
+      <alias>
+        <A0>biy</A0>
+      </alias>
+    </kik>
   </model>
 </root>
