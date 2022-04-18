@@ -126,27 +126,42 @@
       <length>1.0</length>
       <height>1.0</height>
       <scanHeight>0.0</scanHeight>
-      <pickupSpeed>100.0</pickupSpeed>
-      <placeSpeed>100.0</placeSpeed>
+      <pickupSpeed>10.0</pickupSpeed>
+      <placeSpeed>10.0</placeSpeed>
       <pickupDelay>10.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
-      <moveSpeed>100.0</moveSpeed>
+      <moveSpeed>10.0</moveSpeed>
       <alias/>
     </Null>
-    <kik>
-      <name>kik</name>
-      <width>0.0</width>
-      <length>0.0</length>
-      <height>0.0</height>
-      <scanHeight>0.0</scanHeight>
-      <pickupSpeed>20.0</pickupSpeed>
-      <placeSpeed>20.0</placeSpeed>
+    <C_0402>
+      <name>C_0402</name>
+      <width>1.0</width>
+      <length>0.5</length>
+      <height>0.5</height>
+      <scanHeight>0.25</scanHeight>
+      <pickupSpeed>25.0</pickupSpeed>
+      <placeSpeed>33.0</placeSpeed>
+      <pickupDelay>400.0</pickupDelay>
+      <placeDelay>400.0</placeDelay>
+      <moveSpeed>33.0</moveSpeed>
+      <alias>
+        <A0>C_0402</A0>
+      </alias>
+    </C_0402>
+    <R_0402>
+      <name>R_0402</name>
+      <width>1.0</width>
+      <length>0.5</length>
+      <height>0.2</height>
+      <scanHeight>0.1</scanHeight>
+      <pickupSpeed>25.0</pickupSpeed>
+      <placeSpeed>33.0</placeSpeed>
       <pickupDelay>200.0</pickupDelay>
       <placeDelay>200.0</placeDelay>
-      <moveSpeed>20.0</moveSpeed>
+      <moveSpeed>33.0</moveSpeed>
       <alias>
-        <A0>biy</A0>
+        <A0>R_0402</A0>
       </alias>
-    </kik>
+    </R_0402>
   </model>
 </root>

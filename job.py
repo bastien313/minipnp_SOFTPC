@@ -59,6 +59,7 @@ class SimpleTask:
         If there is no task to execute self._status.status is set to END.
         :return:
         """
+        print(self._name)
         if self._funcCnt == (len(self._functionList) - 1):
             self._status.status = TaskStatusEnum.END
         else:
@@ -182,10 +183,13 @@ class FeederVoidErrorTask(SimpleTask):
         self._taskConfigure([self._errorCheck])
 
     def _errorCheck(self):
-        if self._feeder.haveComponent():
+        print('ffed')
+        if not self._feeder.haveComponent():
             self._status.status = TaskStatusEnum.ERROR
-            self._status.msg = 'Feeder void'
-        return TaskStatus(status=TaskStatusEnum.END)
+            self._status.msg = '{} Feeder void'.format(self._feeder.id)
+            return self._status
+        else:
+            return TaskStatus(status=TaskStatusEnum.END)
 
 
 class WaitFeederWasReadyTask(SimpleTask):
@@ -347,14 +351,12 @@ class HomingTask(SimpleTask):
     Launch an homming request and with until is finish.
     """
 
-    def __init__(self, pnpDriver, state, name=''):
+    def __init__(self, pnpDriver, name=''):
         """
         :param pnpDriver: driver class for build gcode and send to device.
-        :param state: state of electro vane.
         """
         super().__init__(name)
         self._driver = pnpDriver
-        self._state = state
         self._taskConfigure([self._homingRequest, self._waitMovement])
 
     def _homingRequest(self):
@@ -469,6 +471,10 @@ class PickAndPlaceJob(Job):
                            name='{} Go to feeder.'.format(ref)),
             WaitFeederWasReadyTask(feeder, name='{} Wait feeder.'.format(ref)),
             FeederVoidErrorTask(feeder, name='{} Feeder error?'.format(ref)),
+            MoveTask(self._driver, {'C': 30.0}, speed=model.moveSpeed, coordMode='R',
+                     name='{} Feeder release +'.format(ref)),
+            MoveTask(self._driver, {'C': -30.0}, speed=model.moveSpeed, coordMode='R',
+                     name='{} Feeder release -'.format(ref)),
             MoveTask(self._driver, {'Z': self._ZpickupPos}, speed=model.pickupSpeed,
                      name='{} Pick Z down.'.format(ref)),
             EvStateTask(self._driver, 1, name='{} Enable vaccum.'.format(ref)),
@@ -479,7 +485,6 @@ class PickAndPlaceJob(Job):
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
             MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y']}, speed=model.moveSpeed,
                      name='{} Go to component position.'.format(ref)),
-            PumpStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
             MoveTask(self._driver, {'C': self._placePos['C']}, speed=model.moveSpeed, coordMode='R',
                      name='{} Go to component position C.'.format(ref)),
             MoveTask(self._driver, {'Z': placePos['Z'] + model.height}, speed=model.placeSpeed,
@@ -510,7 +515,7 @@ class ThreadJobExecutor(threading.Thread):
         threading.Thread.__init__(self)
         self._job = job
         self._driver = driver
-        self._pauseFunc = errorFunc
+        self._errorFunc = errorFunc
         self._endFunc = endFunc
         self._notify = notifyFunc
         self._inPause = False
@@ -535,7 +540,7 @@ class ThreadJobExecutor(threading.Thread):
             if not self._inPause:
                 # Normally job running.
                 jobStatus = self._job.exec()
-                if (self.getStateDescription() != self._oldNotify):
+                if self.getStateDescription() != self._oldNotify:
                     self._oldNotify = self.getStateDescription()
                     self._notify(self._oldNotify)
                 # Check job status aud pause if needed.
@@ -543,9 +548,10 @@ class ThreadJobExecutor(threading.Thread):
                     self._inPause = True
                 elif jobStatus.status == TaskStatusEnum.ERROR:
                     self._inPause = True
-                    self.errorFunc(self._job.status)
+                    self._errorFunc(self._job.status)
                 elif jobStatus.status == TaskStatusEnum.END:
                     self._stopSignal = True
+            time.sleep(0.02)
         # self._driver.stopMachine()
         self._endFunc(self._job.status)
 

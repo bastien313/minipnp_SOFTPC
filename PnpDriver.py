@@ -13,14 +13,13 @@ class serialManager():
         self._actualLine = ""
         self._endLine = endLine
         self._ser = 0
-        self._timeThread = 0# Intervallometre(0.02, self.__recpetion)
-        #self._timeThread.stop()
+        self._timeThread = 0  # Intervallometre(0.02, self.__recpetion)
+        # self._timeThread.stop()
         self._logger = logger
         self.killThread = False
-        self._funcPipe = {0:lambda:None, 1:lambda:None}
+        self._funcPipe = {0: lambda: None, 1: lambda: None}
 
-
-    def setRecpetionPipeCallBack(self,pipe, callback):
+    def setRecpetionPipeCallBack(self, pipe, callback):
         self._funcPipe[pipe] = callback
 
     def sendLine(self, str):
@@ -36,8 +35,6 @@ class serialManager():
     def clearBuffer(self, pipe):
         self._actualLine = ""
         self._bufferLineInput[pipe] = []
-
-
 
     def __recpetion(self):
         """
@@ -58,7 +55,9 @@ class serialManager():
                             self._funcPipe[1](self._actualLine[1:-1])
                         else:
                             if len(self._actualLine):
-                                self._logger.printCout('Pipe {} on {} doesnt exist, data discarded'.format(self._actualLine[0], self._actualLine))
+                                self._logger.printCout(
+                                    'Pipe {} on {} doesnt exist, data discarded'.format(self._actualLine[0],
+                                                                                        self._actualLine))
                             else:
                                 self._logger.printCout('Void command')
                         self._actualLine = ""
@@ -87,10 +86,10 @@ class serialManager():
             return 0
 
         self._logger.printCout("serialPort='{}', Speed='{}' : Open succes".format(comPort, speed))
-       #self._timeThread = Intervallometre(0.02, self.__recpetion)
-        #self._timeThread.setDaemon(True)
-        #self._timeThread.encore = True
-        #self._timeThread.start()
+        # self._timeThread = Intervallometre(0.02, self.__recpetion)
+        # self._timeThread.setDaemon(True)
+        # self._timeThread.encore = True
+        # self._timeThread.start()
         self.killThread = False
         self._timeThread = threading.Thread(target=self.__recpetion)
         self._timeThread.start()
@@ -110,7 +109,7 @@ class pnpDriver:
 
     def __init__(self, logger):
         self._relativeMode = 'A'
-        #self._bufferLineInputPipe0 = []
+        # self._bufferLineInputPipe0 = []
         self._speed = 100.0
         self._GcodeLine = ''
         self.logger = logger
@@ -118,15 +117,15 @@ class pnpDriver:
         self._serManage = serialManager(self.logger)
         self._serManage.setRecpetionPipeCallBack(pipe=0, callback=self.__pipe0DataReception)
         self._serManage.setRecpetionPipeCallBack(pipe=1, callback=self.__pipe1DataReception)
-        self.__statusPipeCallBack = lambda :None
+        self.__statusPipeCallBack = lambda: None
         self._commadUnackited = 0  # Number of bomand is unackited
         self._queue = queue.Queue()
-        self.status = {'X':'00', 'Y':'00', 'Z':'00', 'C':'00'}
+        self.status = {'X': '00', 'Y': '00', 'Z': '00', 'C': '00'}
 
     def isConnected(self):
         return self._serManage.isConnected()
 
-    def setStatusPipeCallBack(self,callback):
+    def setStatusPipeCallBack(self, callback):
         self.__statusPipeCallBack = callback
 
     def __lineIsPresent(self):
@@ -134,7 +133,7 @@ class pnpDriver:
         :return: Int, ammount of line can be read.
         """
         return not self._queue.empty()
-        #return len(self._bufferLineInputPipe0)
+        # return len(self._bufferLineInputPipe0)
 
     def __getLine(self, delete=True):
         """
@@ -143,20 +142,20 @@ class pnpDriver:
         :return: First line recepted
         """
         return self._queue.get()
-        #ret = self._bufferLineInputPipe0[0]
-        #if delete:
+        # ret = self._bufferLineInputPipe0[0]
+        # if delete:
         #    del self._bufferLineInputPipe0[0]
-        #return ret
+        # return ret
 
     def __pipe1DataReception(self, data):
         self.status = self.coordParse(data)
-        #self.__statusPipeCallBack(dicOut)
+        # self.__statusPipeCallBack(dicOut)
 
     def __pipe0DataReception(self, data):
         self._queue.put(data)
-        #self._bufferLineInputPipe0.append(data)
-        #self.logger.printCout('RX: ' + data)
-        #self.logger.printDirectConsole('RX: ' + data)
+        # self._bufferLineInputPipe0.append(data)
+        # self.logger.printCout('RX: ' + data)
+        # self.logger.printDirectConsole('RX: ' + data)
 
     def hardwareConnect(self, comPort, speed):
         self._GcodeLine = ''
@@ -170,7 +169,7 @@ class pnpDriver:
         """Add relative or absolute to Gcode line if neeeded
             Relative = G90, Absolute = G91"""
 
-        #if self._relativeMode != mode:
+        # if self._relativeMode != mode:
         self._relativeMode = mode
         if self._relativeMode == 'R':
             self._GcodeLine += 'G91 '
@@ -248,6 +247,18 @@ class pnpDriver:
         """
         self._GcodeLine = 'S99'
         self.__sendGcodeLine()
+
+    def makeScan(self):
+        self._GcodeLine = 'R500'
+        self.__sendGcodeLine()
+        response = self.readLine()
+        return int(response)
+
+    def getPresure(self):
+        self._GcodeLine = 'R600'
+        self.__sendGcodeLine()
+        response = self.readLine()
+        return float(response)
 
     def sendMachineConf(self, machine):
         self.setMaxSpeed({
@@ -711,11 +722,11 @@ class pnpDriver:
         start = time.time()
         loop = True
         while not self.__lineIsPresent():
-            #while not self._queue.empty():
+            # while not self._queue.empty():
             #    self._bufferLineInputPipe0.append(self._queue.get())
-            #if self.__lineIsPresent():
+            # if self.__lineIsPresent():
             #    loop = False
-            #if (time.time() - start) > timeOut:
+            # if (time.time() - start) > timeOut:
             if 0:
                 raise RuntimeError
 

@@ -104,8 +104,54 @@ class Board:
         for cmp in self.cmpDic.values():
             cmp.posX += xMin * -1.0
             cmp.posY += yMin * -1.0
-
     def getMachineCmpPos(self, ref):
+        """
+        Return the machine coord position of component.
+        :return:
+        """
+        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posX, 'Y': self.cmpDic[self.ref1].posY}
+        theoreticalPosRef2 = {'X': self.cmpDic[self.ref2].posX, 'Y': self.cmpDic[self.ref2].posY}
+        realPosRef1 = self.ref1RealPos
+        realPosRef2 = self.ref2RealPos
+
+
+        # Recaled position of ref2 when ref1 = 0,0
+        theoreticalPosRef2Recal = {'X': theoreticalPosRef2['X'] - theoreticalPosRef1['X'],
+                                   'Y': theoreticalPosRef2['Y'] - theoreticalPosRef1['Y']}
+        realPosRef2Recal = {'X': realPosRef2['X'] - realPosRef1['X'],
+                            'Y': realPosRef2['Y'] - realPosRef1['Y']}
+
+        rapx = realPosRef2Recal['X'] / theoreticalPosRef2Recal['X']
+        rapy = realPosRef2Recal['Y'] / theoreticalPosRef2Recal['Y']
+
+        theoreticalAngle = math.atan2(theoreticalPosRef2Recal['Y'], theoreticalPosRef2Recal['X'])
+        realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
+        angleOffset = realAngleLastPoint - theoreticalAngle
+
+        cmpPosTheoretical = {'X': self.cmpDic[ref].posX, 'Y': self.cmpDic[ref].posY}
+        cmpPosTheoreticalRecaled = {'X': cmpPosTheoretical['X'] - theoreticalPosRef1['X'],
+                                    'Y': cmpPosTheoretical['Y'] - theoreticalPosRef1['Y']}
+
+        correctedCmpPos = {'X': cmpPosTheoreticalRecaled['X'] * rapx,
+                           'Y': cmpPosTheoreticalRecaled['Y'] * rapy}
+
+        cmpHypot = math.sqrt(cmpPosTheoreticalRecaled['X'] * cmpPosTheoreticalRecaled['X']
+                             + cmpPosTheoreticalRecaled['Y'] * cmpPosTheoreticalRecaled['Y'])
+
+        theoreticalAngleCmp = math.atan2(cmpPosTheoreticalRecaled['Y'] , cmpPosTheoreticalRecaled['X'])
+        realAngleCmp = theoreticalAngleCmp + angleOffset
+
+
+        # Compute corrected position
+        #correctedCmpPos = {'X': math.cos(realAngleCmp) * cmpHypot, 'Y': math.sin(realAngleCmp) * cmpHypot}
+        #Recal to machine coord
+        correctedCmpPos['X'] += realPosRef1['X']
+        correctedCmpPos['Y'] += realPosRef1['Y']
+        correctedCmpPos['C'] = self.cmpDic[ref].rot + math.degrees(angleOffset)
+        print(correctedCmpPos)
+        return correctedCmpPos
+
+    def getMachineCmpPos_old(self, ref):
         """
         Return the machine coord position of component.
         :return:
@@ -121,8 +167,14 @@ class Board:
         realPosRef2Recal = {'X': realPosRef2['X'] - realPosRef1['X'],
                             'Y': realPosRef2['Y'] - realPosRef1['Y']}
 
-        theoreticalAngle = math.atan2(theoreticalPosRef2Recal['Y'], theoreticalPosRef2Recal['X'])
-        realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
+        #theoreticalAngle = math.atan2(theoreticalPosRef2Recal['Y'], theoreticalPosRef2Recal['X'])
+        hypot = math.sqrt(theoreticalPosRef2Recal['X'] * theoreticalPosRef2Recal['X']
+                             + theoreticalPosRef2Recal['Y'] * theoreticalPosRef2Recal['Y'])
+        theoreticalAngle = math.asin(theoreticalPosRef2Recal['Y']/hypot)
+        #realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
+        hypot = math.sqrt(realPosRef2Recal['X'] * realPosRef2Recal['X']
+                             + realPosRef2Recal['Y'] * realPosRef2Recal['Y'])
+        realAngleLastPoint = math.asin(realPosRef2Recal['Y']/hypot)
         angleOffset = realAngleLastPoint - theoreticalAngle
 
         cmpPosTheoretical = {'X': self.cmpDic[ref].posX, 'Y': self.cmpDic[ref].posY}
@@ -132,11 +184,19 @@ class Board:
         cmpHypot = math.sqrt(cmpPosTheoreticalRecaled['X'] * cmpPosTheoreticalRecaled['X']
                              + cmpPosTheoreticalRecaled['Y'] * cmpPosTheoreticalRecaled['Y'])
 
-        theoreticalAngleCmp = math.atan2(cmpPosTheoreticalRecaled['Y'] , cmpPosTheoreticalRecaled['X'])
+        #theoreticalAngleCmp = math.atan2(cmpPosTheoreticalRecaled['Y'] , cmpPosTheoreticalRecaled['X'])
+        hypot = math.sqrt(cmpPosTheoreticalRecaled['X'] * cmpPosTheoreticalRecaled['X']
+                             + cmpPosTheoreticalRecaled['Y'] * cmpPosTheoreticalRecaled['Y'])
+        theoreticalAngleCmp = math.asin(cmpPosTheoreticalRecaled['Y']/hypot)
         realAngleCmp = theoreticalAngleCmp + angleOffset
 
         # Compute corrected position
         correctedCmpPos = {'X': math.cos(realAngleCmp) * cmpHypot, 'Y': math.sin(realAngleCmp) * cmpHypot}
+        #correctedCmpPos = {}
+        #correctedCmpPos['X'] = math.cos(angleOffset)*cmpPosTheoreticalRecaled['X'] - \
+        #                       math.sin(angleOffset)*cmpPosTheoreticalRecaled['Y']
+        #correctedCmpPos['Y'] = math.sin(angleOffset)*cmpPosTheoreticalRecaled['X'] + \
+        #                       math.cos(angleOffset)*cmpPosTheoreticalRecaled['Y']
         #Recal to machine coord
         correctedCmpPos['X'] += realPosRef1['X']
         correctedCmpPos['Y'] += realPosRef1['Y']

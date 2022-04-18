@@ -337,10 +337,13 @@ class BoardController:
                                                        name='Is placed callBack'))
                     cmpJob.jobConfigure()
                     longJob.append(cmpJob)
+
+        longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
         longJob.jobConfigure()
         print(longJob)
         self.__longJob = job.ThreadJobExecutor(job=longJob, driver=self.driver,
-                                               errorFunc=self.__longjobError, endFunc=self.__endLongJob)
+                                               errorFunc=self.__longjobError, endFunc=self.__endLongJob,
+                                               notifyFunc=self.__jobNotify)
         self.ihm.jobFrame.playButtonState(1)
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.jobDescription(self.__longJob.getStateDescription())
@@ -364,7 +367,10 @@ class BoardController:
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.pauseButtonState(1)
         self.ihm.jobFrame.buildButtonState(0)
-        self.__longJob.start()
+        if self.__longJob.is_alive():
+            self.__longJob.unPause()
+        else:
+            self.__longJob.start()
 
     def __startLittleJob(self):
         self.ihm.jobFrame.playButtonState(0)
@@ -378,7 +384,7 @@ class BoardController:
             self.__littleJob.stop()
 
         if self.__longJob.is_alive():
-            self.__littleJob.pause()
+            self.__longJob.pause()
             self.ihm.jobFrame.jobDescription(self.__longJob.getStateDescription())
             self.ihm.jobFrame.playButtonState(1)
             self.ihm.jobFrame.pauseButtonState(0)
@@ -547,7 +553,8 @@ class BoardController:
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
         goToJob.append(job.MoveTask(self.driver, {'X': cmpPos['X'], 'Y': cmpPos['Y']},
                                     speed=self.__machineConf.axisConfArray['X'].speed))
-        goToJob.append(job.MoveTask(self.driver, {'Z': cmpPos['Z']}, speed=self.__machineConf.axisConfArray['Z'].speed))
+        goToJob.append(
+            job.MoveTask(self.driver, {'Z': cmpPos['Z'] + 1}, speed=self.__machineConf.axisConfArray['Z'].speed))
         goToJob.jobConfigure()
 
         if self.__littleJob.isRunning():
@@ -577,6 +584,31 @@ class DtbController:
     def makeNewModel(self, strmod):
         self.modList.makeNewModel(strmod)
 
+class ScanController:
+    def __init__(self, logger, driver, machine):
+        self.ihm = 0
+        self.logger = logger
+        self.driver = driver
+
+    def linkCallBack(self, ihm):
+        self.ihm = ihm
+        self.ihm.setScan3Dcb(self._scan3D)
+        self.ihm.setScanLinecb(self._scanLine)
+        self.ihm.setScanPointcb(self._scanPoint)
+        self.ihm.setGoTOcb(self._goTo)
+
+    def _goTo(self):
+        kiki=0
+
+    def _scanPoint(self):
+        kiki=0
+
+    def _scanLine(self):
+        kiki=0
+
+    def _scan3D(self):
+        kiki=0
+
 
 class PnpConroller:
 
@@ -589,6 +621,7 @@ class PnpConroller:
         self.paramCtrl = ParamCtrl(self.driver, self.machineConfiguration)
         self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration)
         self.dtbCtrl = DtbController(logger, self.modList)
+        self.scanCtrl = ScanController(logger, self.driver, self.machineConfiguration)
         self.driver.setStatusPipeCallBack(self.updateStatusOnIHM)
 
         self.directCtrl.setJobIsRunningCb(self.jobIsRunning)
