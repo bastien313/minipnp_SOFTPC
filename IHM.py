@@ -1978,16 +1978,23 @@ class ScanFrame(tk.Frame):
         self._zScan = completeEntry(frame=self, traceFunc=trashFunc, varType='double')
         self._btnGoTo = tk.Button(self, text='Go TO')
         self._btnScanPoint = tk.Button(self, text='Scan point')
-        self._btnScanLine = tk.Button(self, text='Scan Line')
+        self._btnScanXLine = tk.Button(self, text='Scan Line X')
+        self._btnScanYLine = tk.Button(self, text='Scan Line Y')
         self._btnScan3D = tk.Button(self, text='Scan 3D')
+        self._btnFace = tk.Button(self, text='Face 3D')
+        self._btnCircle = tk.Button(self, text='circle')
 
         self._labMes.grid(row=0, column=0, columnspan=2)
         tk.Label(self, text='zScan:').grid(row=1, column=0)
         self._zScan.grid(row=1, column=1)
         self._btnGoTo.grid(row=2, column=0)
         self._btnScanPoint.grid(row=2, column=1)
-        self._btnScanLine.grid(row=3, column=0)
-        self._btnScan3D.grid(row=3, column=1)
+        self._btnScanXLine.grid(row=3, column=0)
+        self._btnScanYLine.grid(row=3, column=1)
+        self._btnCircle.grid(row=4, column=0)
+        self._btnScan3D.grid(row=5, column=0)
+        self._btnFace.grid(row=5, column=1)
+
 
     def setMeasureValue(self, value):
         self._labMes['text'] = 'Mesure: {}'.format(value)
@@ -1998,8 +2005,17 @@ class ScanFrame(tk.Frame):
     def setScan3Dcb(self, cb):
         self._btnScan3D['command'] = cb
 
-    def setScanLinecb(self, cb):
-        self._btnScanLine['command'] = cb
+    def setScanCirclecb(self, cb):
+        self._btnCircle['command'] = cb
+
+    def setScanFacecb(self, cb):
+        self._btnFace['command'] = cb
+
+    def setScanXLinecb(self, cb):
+        self._btnScanXLine['command'] = cb
+
+    def setScanYLinecb(self, cb):
+        self._btnScanYLine['command'] = cb
 
     def setScanPointcb(self, cb):
         self._btnScanPoint['command'] = cb

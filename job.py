@@ -126,6 +126,19 @@ class ExternalCallTask(SimpleTask):
         self._status.status = TaskStatusEnum.END
         return TaskStatus(status=TaskStatusEnum.END)
 
+class ScanTask(SimpleTask):
+    """
+    Make a scan and write data to externalList
+    """
+
+    def __init__(self, pnpDriver, extList, name=''):
+        super().__init__(name)
+        self._el = extList
+        self._driver = pnpDriver
+        self._taskConfigure([self._scan])
+
+    def _scan(self):
+        self._el.append(self._driver.makeScan())
 
 class PumpStateTask(SimpleTask):
     """
