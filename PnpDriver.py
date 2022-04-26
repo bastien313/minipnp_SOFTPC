@@ -254,6 +254,17 @@ class pnpDriver:
         response = self.readLine()
         return int(response)
 
+    def makeScanLine(self, axis, speed, lengt, nbMesure):
+        self._GcodeLine = 'R501 A{} N{} L{} F{}'.format(axis, nbMesure, lengt, speed)
+        self.__sendGcodeLine()
+        nb = int(self.readLine(timeOut=20))
+        arrayOut = []
+        for mes in range(nb):
+            lineMes = self.readLine().split()
+            print(lineMes)
+            arrayOut.append((float(lineMes[0]), int(lineMes[1])))
+        return arrayOut
+
     def getPresure(self):
         self._GcodeLine = 'R600'
         self.__sendGcodeLine()

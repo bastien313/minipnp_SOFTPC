@@ -126,6 +126,7 @@ class ExternalCallTask(SimpleTask):
         self._status.status = TaskStatusEnum.END
         return TaskStatus(status=TaskStatusEnum.END)
 
+
 class ScanTask(SimpleTask):
     """
     Make a scan and write data to externalList
@@ -139,6 +140,29 @@ class ScanTask(SimpleTask):
 
     def _scan(self):
         self._el.append(self._driver.makeScan())
+        return TaskStatus(status=TaskStatusEnum.END)
+
+
+class ScanLineTask(SimpleTask):
+    """
+    Make a scan and write data to externalList
+    """
+
+    def __init__(self, pnpDriver, extList, axis, lengt, nbMesure, speed, name=''):
+        super().__init__(name)
+        self._el = extList
+        self._driver = pnpDriver
+        self._axis = axis
+        self._lengt = lengt
+        self._nbMesure = nbMesure
+        self._speed = speed
+        self._taskConfigure([self._scan])
+
+    def _scan(self):
+        self._el.append(self._driver.makeScanLine(axis=self._axis, speed=self._speed,
+                                                  lengt=self._lengt, nbMesure=self._nbMesure))
+        return TaskStatus(status=TaskStatusEnum.END)
+
 
 class PumpStateTask(SimpleTask):
     """
@@ -284,7 +308,7 @@ class FeederGoToTask(MoveTask):
 
     def _getPosition(self):
         self._moveCoord = self._feeder.getComponentPosition()
-        self._moveCoord = {'X':self._moveCoord['X'], 'Y': self._moveCoord['Y']}
+        self._moveCoord = {'X': self._moveCoord['X'], 'Y': self._moveCoord['Y']}
         return TaskStatus(status=TaskStatusEnum.END)
 
 
@@ -513,13 +537,55 @@ class PickAndPlaceJob(Job):
         self.jobConfigure()
 
 
+class MechanicsCorectorJob(Job):
+    """
+    """
+
+    def __init__(self, pnpDriver, correctorPos, model, zLift, name=''):
+        """
+        :param pnpDriver:
+        :param correctorPos:
+        :param model:
+        :param zLift:
+        :param name:
+        :param ref:
+        """
+        super().__init__(name)
+        self._driver = pnpDriver
+        self._correctorPos = correctorPos
+        self._model = model
+        corectorSize = {'X': 3.75, 'Y': 3.75}
+        cornerHGPos = {'X': (self._correctorPos['X'] - corectorSize['X']) + model.length,
+                       'Y': (self._correctorPos['Y'] + corectorSize['Y']) - model.width}
+        cornerBDPos = {'X': (self._correctorPos['X'] + corectorSize['X']) - model.length,
+                       'Y': (self._correctorPos['Y'] - corectorSize['Y']) + model.width}
+        self._taskList = [
+            MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='Start Z lift.'),
+            MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y']}, speed=model.moveSpeed,
+                     coordMode='R',
+                     name='Cooector GO TO -'),
+            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight}, speed=model.moveSpeed,
+                     name='Corector Z pos.'),
+            MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
+                     name='Corector corner HG.'),
+            MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
+                     name='Corector corner BD.'),
+            MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y']}, speed=model.moveSpeed,
+                     coordMode='R',
+                     name='Cooector GO TO -'),
+            MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='Start Z lift.'),
+        ]
+        self.jobConfigure()
+
+
 class ThreadJobExecutor(threading.Thread):
     """
     Thread class for launch job.
     When an error occur
     """
 
-    def __init__(self, job=Job(), notifyFunc=lambda x: None, errorFunc=lambda x: None, endFunc=lambda x: None, driver=None):
+    def __init__(self, job=Job(), notifyFunc=lambda x: None, errorFunc=lambda x: None, endFunc=lambda x: None,
+                 driver=None):
         """
         :param job: job to execute.
         :param errorFunc: calback when erro occur
@@ -564,7 +630,7 @@ class ThreadJobExecutor(threading.Thread):
                     self._errorFunc(self._job.status)
                 elif jobStatus.status == TaskStatusEnum.END:
                     self._stopSignal = True
-            time.sleep(0.02)
+            # time.sleep(0.02)
         # self._driver.stopMachine()
         self._endFunc(self._job.status)
 

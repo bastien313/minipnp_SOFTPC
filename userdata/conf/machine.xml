@@ -3,9 +3,9 @@
     <zHead>1.0</zHead>
     <zLift>-1.0</zLift>
     <scan_position>
-      <X>1.0</X>
-      <Y>1.0</Y>
-      <Z>1.0</Z>
+      <X>229.0</X>
+      <Y>53.4953</Y>
+      <Z>-5.7966</Z>
     </scan_position>
     <boardRef_position>
       <X>0.0</X>
@@ -20,12 +20,12 @@
     <axis>
       <X>
         <step>1066.660034</step>
-        <speed>33.33</speed>
+        <speed>10.0</speed>
         <accel>200.0</accel>
       </X>
       <Y>
         <step>1066.660034</step>
-        <speed>33.33</speed>
+        <speed>10.0</speed>
         <accel>200.0</accel>
       </Y>
       <Z>
@@ -35,8 +35,8 @@
       </Z>
       <C>
         <step>11.4182</step>
-        <speed>10.0</speed>
-        <accel>2.1</accel>
+        <speed>0.5</speed>
+        <accel>0.1</accel>
       </C>
     </axis>
     <feeder>

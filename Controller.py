@@ -586,23 +586,39 @@ class DtbController:
 
 
 class ScanController:
-    def __init__(self, logger, driver, machine):
+    def __init__(self, logger, driver, machine, modelList):
         self.ihm = 0
         self.logger = logger
         self.driver = driver
+        self.__machineConf = machine
         self.__scanArray = []
         self.__littleJob = job.ThreadJobExecutor()
-        self.__scanXWidth = 4.0
+        self.__scanXWidth = 20.0
         self.__scanYWidth = 4.0
-        self.__scanZWidth = 4.0
+        self.__scanZWidth = 5
         self.__scanCircleWidth = 360.0
-        self.__scanLinePoint = 400
+        self.__scanLineXPoint = 200
+        self.__scanLineYPoint = 20
+        self.__scanLineZPoint = 40
         self.__scanCirclePoint = 360
+        self.modList = modelList
 
+    def testCorrector(self):
+        corrJob = job.MechanicsCorectorJob(pnpDriver = self.driver, correctorPos=self.__machineConf.scanPosition,
+                                           model=self.modList.findModelWithAlias('R_0805'), zLift=self.__machineConf.zLift)
+
+        corrJob.jobConfigure()
+        if self.__littleJob.isRunning():
+            self.logger.printCout("Little job already running")
+            return 0
+
+        # Run job
+        self.__littleJob = job.ThreadJobExecutor(job=corrJob, driver=self.driver)
+        self.__littleJob.start()
 
     def linkCallBack(self, ihm):
         self.ihm = ihm
-        self.ihm.setScan3Dcb(self._scan3D)
+        self.ihm.setScan3Dcb(self.testCorrector)
         self.ihm.setScanXLinecb(self._scanXLine)
         self.ihm.setScanYLinecb(self._scanYLine)
         self.ihm.setScanPointcb(self._scanPoint)
@@ -632,13 +648,13 @@ class ScanController:
     def _scanPoint(self):
         self.__scanArray = []
         scanJob = job.Job(self.driver)
-        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
-                                    speed=self.__machineConf.axisConfArray['Z'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
-                                                  'Y': self.__machineConf.scanPosition['Y']},
-                                    speed=self.__machineConf.axisConfArray['X'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
-                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+       # scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+       #                             speed=self.__machineConf.axisConfArray['Z'].speed))
+        #scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
+       #                                           'Y': self.__machineConf.scanPosition['Y']},
+       #                             speed=self.__machineConf.axisConfArray['X'].speed))
+       # scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
+       #                             speed=self.__machineConf.axisConfArray['Z'].speed))
         scanJob.append(job.WaitTask(0.1))
         scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
         scanJob.jobConfigure()
@@ -649,17 +665,19 @@ class ScanController:
 
         # Run job
         self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver,
-                                                 endFunc=lambda: self.ihm.setMeasureValue(self.__scanArray[0]))
+                                                 endFunc=lambda x: self.ihm.setMeasureValue(self.__scanArray[0]))
         self.__littleJob.start()
 
-    def _endScanCircle(self):
+    def _endScanCircle_old(self, stat):
         with open('circle.csv', 'w+') as file:
-            angle = 0.0
-            for scanData in self.__scanArray:
-                file.write('{} {}'.format(angle, scanData))
-                angle += self.__scanCircleWidth/self.__scanCirclePoint
+            # angle = 0.0
+            for scanData in self.__scanArray[0]:
+                # for scanData in self.__scanArray:
+                file.write('{} {}\n'.format(scanData[0], scanData[1]))
+                # angle += self.__scanCircleWidth / self.__scanCirclePoint
+                # file.write('{} {}\n'.format(angle, scanData))
 
-    def _scanCircle(self):
+    def _scanCircle_old(self):
         self.__scanArray = []
         scanJob = job.Job(self.driver)
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
@@ -670,13 +688,14 @@ class ScanController:
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
 
-        for i in range(self.__scanCirclePoint):
-            scanJob.append(job.MoveTask(self.driver, {'C': self.__scanCircleWidth/self.__scanCirclePoint}, coordMode='R',
-                                        speed=self.__machineConf.axisConfArray['C'].speed))
-            scanJob.append(job.WaitTask(0.01))
-            scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
+        scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__scanCircleWidth / 2.0)}, coordMode='R',
+                                    speed=self.__machineConf.axisConfArray['C'].speed))
 
-        scanJob.append(job.MoveTask(self.driver, {'C': -360.0}, coordMode='R',
+        scanJob.append(
+            job.ScanLineTask(pnpDriver=self.driver, extList=self.__scanArray, axis='C', lengt=self.__scanCircleWidth,
+                             nbMesure=self.__scanCirclePoint, speed=self.__machineConf.axisConfArray['C'].speed))
+
+        scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__scanCircleWidth)}, coordMode='R',
                                     speed=self.__machineConf.axisConfArray['C'].speed))
 
         scanJob.jobConfigure()
@@ -689,30 +708,70 @@ class ScanController:
         self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanCircle)
         self.__littleJob.start()
 
-
-    def _endScanXLine(self):
-        with open('Xline.csv', 'w+') as file:
-            posX = 0 - (self.__scanXWidth/2.0)
+    def _endScanCircle(self, stat):
+        with open('circle.csv', 'w+') as file:
+            angle = 0.0
             for scanData in self.__scanArray:
-                file.write('{} {}'.format(posX, scanData))
-                posX += self.__scanXWidth/self.__scanLinePoint
+                # for scanData in self.__scanArray:
+                #file.write('{} {}\n'.format(scanData[0], scanData[1]))
+                 angle += self.__scanCircleWidth / self.__scanCirclePoint
+                 file.write('{} {}\n'.format(angle, scanData))
+
+    def _scanCircle(self):
+        self.__scanArray = []
+        scanJob = job.Job(self.driver)
+        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+        scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
+                                                  'Y': self.__machineConf.scanPosition['Y']},
+                                    speed=self.__machineConf.axisConfArray['X'].speed))
+        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+
+        scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__scanCircleWidth / 2.0)}, coordMode='R',
+                                    speed=self.__machineConf.axisConfArray['C'].speed))
+
+        for i in range(self.__scanCirclePoint):
+            scanJob.append(job.MoveTask(self.driver, {'C': self.__scanCircleWidth / self.__scanCirclePoint}, coordMode='R',
+                                        speed=self.__machineConf.axisConfArray['C'].speed))
+            scanJob.append(job.WaitTask(0.01))
+            scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
+
+        scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__scanCircleWidth)}, coordMode='R',
+                                    speed=self.__machineConf.axisConfArray['C'].speed))
+
+        scanJob.jobConfigure()
+
+        if self.__littleJob.isRunning():
+            self.logger.printCout("Little job already running")
+            return 0
+
+        # Run job
+        self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanCircle)
+        self.__littleJob.start()
+
+    def _endScanXLine(self, stat):
+        with open('Xline.csv', 'w+') as file:
+            #posy = 0 - self.__scanYWidth / 2.0
+            for scanData in self.__scanArray[0]:
+                file.write('{} {}\n'.format(scanData[0], scanData[1]))
+                #posy += self.__scanYWidth / self.__scanLinePoint
 
     def _scanXLine(self):
         self.__scanArray = []
         scanJob = job.Job(self.driver)
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth/2.0),
-                                                  'Y': self.__machineConf.scanPosition['Y']},
-                                    speed=self.__machineConf.axisConfArray['X'].speed))
+        scanJob.append(
+            job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0),
+                                       'Y': self.__machineConf.scanPosition['Y']},
+                         speed=self.__machineConf.axisConfArray['X'].speed))
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
-
-        for i in range(self.__scanLinePoint):
-            scanJob.append(job.MoveTask(self.driver, {'X': self.__scanXWidth/self.__scanLinePoint}, coordMode='R',
-                                        speed=self.__machineConf.axisConfArray['X'].speed))
-            scanJob.append(job.WaitTask(0.01))
-            scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
+        scanJob.append(
+            job.ScanLineTask(pnpDriver=self.driver, extList=self.__scanArray, axis='X',
+                             lengt=self.__scanXWidth,
+                             nbMesure=self.__scanLineXPoint, speed=self.__machineConf.axisConfArray['X'].speed))
 
         scanJob.jobConfigure()
 
@@ -724,15 +783,12 @@ class ScanController:
         self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanXLine)
         self.__littleJob.start()
 
-
-    def _endScanYLine(self):
+    def _endScanYLine(self,stat):
         with open('Yline.csv', 'w+') as file:
-            posy = 0 - self.__scanYWidth/2.0
-            for scanData in self.__scanArray:
-                file.write('{} {}'.format(posy, scanData))
-                posy += self.__scanYWidth/self.__scanLinePoint
-
-
+            #posy = 0 - self.__scanYWidth / 2.0
+            for scanData in self.__scanArray[0]:
+                file.write('{} {}\n'.format(scanData[0], scanData[1]))
+                #posy += self.__scanYWidth / self.__scanLinePoint
 
     def _scanYLine(self):
         self.__scanArray = []
@@ -740,16 +796,16 @@ class ScanController:
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
         scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
-                                                  'Y': self.__machineConf.scanPosition['Y']+(0 - self.__scanYWidth/2.0)},
+                                                  'Y': self.__machineConf.scanPosition['Y'] + (
+                                                          0 - self.__scanYWidth / 2.0)},
                                     speed=self.__machineConf.axisConfArray['X'].speed))
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
 
-        for i in range(self.__scanLinePoint):
-            scanJob.append(job.MoveTask(self.driver, {'Y': self.__scanYWidth/self.__scanLinePoint}, coordMode='R',
-                                        speed=self.__machineConf.axisConfArray['Y'].speed))
-            scanJob.append(job.WaitTask(0.01))
-            scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
+        scanJob.append(
+            job.ScanLineTask(pnpDriver=self.driver, extList=self.__scanArray, axis='Y',
+                             lengt=self.__scanYWidth,
+                             nbMesure=self.__scanLineYPoint, speed=self.__machineConf.axisConfArray['Y'].speed))
 
         scanJob.jobConfigure()
 
@@ -761,24 +817,71 @@ class ScanController:
         self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanYLine)
         self.__littleJob.start()
 
-    def _endScanFace(self):
+    def _endScanFace(self, stat):
         with open('face.asc', 'w+') as file:
-            for zIndex, xLine in enumerate(self.__scanArray):
-                for xIndex, scanMes in enumerate(xLine):
-                    x = (0 - self.__scanXWidth/2.0) + (xIndex*(self.__scanXWidth/self.__scanLinePoint))
-                    y = scanMes
-                    z = (0 - self.__scanZWidth/2.0) + (zIndex*(self.__scanZWidth/self.__scanLinePoint))
-                    file.write('{} {} {}'.format(x,y,z))
+            for indexLine, line in enumerate(self.__scanArray):
+                for mes in line[0]:
+                    x = mes[0] - (self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0))
+                    y = (0 - self.__scanYWidth / 2.0) + (indexLine * (self.__scanYWidth / self.__scanLineYPoint))
+                    z = mes[1] / 100.0
+                    file.write('{} {} {}\n'.format(x, y, z))
 
     def _scanFace(self):
         self.__scanArray = []
         scanJob = job.Job(self.driver)
         scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X']+(0 - self.__scanXWidth/2.0),
-                                                  'Y': self.__machineConf.scanPosition['Y']},
-                                    speed=self.__machineConf.axisConfArray['X'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()+(0 - self.__scanZWidth/2.0)},
+        scanJob.append(
+            job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0),
+                                       'Y': self.__machineConf.scanPosition['Y'] + (self.__scanYWidth / 2.0)},
+                         speed=self.__machineConf.axisConfArray['X'].speed))
+        scanJob.append(job.MoveTask(self.driver, {
+            'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+
+        for xline in range(self.__scanLineYPoint):
+            lineList = []
+            scanJob.append(
+                job.ScanLineTask(pnpDriver=self.driver, extList=lineList, axis='X',
+                                 lengt=self.__scanXWidth,
+                                 nbMesure=self.__scanLineXPoint, speed=self.__machineConf.axisConfArray['X'].speed))
+
+            self.__scanArray.append(lineList)
+            scanJob.append(
+                job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0)},
+                             speed=self.__machineConf.axisConfArray['X'].speed))
+            scanJob.append(job.MoveTask(self.driver, {'Y': (self.__scanYWidth / self.__scanLineYPoint)*-1.0}, coordMode='R',
+                                        speed=self.__machineConf.axisConfArray['Y'].speed))
+        scanJob.jobConfigure()
+
+        if self.__littleJob.isRunning():
+            self.logger.printCout("Little job already running")
+            return 0
+
+        # Run job
+        self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanFace)
+        self.__littleJob.start()
+
+    def _endScanFace_old(self, stat):
+        with open('face.asc', 'w+') as file:
+            for zIndex, xLine in enumerate(self.__scanArray):
+                for xIndex, scanMes in enumerate(xLine):
+                    x = (0 - self.__scanXWidth / 2.0) + (xIndex * (self.__scanXWidth / self.__scanLinePoint))
+                    y = scanMes / 100.0
+                    z = (0 - self.__scanZWidth / 2.0) + (zIndex * (self.__scanZWidth / self.__scanLinePoint))
+                    file.write('{} {} {}\n'.format(x, y, z))
+
+    def _scanFace_old(self):
+        self.__scanArray = []
+        scanJob = job.Job(self.driver)
+        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+                                    speed=self.__machineConf.axisConfArray['Z'].speed))
+        scanJob.append(
+            job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0),
+                                       'Y': self.__machineConf.scanPosition['Y']},
+                         speed=self.__machineConf.axisConfArray['X'].speed))
+        scanJob.append(job.MoveTask(self.driver, {
+            'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan() + (0 - self.__scanZWidth / 2.0)},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
 
         for xline in range(self.__scanLinePoint):
@@ -786,11 +889,12 @@ class ScanController:
             for zPoint in range(self.__scanLinePoint):
                 scanJob.append(job.WaitTask(0.01))
                 scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=lineList))
-                scanJob.append(job.MoveTask(self.driver, {'X': self.__scanXWidth/self.__scanLinePoint}, coordMode='R',
-                                            speed=self.__machineConf.axisConfArray['x'].speed))
+                scanJob.append(job.MoveTask(self.driver, {'X': self.__scanXWidth / self.__scanLinePoint}, coordMode='R',
+                                            speed=self.__machineConf.axisConfArray['X'].speed))
             self.__scanArray.append(lineList)
-            scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X']+(0 - self.__scanXWidth/2.0)},
-                                        speed=self.__machineConf.axisConfArray['X'].speed))
+            scanJob.append(
+                job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0)},
+                             speed=self.__machineConf.axisConfArray['X'].speed))
             scanJob.append(job.MoveTask(self.driver, {'Z': self.__scanZWidth / self.__scanLinePoint}, coordMode='R',
                                         speed=self.__machineConf.axisConfArray['Z'].speed))
         scanJob.jobConfigure()
@@ -803,14 +907,16 @@ class ScanController:
         self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanFace)
         self.__littleJob.start()
 
-    def _endScan3D(self):
+    def _endScan3D(self, stat):
+        firstAngle = self.__scanArray[0][0][0][0]
         with open('3D.asc', 'w+') as file:
-            for zIndex, circle in enumerate(self.__scanArray):
-                for circleIndex, scanMes in enumerate(circle):
-                    x = (0 - self.__scanCircleWidth/2.0) + (circleIndex*(self.__scanCircleWidth/self.__scanCirclePoint))
-                    y = scanMes
-                    z = (0 - self.__scanZWidth/2.0) + (zIndex*(self.__scanZWidth/self.__scanLinePoint))
-                    file.write('{} {} {}'.format(x,y,z))
+            for indexLine, line in enumerate(self.__scanArray):
+                for mes in line[0]:
+                    x = (mes[0] - firstAngle) / 10.0
+                    y = mes[1] / 100.0
+                    z = (0 - self.__scanZWidth / 2.0) + (
+                            indexLine * (self.__scanZWidth / self.__scanLineZPoint))
+                    file.write('{} {} {}\n'.format(x, y, z))
 
     def _scan3D(self):
         self.__scanArray = []
@@ -820,22 +926,22 @@ class ScanController:
         scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
                                                   'Y': self.__machineConf.scanPosition['Y']},
                                     speed=self.__machineConf.axisConfArray['X'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()+(0 - self.__scanZWidth/2.0)},
+        scanJob.append(job.MoveTask(self.driver, {
+            'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan() + (0 - self.__scanZWidth / 2.0)},
                                     speed=self.__machineConf.axisConfArray['Z'].speed))
-        scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__circleZWidth/2.0)}, coordMode='R',
+        scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__scanCircleWidth / 2.0)}, coordMode='R',
                                     speed=self.__machineConf.axisConfArray['C'].speed))
 
-        for circle in range(self.__scanLinePoint):
+        for circle in range(self.__scanCirclePoint):
             circle = []
-            for cPoint in range(self.__scanCirclePoint):
-                scanJob.append(job.WaitTask(0.01))
-                scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=circle))
-                scanJob.append(job.MoveTask(self.driver, {'C': self.__scanCircleWidth/self.__scanCirclePoint}, coordMode='R',
-                                            speed=self.__machineConf.axisConfArray['C'].speed))
+            scanJob.append(
+                job.ScanLineTask(pnpDriver=self.driver, extList=circle, axis='C',
+                                 lengt=self.__scanCircleWidth,
+                                 nbMesure=self.__scanCirclePoint, speed=self.__machineConf.axisConfArray['C'].speed))
             self.__scanArray.append(circle)
-            scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__circleZWidth / 2.0)}, coordMode='R',
+            scanJob.append(job.MoveTask(self.driver, {'C': (0 - self.__scanCircleWidth)}, coordMode='R',
                                         speed=self.__machineConf.axisConfArray['C'].speed))
-            scanJob.append(job.MoveTask(self.driver, {'Z': self.__scanZWidth / self.__scanLinePoint}, coordMode='R',
+            scanJob.append(job.MoveTask(self.driver, {'Z': self.__scanZWidth / self.__scanLineZPoint}, coordMode='R',
                                         speed=self.__machineConf.axisConfArray['Z'].speed))
         scanJob.jobConfigure()
 
@@ -859,7 +965,7 @@ class PnpConroller:
         self.paramCtrl = ParamCtrl(self.driver, self.machineConfiguration)
         self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration)
         self.dtbCtrl = DtbController(logger, self.modList)
-        self.scanCtrl = ScanController(logger, self.driver, self.machineConfiguration)
+        self.scanCtrl = ScanController(logger, self.driver, self.machineConfiguration,self.modList)
         self.driver.setStatusPipeCallBack(self.updateStatusOnIHM)
 
         self.directCtrl.setJobIsRunningCb(self.jobIsRunning)
