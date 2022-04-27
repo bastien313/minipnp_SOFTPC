@@ -488,7 +488,7 @@ class PickAndPlaceJob(Job):
     Pick and place task.
     """
 
-    def __init__(self, pnpDriver, feeder, placePos, model, zLift, name='', ref=''):
+    def __init__(self, pnpDriver, feeder, placePos, model, zLift, correctorPos, name='', ref=''):
         """
 
         :param pnpDriver: Driver of pnp machine
@@ -520,6 +520,7 @@ class PickAndPlaceJob(Job):
             WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.pickupSpeed, name='{} Pick Z up.'.format(ref)),
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
+            MechanicsCorectorJob(pnpDriver, correctorPos, self._model, zLift),
             MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y']}, speed=model.moveSpeed,
                      name='{} Go to component position.'.format(ref)),
             MoveTask(self._driver, {'C': self._placePos['C']}, speed=model.moveSpeed, coordMode='R',
@@ -554,24 +555,22 @@ class MechanicsCorectorJob(Job):
         self._driver = pnpDriver
         self._correctorPos = correctorPos
         self._model = model
-        corectorSize = {'X': 3.75, 'Y': 3.75}
-        cornerHGPos = {'X': (self._correctorPos['X'] - corectorSize['X']) + model.length,
-                       'Y': (self._correctorPos['Y'] + corectorSize['Y']) - model.width}
-        cornerBDPos = {'X': (self._correctorPos['X'] + corectorSize['X']) - model.length,
-                       'Y': (self._correctorPos['Y'] - corectorSize['Y']) + model.width}
+        corectorSize = {'X': 3.35, 'Y': 3.35}
+        cornerHGPos = {'X': (self._correctorPos['X'] - corectorSize['X']) + (model.width/2),
+                       'Y': (self._correctorPos['Y'] + corectorSize['Y']) - (model.length/2)}
+        cornerBDPos = {'X': (self._correctorPos['X'] + corectorSize['X']) - (model.width/2),
+                       'Y': (self._correctorPos['Y'] - corectorSize['Y']) + (model.length/2)}
         self._taskList = [
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='Start Z lift.'),
             MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y']}, speed=model.moveSpeed,
-                     coordMode='R',
                      name='Cooector GO TO -'),
             MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight}, speed=model.moveSpeed,
                      name='Corector Z pos.'),
             MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
                      name='Corector corner HG.'),
-            MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
+            MoveTask(self._driver, cornerBDPos, speed=model.moveSpeed,
                      name='Corector corner BD.'),
             MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y']}, speed=model.moveSpeed,
-                     coordMode='R',
                      name='Cooector GO TO -'),
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='Start Z lift.'),
         ]

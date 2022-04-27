@@ -452,7 +452,7 @@ class BoardController:
         cmpPos['Z'] = self.__machineConf.boardRefPosition['Z'] + model.height
         cmpJob = job.PickAndPlaceJob(pnpDriver=self.driver, feeder=feeder,
                                      placePos=cmpPos, model=model, zLift=self.__machineConf.zLift,
-                                     name='Pick and place {}'.format(ref))
+                                     name='Pick and place {}'.format(ref), correctorPos=self.__machineConf.scanPosition)
         cmpJob.jobConfigure()
         self.logger.printCout("Build {} succes.".format(ref))
         return cmpJob
@@ -604,8 +604,9 @@ class ScanController:
         self.modList = modelList
 
     def testCorrector(self):
+        model = self.modList[self.modList.findModelWithAlias('R_0805')]
         corrJob = job.MechanicsCorectorJob(pnpDriver = self.driver, correctorPos=self.__machineConf.scanPosition,
-                                           model=self.modList.findModelWithAlias('R_0805'), zLift=self.__machineConf.zLift)
+                                           model=model, zLift=self.__machineConf.zLift)
 
         corrJob.jobConfigure()
         if self.__littleJob.isRunning():
