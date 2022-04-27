@@ -234,8 +234,7 @@ class DirectCtrl:
     def getCoordDriver(self):
         return self._driver.getHardwarePos()
 
-    def openCom(self, comPort, serialSpeed):
-        self._driver.hardwareConnect(comPort, serialSpeed)
+    def motorOn(self):
         if self._driver.isConnected():
             # self._driver.statusModeDisable()
             self._driver.sendMachineConf(self._machineConf)
@@ -245,7 +244,7 @@ class DirectCtrl:
             # self._driver.setAccel()
             self._driver.motorEnable()
 
-    def closeCom(self):
+    def motorOff(self):
         if self._driver.isConnected():
             self._driver.motorDisable()
             self._driver.statusModeDisable()
@@ -605,7 +604,7 @@ class ScanController:
 
     def testCorrector(self):
         model = self.modList[self.modList.findModelWithAlias('R_0805')]
-        corrJob = job.MechanicsCorectorJob(pnpDriver = self.driver, correctorPos=self.__machineConf.scanPosition,
+        corrJob = job.MechanicsCorectorJob(pnpDriver=self.driver, correctorPos=self.__machineConf.scanPosition,
                                            model=model, zLift=self.__machineConf.zLift)
 
         corrJob.jobConfigure()
@@ -649,13 +648,13 @@ class ScanController:
     def _scanPoint(self):
         self.__scanArray = []
         scanJob = job.Job(self.driver)
-       # scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
-       #                             speed=self.__machineConf.axisConfArray['Z'].speed))
-        #scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
-       #                                           'Y': self.__machineConf.scanPosition['Y']},
-       #                             speed=self.__machineConf.axisConfArray['X'].speed))
-       # scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
-       #                             speed=self.__machineConf.axisConfArray['Z'].speed))
+        # scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.zLift},
+        #                             speed=self.__machineConf.axisConfArray['Z'].speed))
+        # scanJob.append(job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'],
+        #                                           'Y': self.__machineConf.scanPosition['Y']},
+        #                             speed=self.__machineConf.axisConfArray['X'].speed))
+        # scanJob.append(job.MoveTask(self.driver, {'Z': self.__machineConf.scanPosition['Z'] + self.ihm.getZscan()},
+        #                             speed=self.__machineConf.axisConfArray['Z'].speed))
         scanJob.append(job.WaitTask(0.1))
         scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
         scanJob.jobConfigure()
@@ -714,9 +713,9 @@ class ScanController:
             angle = 0.0
             for scanData in self.__scanArray:
                 # for scanData in self.__scanArray:
-                #file.write('{} {}\n'.format(scanData[0], scanData[1]))
-                 angle += self.__scanCircleWidth / self.__scanCirclePoint
-                 file.write('{} {}\n'.format(angle, scanData))
+                # file.write('{} {}\n'.format(scanData[0], scanData[1]))
+                angle += self.__scanCircleWidth / self.__scanCirclePoint
+                file.write('{} {}\n'.format(angle, scanData))
 
     def _scanCircle(self):
         self.__scanArray = []
@@ -733,8 +732,9 @@ class ScanController:
                                     speed=self.__machineConf.axisConfArray['C'].speed))
 
         for i in range(self.__scanCirclePoint):
-            scanJob.append(job.MoveTask(self.driver, {'C': self.__scanCircleWidth / self.__scanCirclePoint}, coordMode='R',
-                                        speed=self.__machineConf.axisConfArray['C'].speed))
+            scanJob.append(
+                job.MoveTask(self.driver, {'C': self.__scanCircleWidth / self.__scanCirclePoint}, coordMode='R',
+                             speed=self.__machineConf.axisConfArray['C'].speed))
             scanJob.append(job.WaitTask(0.01))
             scanJob.append(job.ScanTask(pnpDriver=self.driver, extList=self.__scanArray))
 
@@ -753,10 +753,10 @@ class ScanController:
 
     def _endScanXLine(self, stat):
         with open('Xline.csv', 'w+') as file:
-            #posy = 0 - self.__scanYWidth / 2.0
+            # posy = 0 - self.__scanYWidth / 2.0
             for scanData in self.__scanArray[0]:
                 file.write('{} {}\n'.format(scanData[0], scanData[1]))
-                #posy += self.__scanYWidth / self.__scanLinePoint
+                # posy += self.__scanYWidth / self.__scanLinePoint
 
     def _scanXLine(self):
         self.__scanArray = []
@@ -784,12 +784,12 @@ class ScanController:
         self.__littleJob = job.ThreadJobExecutor(job=scanJob, driver=self.driver, endFunc=self._endScanXLine)
         self.__littleJob.start()
 
-    def _endScanYLine(self,stat):
+    def _endScanYLine(self, stat):
         with open('Yline.csv', 'w+') as file:
-            #posy = 0 - self.__scanYWidth / 2.0
+            # posy = 0 - self.__scanYWidth / 2.0
             for scanData in self.__scanArray[0]:
                 file.write('{} {}\n'.format(scanData[0], scanData[1]))
-                #posy += self.__scanYWidth / self.__scanLinePoint
+                # posy += self.__scanYWidth / self.__scanLinePoint
 
     def _scanYLine(self):
         self.__scanArray = []
@@ -851,8 +851,9 @@ class ScanController:
             scanJob.append(
                 job.MoveTask(self.driver, {'X': self.__machineConf.scanPosition['X'] + (0 - self.__scanXWidth / 2.0)},
                              speed=self.__machineConf.axisConfArray['X'].speed))
-            scanJob.append(job.MoveTask(self.driver, {'Y': (self.__scanYWidth / self.__scanLineYPoint)*-1.0}, coordMode='R',
-                                        speed=self.__machineConf.axisConfArray['Y'].speed))
+            scanJob.append(
+                job.MoveTask(self.driver, {'Y': (self.__scanYWidth / self.__scanLineYPoint) * -1.0}, coordMode='R',
+                             speed=self.__machineConf.axisConfArray['Y'].speed))
         scanJob.jobConfigure()
 
         if self.__littleJob.isRunning():
@@ -966,7 +967,7 @@ class PnpConroller:
         self.paramCtrl = ParamCtrl(self.driver, self.machineConfiguration)
         self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration)
         self.dtbCtrl = DtbController(logger, self.modList)
-        self.scanCtrl = ScanController(logger, self.driver, self.machineConfiguration,self.modList)
+        self.scanCtrl = ScanController(logger, self.driver, self.machineConfiguration, self.modList)
         self.driver.setStatusPipeCallBack(self.updateStatusOnIHM)
 
         self.directCtrl.setJobIsRunningCb(self.jobIsRunning)
@@ -974,12 +975,19 @@ class PnpConroller:
     def setTopIHM(self, ihm):
         self.ihm = ihm
 
+    def discoveringDevice(self):
+        self.driver.startDiscoveringDevice()
+
     def updateStatusOnIHM(self):
-        posDict = self.driver.status
-        statusStr = 'Connected  ' if self.driver.isConnected() else 'Disconnected  '
-        for key, val in posDict.items():
-            statusStr += '{}: {}   '.format(key, val)
-        self.directCtrl.IHMposUpdate(posDict)
+        statusStr = ''
+        if self.driver.isConnected():
+            posDict = self.driver.status
+            for key, val in posDict.items():
+                statusStr += '{}: {}   '.format(key, val)
+            self.directCtrl.IHMposUpdate(posDict)
+        else:
+            statusStr = 'Searching device...'
+
         self.ihm.setStatusLabel(statusStr)
         self.ihm.mainWindow.after(300, self.updateStatusOnIHM)
 

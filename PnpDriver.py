@@ -2,107 +2,99 @@
 import threading, queue
 
 import serial
+import serial.tools.list_ports
 import time
 from deprecated import deprecated
 
 from timerThread import Intervallometre
 
 
-class serialManager():
-    def __init__(self, logger, endLine='\r'):
-        self._actualLine = ""
-        self._endLine = endLine
-        self._ser = 0
-        self._timeThread = 0  # Intervallometre(0.02, self.__recpetion)
-        # self._timeThread.stop()
+class SerialManager(threading.Thread):
+    def __init__(self, logger, endLineCharacter='\r'):
+        threading.Thread.__init__(self)
+        self._receiveBuffer = ""
+        self._emissionBufferQueue = queue.Queue()
+        self._endLineCharacter = endLineCharacter
+        self._serialAccess = serial.Serial()
         self._logger = logger
-        self.killThread = False
         self._funcPipe = {0: lambda: None, 1: lambda: None}
+
+    def run(self):
+        if self._serialAccess.is_open:
+            try:
+                self.__receive()
+                self.__emission()
+            except:
+                self._logger.printCout('Serial error, close.')
+                self._serialAccess.close()
+                self._receiveBuffer = ""
+        else:
+            self.__searchAndConnectDevice()
+            time.sleep(0.500)
+
+        time.sleep(0.020)
 
     def setRecpetionPipeCallBack(self, pipe, callback):
         self._funcPipe[pipe] = callback
 
     def sendLine(self, str):
         """
-        Send String and put endLIne if not present
+        Put string to send in queue
         :param str: string to send
         :return:
         """
-        if str[-1] != self._endLine:
-            str += self._endLine
-        self._ser.write(str.encode('utf-8'))
+        self._emissionBufferQueue.put(str)
 
     def clearBuffer(self, pipe):
-        self._actualLine = ""
-        self._bufferLineInput[pipe] = []
+        self._receiveBuffer = ""
+        # self._bufferLineInput[pipe] = []
 
-    def __recpetion(self):
+    def isConnected(self):
+        return self._serialAccess.is_open
+
+    def __searchAndConnectDevice(self):
+        listCom = serial.tools.list_ports.comports()
+        for port in listCom:
+            if 'minipnp' in port.product:
+                self._serialAccess.baudrate = 115200
+                # self._serialAccess.timeout = None
+                try:
+                    self._serialAccess.port = port  # this action call .open()
+                except:
+                    self._serialAccess.close()
+
+    def __emission(self):
+        while not self._emissionBufferQueue.empty():
+            lineOut = self._queue.get()
+            if lineOut[-1] != self._endLineCaracter:
+                lineOut += self._endLineCaracter
+            self._serialAcces.write(str.encode('utf-8'))
+
+    def __receive(self):
         """
         Called from timer.
         Proces low level recption of serial port.
         :return:
         """
         while not self.killThread:
-            if self._ser:
-                byteIn = self._ser.read(size=100)
+            if self._serialAcces:
+                byteIn = self._serialAcces.read(size=100)
                 byteIn = byteIn.decode("utf-8")
                 for byte in byteIn:
-                    self._actualLine += byte
-                    if byte == self._endLine:
-                        if self._actualLine[0] == '0':
-                            self._funcPipe[0](self._actualLine[1:-1])
-                        elif self._actualLine[0] == '1':
-                            self._funcPipe[1](self._actualLine[1:-1])
+                    self._receiveBuffer += byte
+                    if byte == self._endLineCaracter:
+                        if self._receiveBuffer[0] == '0':
+                            self._funcPipe[0](self._receiveBuffer[1:-1])
+                        elif self._receiveBuffer[0] == '1':
+                            self._funcPipe[1](self._receiveBuffer[1:-1])
                         else:
-                            if len(self._actualLine):
+                            if len(self._receiveBuffer):
                                 self._logger.printCout(
-                                    'Pipe {} on {} doesnt exist, data discarded'.format(self._actualLine[0],
-                                                                                        self._actualLine))
+                                    'Pipe {} on {} doesnt exist, data discarded'.format(self._receiveBuffer[0],
+                                                                                        self._receiveBuffer))
                             else:
                                 self._logger.printCout('Void command')
-                        self._actualLine = ""
-
-            time.sleep(0.02)
-
-    def openSerial(self, comPort, speed):
-        """
-        Open serial port and start reception timer if succes
-        :param comPort: Name of serial port
-        :param speed: Speed of serial port
-        :return: 1 if succes 0 otherwise
-        """
-        self._bufferLineInput = []
-        if type(self._ser) is serial.Serial:
-            self._ser.close()
-        try:
-            self._ser = serial.Serial(comPort, speed, timeout=0)
-        except ValueError:
-            self._ser = 0
-            self._logger.printCout("serialPort='{}', Speed='{}' : ValueError".format(comPort, speed))
-            return 0
-        except serial.SerialException:
-            self._ser = 0
-            self._logger.printCout("serialPort='{}', Speed='{}' : Serial port not found".format(comPort, speed))
-            return 0
-
-        self._logger.printCout("serialPort='{}', Speed='{}' : Open succes".format(comPort, speed))
-        # self._timeThread = Intervallometre(0.02, self.__recpetion)
-        # self._timeThread.setDaemon(True)
-        # self._timeThread.encore = True
-        # self._timeThread.start()
-        self.killThread = False
-        self._timeThread = threading.Thread(target=self.__recpetion)
-        self._timeThread.start()
-        return 1
-
-    def closeSerial(self):
-        if self._timeThread:
-            self.killThread = True
-        if type(self._ser) is serial.Serial:
-            self._ser.close()
-
-    def isConnected(self):
-        return True if self._ser else False
+                        self._receiveBuffer = ""
 
 
 class pnpDriver:
@@ -114,7 +106,7 @@ class pnpDriver:
         self._GcodeLine = ''
         self.logger = logger
         self.feederList = {}
-        self._serManage = serialManager(self.logger)
+        self._serManage = SerialManager(self.logger)
         self._serManage.setRecpetionPipeCallBack(pipe=0, callback=self.__pipe0DataReception)
         self._serManage.setRecpetionPipeCallBack(pipe=1, callback=self.__pipe1DataReception)
         self.__statusPipeCallBack = lambda: None
@@ -157,13 +149,8 @@ class pnpDriver:
         # self.logger.printCout('RX: ' + data)
         # self.logger.printDirectConsole('RX: ' + data)
 
-    def hardwareConnect(self, comPort, speed):
-        self._GcodeLine = ''
-        return self._serManage.openSerial(comPort, speed)
-
-    def hardwareDisconnect(self):
-        self._GcodeLine = ''
-        self._serManage.closeSerial()
+    def startDiscoveringDevice(self):
+        self._serManage.start()
 
     def __setCoordMode(self, mode):
         """Add relative or absolute to Gcode line if neeeded

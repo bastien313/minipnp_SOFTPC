@@ -838,20 +838,20 @@ class SerialFrame(tk.LabelFrame):
         self._comSpeedEntry = completeEntry(self, trashFunc(), varType='int')
         self._comSpeedEntry.var = 115200
 
-        self._openBtn = tk.Button(self, text='Open', command=self.__openCom)
-        self._closeBtn = tk.Button(self, text='Close', command=self.__closeCom)
+        self._openBtn = tk.Button(self, text='Motor On', command=self.__openCom)
+        self._closeBtn = tk.Button(self, text='Motor Off', command=self.__closeCom)
 
-        self._comSelOM.grid(row=0, column=0)
-        self._serialSpeedLab.grid(row=1, column=1)
-        self._comSpeedEntry.grid(row=2, column=1)
+        #self._comSelOM.grid(row=0, column=0)
+        #self._serialSpeedLab.grid(row=1, column=1)
+        #self._comSpeedEntry.grid(row=2, column=1)
         self._openBtn.grid(row=3, column=1)
         self._closeBtn.grid(row=4, column=1)
 
     def __openCom(self):
-        self.controller.openCom(self._comSel.get(), self._comSpeedVar.get())
+        self.controller.motorOn()
 
     def __closeCom(self):
-        self.controller.closeCom()
+        self.controller.motorOff()
 
     def __deleteComList(self):
         self._listCom = []
@@ -887,7 +887,7 @@ class CtrlFrame(tk.Frame):
         self._frameConfArrow = tk.LabelFrame(self, text="Control configuration", labelanchor='n', padx=10, pady=10)
         self._framePos = tk.LabelFrame(self, text="Position", labelanchor='n', padx=10, pady=10)
         self._frameConsole = tk.LabelFrame(self, text="Console", labelanchor='n', padx=10, pady=10)
-        self.serialFrame = SerialFrame(self, self.controller, text='Serial', labelanchor='n', padx=5, pady=5)
+        self.serialFrame = SerialFrame(self, self.controller, text='Misc', labelanchor='n', padx=5, pady=5)
 
         self._xp = tk.Button(self._frameArrow, text='X+', height=2, width=4)
         self._xm = tk.Button(self._frameArrow, text='X-', height=2, width=4)
@@ -2107,7 +2107,7 @@ class PnpIHM:
         self._menuTableTop.add_separator()
         self._menuTableTop.add_command(label="Save ", command=self.ctrl.machineConfiguration.saveToXml)
 
-        self._statusLabel = tk.Label(self.mainWindow, text='status', font='Arial 20 bold')
+        self._statusLabel = tk.Label(self.mainWindow, text='Searching device...', font='Arial 20 bold')
         self.actualFrame = self.paramWindow
         self.initCtrlMenu()
 
