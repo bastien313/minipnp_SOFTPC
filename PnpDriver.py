@@ -20,19 +20,28 @@ class SerialManager(threading.Thread):
         self._funcPipe = {0: lambda: None, 1: lambda: None}
 
     def run(self):
-        if self._serialAccess.is_open:
-            try:
-                self.__receive()
-                self.__emission()
-            except:
-                self._logger.printCout('Serial error, close.')
-                self._serialAccess.close()
-                self._receiveBuffer = ""
-        else:
-            self.__searchAndConnectDevice()
-            time.sleep(0.500)
+        while 1:
+            if self._serialAccess.is_open:
+                error = 0
+                try:
+                    error = 1
+                    self.__receive()
+                    error = 2
+                    self.__emission()
 
-        time.sleep(0.020)
+                except:
+                    if error==1:
+                        self._logger.printCout('Serial read error, close.')
+                    else:
+                        self._logger.printCout('Serial write error, close.')
+                    self._serialAccess.close()
+                    self._receiveBuffer = ""
+
+            else:
+                self.__searchAndConnectDevice()
+                time.sleep(0.500)
+
+            #time.sleep(0.00002)
 
     def setRecpetionPipeCallBack(self, pipe, callback):
         self._funcPipe[pipe] = callback
@@ -55,20 +64,22 @@ class SerialManager(threading.Thread):
     def __searchAndConnectDevice(self):
         listCom = serial.tools.list_ports.comports()
         for port in listCom:
-            if 'minipnp' in port.product:
+            if 'MPNP' in port.serial_number:
                 self._serialAccess.baudrate = 115200
-                # self._serialAccess.timeout = None
+                self._serialAccess.timeout = 0
                 try:
-                    self._serialAccess.port = port  # this action call .open()
+                    self._serialAccess.port = port.device  # this action call .open()
+                    self._serialAccess.open()
                 except:
                     self._serialAccess.close()
 
     def __emission(self):
         while not self._emissionBufferQueue.empty():
-            lineOut = self._queue.get()
-            if lineOut[-1] != self._endLineCaracter:
-                lineOut += self._endLineCaracter
-            self._serialAcces.write(str.encode('utf-8'))
+            lineOut = self._emissionBufferQueue.get()
+            if lineOut[-1] != self._endLineCharacter:
+                lineOut += self._endLineCharacter
+            #print(lineOut.encode('utf-8'))
+            self._serialAccess.write(lineOut.encode('utf-8'))
 
     def __receive(self):
         """
@@ -76,25 +87,23 @@ class SerialManager(threading.Thread):
         Proces low level recption of serial port.
         :return:
         """
-        while not self.killThread:
-            if self._serialAcces:
-                byteIn = self._serialAcces.read(size=100)
-                byteIn = byteIn.decode("utf-8")
-                for byte in byteIn:
-                    self._receiveBuffer += byte
-                    if byte == self._endLineCaracter:
-                        if self._receiveBuffer[0] == '0':
-                            self._funcPipe[0](self._receiveBuffer[1:-1])
-                        elif self._receiveBuffer[0] == '1':
-                            self._funcPipe[1](self._receiveBuffer[1:-1])
-                        else:
-                            if len(self._receiveBuffer):
-                                self._logger.printCout(
-                                    'Pipe {} on {} doesnt exist, data discarded'.format(self._receiveBuffer[0],
-                                                                                        self._receiveBuffer))
-                            else:
-                                self._logger.printCout('Void command')
-                        self._receiveBuffer = ""
+        byteIn = self._serialAccess.read(size=64)
+        byteIn = byteIn.decode("utf-8")
+        for byte in byteIn:
+            self._receiveBuffer += byte
+            if byte == self._endLineCharacter:
+                if self._receiveBuffer[0] == '0':
+                    self._funcPipe[0](self._receiveBuffer[1:-1])
+                elif self._receiveBuffer[0] == '1':
+                    self._funcPipe[1](self._receiveBuffer[1:-1])
+                else:
+                    if len(self._receiveBuffer):
+                        self._logger.printCout(
+                            'Pipe {} on {} doesnt exist, data discarded'.format(self._receiveBuffer[0],
+                                                                                self._receiveBuffer))
+                    else:
+                        self._logger.printCout('Void command')
+                self._receiveBuffer = ""
 
 
 class pnpDriver:
@@ -732,6 +741,7 @@ class pnpDriver:
 
         self._commadUnackited -= 1
         cmdLine = self.__getLine()
+        print('time = {}'.format(time.time() - start))
         return cmdLine
 
     def __sendGcodeLine(self):
@@ -739,6 +749,7 @@ class pnpDriver:
         Send self._GcodeLine over sertial port and clear GcodeLine.
         :return:
         """
+
         if self.isConnected():
             if self._GcodeLine != 'R400':
                 self.logger.printDirectConsole('TX: ' + self._GcodeLine)
@@ -748,6 +759,7 @@ class pnpDriver:
             self._serManage.sendLine(self._GcodeLine)
 
             self._GcodeLine = ''
+
 
     def externalGcodeLine(self, cmd):
         self._GcodeLine = cmd

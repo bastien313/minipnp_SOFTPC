@@ -374,6 +374,7 @@ class MachineConf:
 
         # Write feeder parameters
         feederRoot = etree.SubElement(machineRoot, 'feeder')
+
         for feeder in self.feederList:
             feeder.saveInLxml(feederRoot)
 
@@ -504,10 +505,3 @@ class MachineConf:
                 self.logger.printCout('Filtered list feeder not found {}'.format(idFeed))
         return feederListOut
 
-log = lg.logger()
-mach = MachineConf('userdata/conf/machine.xml', log)
-
-# mach.addFeeder(ReelFeeder({'id': 5, 'name': 'feederTest', 'xPos': 18.5, 'yPos': -2.5, 'zPos': 44.5, 'I2Caddr': 25, 'step':22, 'compByStep': 99}))
-
-# mach.saveToXml()
-print(mach)

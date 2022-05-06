@@ -520,6 +520,10 @@ class PickAndPlaceJob(Job):
             WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.pickupSpeed, name='{} Pick Z up.'.format(ref)),
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
+            MoveTask(self._driver, {'C': 30.0}, speed=model.moveSpeed, coordMode='R',
+                     name='{} Feeder release +'.format(ref)),
+            MoveTask(self._driver, {'C': -30.0}, speed=model.moveSpeed, coordMode='R',
+                     name='{} Feeder release -'.format(ref)),
             MechanicsCorectorJob(pnpDriver, correctorPos, self._model, zLift),
             MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y']}, speed=model.moveSpeed,
                      name='{} Go to component position.'.format(ref)),
@@ -555,7 +559,7 @@ class MechanicsCorectorJob(Job):
         self._driver = pnpDriver
         self._correctorPos = correctorPos
         self._model = model
-        corectorSize = {'X': 3.35, 'Y': 3.35}
+        corectorSize = {'X': 3.475, 'Y': 3.475}
         cornerHGPos = {'X': (self._correctorPos['X'] - corectorSize['X']) + (model.width/2),
                        'Y': (self._correctorPos['Y'] + corectorSize['Y']) - (model.length/2)}
         cornerBDPos = {'X': (self._correctorPos['X'] + corectorSize['X']) - (model.width/2),
@@ -566,6 +570,10 @@ class MechanicsCorectorJob(Job):
                      name='Cooector GO TO -'),
             MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight}, speed=model.moveSpeed,
                      name='Corector Z pos.'),
+            MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
+                     name='Corector corner HG.'),
+            MoveTask(self._driver, cornerBDPos, speed=model.moveSpeed,
+                     name='Corector corner BD.'),
             MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
                      name='Corector corner HG.'),
             MoveTask(self._driver, cornerBDPos, speed=model.moveSpeed,
@@ -629,7 +637,7 @@ class ThreadJobExecutor(threading.Thread):
                     self._errorFunc(self._job.status)
                 elif jobStatus.status == TaskStatusEnum.END:
                     self._stopSignal = True
-            # time.sleep(0.02)
+            #time.sleep(0.02)
         # self._driver.stopMachine()
         self._endFunc(self._job.status)
 

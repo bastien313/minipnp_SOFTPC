@@ -248,7 +248,6 @@ class DirectCtrl:
         if self._driver.isConnected():
             self._driver.motorDisable()
             self._driver.statusModeDisable()
-            self._driver.hardwareDisconnect()
 
 
 class BoardController:

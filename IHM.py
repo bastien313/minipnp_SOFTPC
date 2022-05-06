@@ -2113,6 +2113,7 @@ class PnpIHM:
 
         self.ctrl.setTopIHM(self)
         self.ctrl.bindInit()
+        self.ctrl.discoveringDevice()
         self.ctrl.updateStatusOnIHM()
         self.ctrl.scanCtrl.linkCallBack(self.scanWindow)
         self.paramWindow.update()

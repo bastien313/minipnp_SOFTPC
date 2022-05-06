@@ -434,7 +434,7 @@
         <posX>43.943999999999996</posX>
         <posY>95.104</posY>
         <angle>180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
       </cmp>
       <cmp data-id="35">
@@ -2337,7 +2337,7 @@
         <ref>R79</ref>
         <value>43K 1%</value>
         <package>R_0805_2012Metric</package>
-        <model>R_0805</model>
+        <model>R_805</model>
         <feeder>3</feeder>
         <posX>67.52208399999999</posX>
         <posY>26.568681</posY>
@@ -2577,7 +2577,7 @@
         <ref>R99</ref>
         <value>43K 1%</value>
         <package>R_0805_2012Metric</package>
-        <model>R_0805</model>
+        <model>R_805</model>
         <feeder>3</feeder>
         <posX>67.52208399999999</posX>
         <posY>51.96868</posY>
