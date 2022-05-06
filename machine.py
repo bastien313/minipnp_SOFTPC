@@ -38,6 +38,108 @@ class MotorConf:
         etree.SubElement(axisRoot, 'accel').text = str(self.accel)
 
 
+class BasePlate:
+    """
+    Represent a plate put on machine with an offset(X, Y, Z) and an orientation.
+    """
+    def __init__(self, realRef1, realRef2, vectorRef):
+        """
+        :param realRef1: position of ref 1 (referance)
+        :param realRef2: position of ref 2 (corector)
+        :param vectorRef: vector theorical of ref2 - ref1
+        """
+        self._realRef = [realRef1, realRef2]
+        self._vectorRef = vectorRef
+        self._zRamp = 0
+        self._rotationOffset =0.0
+
+    def setRealRef(self, position, refId):
+        self._realRef[id] = position
+
+    def getRealRef(self, position, refId):
+        return self._realRef[id]
+
+    def computeFromRef(self):
+        """
+        Compute rotationOffset and z ramp from loaded referances.
+        """
+        angleTheorical = math.cos(self.__vectorRef['X'] / math.hypot(self.__vectorRef['X'], self.__vectorRef['Y']))
+        recaledPos = {'X': self.__realRef[1]['X'] - self.__realRef[0]['X'],
+                      'Y': self.__realRef[1]['Y'] - self.__realRef[0]['Y'],
+                      'Z': self.__realRef[1]['Z'] - self.__realRef[0]['Z']}
+        realAngle = math.cos(recaledPos['X'] / math.hypot(self.__vectorRef['X'], self.__vectorRef['Y']))
+
+        self._rotationOffset = realAngle - angleTheorical
+        self._zRamp = (self.__realRef[1]['Z'] - self.__realRef[0]['Z']) / math.hypot(self.__vectorRef['X'], self.__vectorRef['Y'])
+
+    def computeFromAngle(self):
+        """
+        Compute ref 2 from loaded correction.
+        """
+        theorRef2Pos = {
+            'X': self._realRef[0]['X'] + self.__vectorRef['X'],
+            'Y': self._realRef[0]['Y'] + self.__vectorRef['Y'],
+            'X': self._realRef[0]['Z'],
+        }
+        self._realRef[1] = self.getPointCorrected(theorRef2Pos)
+
+
+    def getRotationOffset(self):
+        """
+        Return rotation ofset in degrees.
+        """
+        return math.degrees(self.__rotationOffset)
+
+    def getPointCorrected(self, point):
+        """
+        Get the réal position of the théorical point position.
+        Point position must be on global system coordinate.
+        :param point: position of théorical point.
+        Return new position in global system coordinate.
+        """
+        pointRecaled = {
+            'X': point['X'] - self.__realRef[0]['X'],
+            'Y': point['Y'] - self.__realRef[0]['Y'],
+            'X': point['Z'] - self.__realRef[0]['Z'],
+        }
+
+        newPoint = {
+            'X': (pointRecaled['X'] * math.cos(self._rotationOffset)) - (pointRecaled['Y'] * math.sin(self._rotationOffset)),
+            'Y': (pointRecaled['X'] * math.sin(self._rotationOffset)) + (pointRecaled['Y'] * math.cos(self._rotationOffset)),
+            'Z': pointRecaled['Z'] * self._zRamp
+        }
+
+        return {
+            'X': newPoint['X'] + self.__realRef[0]['X'],
+            'Y': newPoint['Y'] + self.__realRef[0]['Y'],
+            'Z': newPoint['Z'] + self.__realRef[0]['Z']
+        }
+
+
+class StripFeederBasePlate(BasePlate):
+    def __init__(self, realRef1, realRef2, vectorRef=None, stripStep=10.6, vectorFistCmp=None):
+        if vectorFistCmp is None:
+            vectorFistCmp = {'X': 6.2295, 'Y:'196.16}
+        if vectorRef is None:
+            vectorRef = {'X': 73.2, 'Y': 196.0}
+        BasePlate.__init__(self, realRef1, realRef2, vectorRef)
+        self._stripStep = stripStep
+        self._vectorFirstCmp = vectorFistCmp
+
+    def getTheoricalFirstCmpPosition(self, stripId):
+        """
+        Return the first component position referance of strip selected.
+        The position is theorical , its NOT corrected.
+        Note: strip id start from 0.
+        """
+        return  {
+            'X': (self._realRef[0]['X'] + self._vectorFirstCmp['X']) + (stripId * self._stripStep),
+            'Y': self._realRef[0]['Y'] + self._vectorFirstCmp['Y'],
+            'Z': self._realRef[0]['Z']
+        }
+
+
+
 class Feeder:
     def __init__(self, paramList, saveMachineFunction):
         self.type = 'feeder'

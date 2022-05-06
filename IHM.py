@@ -40,6 +40,32 @@ def checkIntEntry(value_if_allowed, text):
     else:
         return False
 
+class ScrollableFrameText(tk.Frame):
+    def __init__(self, base_frame, *args, **kwargs):
+        super().__init__(base_frame, *args, **kwargs)
+        self._holder = tk.Text(self)
+        self._vsb = tk.Scrollbar(self, orient="vertical", command=self._holder.yview)
+        self._holder.configure(yscrollcommand=self._vsb.set)
+        self._holder.grid(row=0, column=0, sticky="nsew")
+        self._vsb.grid(row=0, column=1, sticky="nsew")
+
+
+    def setSize(self, width, height):
+        bite = 1
+        #self.configure(minwidth=width, minheight=height)
+
+    def insert(self, objects):
+        self._holder.window_create("end", window=objects)
+        self._holder.insert("end", "\n")
+        #self._holder.insert(tk.END, objects)
+
+    def clear(self):
+        self._holder.delete("1.0", tk.END)
+
+    def __getUserFrame(self):
+        return self._holder
+
+    userFrame = property(fget=__getUserFrame)
 
 class ScrollableFrame(tk.Frame):
     """
@@ -87,6 +113,7 @@ class ScrollableFrame(tk.Frame):
         return self._fr
 
     userFrame = property(fget=__getUserFrame)
+
 
 
 class BoarDrawing(tk.Frame):
@@ -250,31 +277,62 @@ class completeEntry(tk.Entry):
     Used for disable trace when var is not edited by user IHM.
     """
 
-    def __init__(self, frame, traceFunc, varType='str'):
+    def __init__(self, frame, traceFunc=None, varType='str'):
         tk.Entry.__init__(self, frame, width=15, state='normal')
         self._frame = frame
         self._traceFunc = traceFunc
-        if varType == 'int':
-            self._var = tk.IntVar(self._frame, 1)
-            checkEntryCmdInt = self._frame.register(checkIntEntry)
-            self.configure(validate='key', textvariable=self._var, validatecommand=(checkEntryCmdInt, '%P', '%S'))
-        elif varType == 'double':
-            self._var = tk.DoubleVar(self._frame, 1.0)
-            checkEntryCmdDouble = self._frame.register(checkDoubleEntry)
-            self.configure(validate='key', textvariable=self._var, validatecommand=(checkEntryCmdDouble, '%P', '%S'))
-        else:
-            self._var = tk.StringVar(self._frame, "str")
-            self.configure(textvariable=self._var)
+        self._varString = tk.StringVar(self._frame, '0')
+        self._varString.trace_id = self._varString.trace("w", self._localTrace)
+        self._varType = varType
+        self.configure(textvariable=self._varString)
+        self.lastVar = 0
+        self.config(highlightthickness=1)
+        self.config(highlightcolor='SystemButtonFace', highlightbackground='SystemButtonFace')
 
-        self._var.trace_id = self._var.trace("w", self._traceFunc)
+    def _localTrace(self, *args):
+        newVarIsValid = False
+        if self._varType == 'int':
+            if self._varString.get().isdecimal():
+                self.lastVar = int(self._varString.get())
+                newVarIsValid = True
+        elif self._varType == 'double' or self._varType == 'float':
+            try:
+                float(self._varString.get())
+            except:
+                pass
+            else:
+                self.lastVar = float(self._varString.get())
+                newVarIsValid = True
+        else:
+            newVarIsValid = True
+            self.lastVar = self._varString.get()
+
+        if newVarIsValid:
+            self.config(highlightcolor='SystemButtonFace', highlightbackground='SystemButtonFace')
+
+        else:
+            self.config(highlightcolor="red", highlightbackground="red")
+
+        if self._traceFunc:
+            self._traceFunc()
 
     def _getVar(self):
-        return self._var.get()
+        return self.lastVar
 
     def _setVar(self, val):
-        self._var.trace_vdelete("w", self._var.trace_id)
-        self._var.set(val)
-        self._var.trace_id = self._var.trace("w", self._traceFunc)
+        self._varString.trace_vdelete("w", self._varString.trace_id)
+
+        if self._varType == 'int' and type(val) is int:
+            self._varString.set(f'{val}')
+            self.lastVar = val
+        elif self._varType == 'dboule' or self._varType == 'float' and type(val) is float:
+            self._varString.set(f'{val}')
+            self.lastVar = val
+        else:
+            self._varString.set(val)
+            self.lastVar = val
+
+        self._varString.trace_id = self._varString.trace("w", self._localTrace)
 
     var = property(fset=_setVar, fget=_getVar)
 
@@ -841,9 +899,9 @@ class SerialFrame(tk.LabelFrame):
         self._openBtn = tk.Button(self, text='Motor On', command=self.__openCom)
         self._closeBtn = tk.Button(self, text='Motor Off', command=self.__closeCom)
 
-        #self._comSelOM.grid(row=0, column=0)
-        #self._serialSpeedLab.grid(row=1, column=1)
-        #self._comSpeedEntry.grid(row=2, column=1)
+        # self._comSelOM.grid(row=0, column=0)
+        # self._serialSpeedLab.grid(row=1, column=1)
+        # self._comSpeedEntry.grid(row=2, column=1)
         self._openBtn.grid(row=3, column=1)
         self._closeBtn.grid(row=4, column=1)
 
@@ -1388,7 +1446,7 @@ class globalCmpFrame(tk.LabelFrame):
         self.controller = controller
 
         self._filterFrame = tk.Frame(self)
-        self._cmpFrameScrol = ScrollableFrame(self)
+        self._cmpFrameScrol = ScrollableFrameText(self)
         self._cmpFrameScrol.setSize(width=750, height=500)
 
         self._filterFrame.grid(row=0, column=0)
@@ -1463,9 +1521,11 @@ class globalCmpFrame(tk.LabelFrame):
             if type(l) is componentFrame:
                 l.destroy()
 
+        self._cmpFrameScrol.clear()
         idRow = 1
         for cmp in self.cmpDisplayList:
-            componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp).grid(row=idRow, column=0)
+            self._cmpFrameScrol.insert(componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp))
+            #componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp).grid(row=idRow, column=0)
             idRow += 1
 
     def filterApply(self):
@@ -1995,7 +2055,6 @@ class ScanFrame(tk.Frame):
         self._btnScan3D.grid(row=5, column=0)
         self._btnFace.grid(row=5, column=1)
 
-
     def setMeasureValue(self, value):
         self._labMes['text'] = 'Mesure: {}'.format(value)
 
@@ -2080,7 +2139,6 @@ class PnpIHM:
         self.debugWindow = DebugFrame(self.mainWindow)
 
         self.scanWindow = ScanFrame(self.mainWindow, logger)
-
 
         self.topMenuBar = tk.Menu(self.mainWindow)
         self._menuFile = tk.Menu(self.topMenuBar, tearoff=0)
