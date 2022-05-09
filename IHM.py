@@ -2161,6 +2161,7 @@ class PnpIHM:
 
         self._menuTableTop.add_command(label="Parameters ", command=self.initParamMenu)
         self._menuTableTop.add_command(label="Feeder ", command=self.initFeederMenu)
+        self._menuTableTop.add_command(label="Base plate ", command=self.initBasePlateMenu)
         self._menuTableTop.add_command(label="Scan ", command=self.initScanMenu)
         self._menuTableTop.add_separator()
         self._menuTableTop.add_command(label="Save ", command=self.ctrl.machineConfiguration.saveToXml)

@@ -5,8 +5,10 @@ import xmledit as xe
 import logger as lg
 import Corrector as cr
 
+
 class FeederNotFound(Exception):
     pass
+
 
 class MotorConf:
     """
@@ -42,53 +44,58 @@ class BasePlate:
     """
     Represent a plate put on machine with an offset(X, Y, Z) and an orientation.
     """
-    def __init__(self, realRef1, realRef2, vectorRef):
+
+    def __init__(self, paramList):
         """
         :param realRef1: position of ref 1 (referance)
         :param realRef2: position of ref 2 (corector)
         :param vectorRef: vector theorical of ref2 - ref1
         """
-        self._realRef = [realRef1, realRef2]
-        self._vectorRef = vectorRef
+        self._realRef = [paramList['realRef1'], paramList['realRef2']]
+        self._vectorRef = paramList['vectorRef']
+        self._vectorRef['Z'] = 0.0 if 'Z' not in self._vectorRef else self._vectorRef['Z']
+        self._id = int(paramList['id']) if 'id' in paramList else 0
+        self._name = paramList['name'] if 'name' in paramList else 'Noname'
         self._zRamp = 0
-        self._rotationOffset =0.0
+        self._rotationOffset = 0.0
+        self._type = 'BasePlate'
 
     def setRealRef(self, position, refId):
-        self._realRef[id] = position
+        self._realRef[refId] = position
 
-    def getRealRef(self, position, refId):
-        return self._realRef[id]
+    def getRealRef(self, refId):
+        return self._realRef[refId]
 
     def computeFromRef(self):
         """
         Compute rotationOffset and z ramp from loaded referances.
         """
-        angleTheorical = math.cos(self.__vectorRef['X'] / math.hypot(self.__vectorRef['X'], self.__vectorRef['Y']))
-        recaledPos = {'X': self.__realRef[1]['X'] - self.__realRef[0]['X'],
-                      'Y': self.__realRef[1]['Y'] - self.__realRef[0]['Y'],
-                      'Z': self.__realRef[1]['Z'] - self.__realRef[0]['Z']}
-        realAngle = math.cos(recaledPos['X'] / math.hypot(self.__vectorRef['X'], self.__vectorRef['Y']))
+        angleTheorical = math.cos(self._vectorRef['X'] / math.hypot(self._vectorRef['X'], self._vectorRef['Y']))
+        recaledPos = {'X': self._realRef[1]['X'] - self._realRef[0]['X'],
+                      'Y': self._realRef[1]['Y'] - self._realRef[0]['Y'],
+                      'Z': self._realRef[1]['Z'] - self._realRef[0]['Z']}
+        realAngle = math.cos(recaledPos['X'] / math.hypot(self._vectorRef['X'], self._vectorRef['Y']))
 
         self._rotationOffset = realAngle - angleTheorical
-        self._zRamp = (self.__realRef[1]['Z'] - self.__realRef[0]['Z']) / math.hypot(self.__vectorRef['X'], self.__vectorRef['Y'])
+        self._zRamp = (self._realRef[1]['Z'] - self._realRef[0]['Z']) / math.hypot(self._vectorRef['X'],
+                                                                                   self._vectorRef['Y'])
 
     def computeFromAngle(self):
         """
         Compute ref 2 from loaded correction.
         """
         theorRef2Pos = {
-            'X': self._realRef[0]['X'] + self.__vectorRef['X'],
-            'Y': self._realRef[0]['Y'] + self.__vectorRef['Y'],
-            'X': self._realRef[0]['Z'],
+            'X': self._realRef[0]['X'] + self._vectorRef['X'],
+            'Y': self._realRef[0]['Y'] + self._vectorRef['Y'],
+            'Z': self._realRef[0]['Z'],
         }
         self._realRef[1] = self.getPointCorrected(theorRef2Pos)
-
 
     def getRotationOffset(self):
         """
         Return rotation ofset in degrees.
         """
-        return math.degrees(self.__rotationOffset)
+        return math.degrees(self._rotationOffset)
 
     def getPointCorrected(self, point):
         """
@@ -98,33 +105,51 @@ class BasePlate:
         Return new position in global system coordinate.
         """
         pointRecaled = {
-            'X': point['X'] - self.__realRef[0]['X'],
-            'Y': point['Y'] - self.__realRef[0]['Y'],
-            'X': point['Z'] - self.__realRef[0]['Z'],
+            'X': point['X'] - self._realRef[0]['X'],
+            'Y': point['Y'] - self._realRef[0]['Y'],
+            'Z': point['Z'] - self._realRef[0]['Z']
         }
 
         newPoint = {
-            'X': (pointRecaled['X'] * math.cos(self._rotationOffset)) - (pointRecaled['Y'] * math.sin(self._rotationOffset)),
-            'Y': (pointRecaled['X'] * math.sin(self._rotationOffset)) + (pointRecaled['Y'] * math.cos(self._rotationOffset)),
+            'X': (pointRecaled['X'] * math.cos(self._rotationOffset)) - (
+                        pointRecaled['Y'] * math.sin(self._rotationOffset)),
+            'Y': (pointRecaled['X'] * math.sin(self._rotationOffset)) + (
+                        pointRecaled['Y'] * math.cos(self._rotationOffset)),
             'Z': pointRecaled['Z'] * self._zRamp
         }
 
         return {
-            'X': newPoint['X'] + self.__realRef[0]['X'],
-            'Y': newPoint['Y'] + self.__realRef[0]['Y'],
-            'Z': newPoint['Z'] + self.__realRef[0]['Z']
+            'X': newPoint['X'] + self._realRef[0]['X'],
+            'Y': newPoint['Y'] + self._realRef[0]['Y'],
+            'Z': newPoint['Z'] + self._realRef[0]['Z']
         }
+
+    def saveInLxml(self, rootLxml):
+        """
+        Save feeder parameter in xml.
+        :param rootLxml:
+        :return: return the created root for inherited class.
+        """
+        bpRoot = etree.SubElement(rootLxml, 'basePlate_' + str(self._id))
+        etree.SubElement(bpRoot, 'name').text = self._name
+        etree.SubElement(bpRoot, 'type').text = self._type
+        xe.addPosToXml(bpRoot, 'ref0Pos', self._realRef[0]['X'], self._realRef[0]['Y'], self._realRef[0]['Z'])
+        xe.addPosToXml(bpRoot, 'ref1Pos', self._realRef[1]['X'], self._realRef[1]['Y'], self._realRef[1]['Z'])
+        xe.addPosToXml(bpRoot, 'vectorRef', self._vectorRef['X'], self._vectorRef['Y'], self._vectorRef['Z'])
+        etree.SubElement(bpRoot, 'zRamp').text = str(self._zRamp)
+        etree.SubElement(bpRoot, 'rotation(radian)').text = str(self._rotationOffset)
+        return bpRoot
 
 
 class StripFeederBasePlate(BasePlate):
-    def __init__(self, realRef1, realRef2, vectorRef=None, stripStep=10.6, vectorFistCmp=None):
-        if vectorFistCmp is None:
-            vectorFistCmp = {'X': 6.2295, 'Y:'196.16}
-        if vectorRef is None:
-            vectorRef = {'X': 73.2, 'Y': 196.0}
-        BasePlate.__init__(self, realRef1, realRef2, vectorRef)
-        self._stripStep = stripStep
-        self._vectorFirstCmp = vectorFistCmp
+    def __init__(self, paramList):
+        if not 'vectorRef' in paramList:
+            paramList['vectorRef'] = {'X': 73.2, 'Y': 196.0}
+        BasePlate.__init__(self, paramList)
+        self._stripStep = paramList['stripStep'] if 'stripStep' in paramList else 10.6
+        self._vectorFirstCmp = paramList['vectorFistCmp'] if 'vectorFistCmp' in paramList else {'X': 6.2295,
+                                                                                                'Y': 196.16, 'Z': 0.0}
+        self._type = 'StripFeederBasePlate'
 
     def getTheoricalFirstCmpPosition(self, stripId):
         """
@@ -132,18 +157,25 @@ class StripFeederBasePlate(BasePlate):
         The position is theorical , its NOT corrected.
         Note: strip id start from 0.
         """
-        return  {
+        return {
             'X': (self._realRef[0]['X'] + self._vectorFirstCmp['X']) + (stripId * self._stripStep),
             'Y': self._realRef[0]['Y'] + self._vectorFirstCmp['Y'],
-            'Z': self._realRef[0]['Z']
+            'Z': self._realRef[0]['Z'] + self._vectorFirstCmp['Z']
         }
 
+    def saveInLxml(self, rootLxml):
+        bpRoot = BasePlate.saveInLxml(self, rootLxml)
+        etree.SubElement(bpRoot, 'stripStep').text = str(self._stripStep)
+        xe.addPosToXml(bpRoot, 'vectorFistCmp', self._vectorFirstCmp['X'], self._vectorFirstCmp['Y'],
+                       self._vectorFirstCmp['Z'])
+        return bpRoot
 
 
 class Feeder:
     def __init__(self, paramList, saveMachineFunction):
         self.type = 'feeder'
         self.id = int(paramList['id']) if 'id' in paramList else 0
+        self.basePlateId = int(paramList['basePlateId']) if 'basePlateId' in paramList else 0
         self.name = paramList['name'] if 'name' in paramList else 'noname'
         self.pos = {'X': float(paramList['xPos']) if 'xPos' in paramList else 1.0,
                     'Y': float(paramList['yPos']) if 'yPos' in paramList else 1.0,
@@ -192,12 +224,13 @@ class Feeder:
         etree.SubElement(feederRoot, 'zPos').text = str(self.pos['Z'])
         return feederRoot
 
+
 class CompositeFeeder(Feeder):
     def __init__(self, paramList, saveMachineFunction):
         Feeder.__init__(self, paramList, saveMachineFunction)
         self.type = 'compositefeeder'
         self.feederList = paramList['feederList'] if 'feederList' in paramList else []
-        self._precedentFeederPickup = 0 # last feeder which user request position.
+        self._precedentFeederPickup = 0  # last feeder which user request position.
 
     def saveInLxml(self, rootLxml):
         feederRoot = Feeder.saveInLxml(self, rootLxml)
@@ -263,25 +296,22 @@ class StripFeeder(Feeder):
         etree.SubElement(feederRoot, 'yEndPos').text = str(self.endPos['Y'])
         etree.SubElement(feederRoot, 'yEndPos').text = str(self.endPos['Y'])
 
-
-
-
     def __getCorrectedPositionLinear(self, cmpId):
-        xRamp = (self.endPos['X'] - self.pos['X']) / (self.componentPerStrip-1)
-        yRamp = (self.endPos['Y'] - self.pos['Y']) / (self.componentPerStrip-1)
+        xRamp = (self.endPos['X'] - self.pos['X']) / (self.componentPerStrip - 1)
+        yRamp = (self.endPos['Y'] - self.pos['Y']) / (self.componentPerStrip - 1)
 
         correctedCmpPos = {}
         correctedCmpPos['X'] = self.pos['X'] + cmpId * xRamp
         correctedCmpPos['Y'] = self.pos['Y'] + cmpId * yRamp
 
-
-        theoreticalPosLastPoint = {'X':0,
-                                   'Y':math.sqrt(xRamp*xRamp + yRamp*yRamp) * float(self.componentPerStrip - 1)}  # Ramene la referance a 0
-        realPosLastPoint = {'X': self.endPos['X']- self.pos['X'], 'Y': self.endPos['Y']- self.pos['Y']}
+        theoreticalPosLastPoint = {'X': 0,
+                                   'Y': math.sqrt(xRamp * xRamp + yRamp * yRamp) * float(
+                                       self.componentPerStrip - 1)}  # Ramene la referance a 0
+        realPosLastPoint = {'X': self.endPos['X'] - self.pos['X'], 'Y': self.endPos['Y'] - self.pos['Y']}
 
         # Get angle aof reference, real and theoretical
-        theoreticalAngleLastPoint = math.atan(theoreticalPosLastPoint['Y'] / (theoreticalPosLastPoint['X']+0.000001))
-        realAngleLastPoint = math.atan(realPosLastPoint['Y'] / (realPosLastPoint['X']+0.000001))
+        theoreticalAngleLastPoint = math.atan(theoreticalPosLastPoint['Y'] / (theoreticalPosLastPoint['X'] + 0.000001))
+        realAngleLastPoint = math.atan(realPosLastPoint['Y'] / (realPosLastPoint['X'] + 0.000001))
 
         # compute angle offset of real referance position
         angleOffset = realAngleLastPoint - theoreticalAngleLastPoint
@@ -292,7 +322,8 @@ class StripFeeder(Feeder):
 
     def getPositionById(self, cmpId, stripId=0):
         recalculatePosition = self.__getCorrectedPositionLinear(cmpId)
-        return {'X': recalculatePosition['X'], 'Y': recalculatePosition['Y'], 'Z': self.pos['Z'], 'C': recalculatePosition['C']}
+        return {'X': recalculatePosition['X'], 'Y': recalculatePosition['Y'], 'Z': self.pos['Z'],
+                'C': recalculatePosition['C']}
 
     def getComponentPosition(self):
         """
@@ -321,7 +352,6 @@ class StripFeeder(Feeder):
     def reload(self):
         self.nextComponent = 0
         self._haveComponent = True
-
 
 
 class ReelFeeder(Feeder):
@@ -373,6 +403,7 @@ class MachineConf:
         self.zLift = 10.0
         self.pathFile = pathFile
         self.feederList = []
+        self.basePlateList = []
         self.logger = logger
 
         self.__loadFromXml()
@@ -480,6 +511,10 @@ class MachineConf:
         for feeder in self.feederList:
             feeder.saveInLxml(feederRoot)
 
+        basePlateRoot = etree.SubElement(machineRoot, 'basePlate')
+        for bp in self.basePlateList:
+            bp.saveInLxml(basePlateRoot)
+
         with open(self.pathFile, 'wb') as fileOut:
             fileOut.write(etree.tostring(root, pretty_print=True))
 
@@ -507,6 +542,26 @@ class MachineConf:
         elif feederData['type'] == 'compositefeeder':
             feederData['feederList'] = self.makeFilteredFeederList(feederData['feederListStr'])
             self.addFeeder(CompositeFeeder(feederData, self.saveToXml))
+
+    def __basePlateLoadFromXml(self, idBp, bpRoot):
+        """
+        Load one basePlate from xml file.
+        Create selected object and insert in self.feederList.
+        :param idFeeder: id of feeder
+        :param feederRoot:
+        :return: none
+        """
+        basePlateData = {}
+        # import dara from xml
+        for element in bpRoot:
+            basePlateData[element.tag] = element.text
+
+        basePlateData['id'] = int(idBp)
+        # create feeder
+        if basePlateData['type'] == 'BasePlate':
+            self.addFeeder(BasePlate(basePlateData))
+        elif basePlateData['type'] == 'StripFeederBasePlate':
+            self.addFeeder(StripFeederBasePlate(basePlateData))
 
     def __axisLoadFromXml(self, axis, axisRoot):
         """
@@ -553,6 +608,10 @@ class MachineConf:
             for feeder in feederRoot:
                 self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
 
+            basePlateRoot = machineRoot.find('feeder')
+            for basePlate in basePlateRoot:
+                self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
+
     def __makeNewFile(self):
         """
         Make a new XML file which is void.
@@ -585,11 +644,30 @@ class MachineConf:
                 return 1
         self.feederList.append(newFeeder)
 
+    def addBasePlate(self, newBasePlate):
+        """
+        Add BasePlate to machine , self.basePlateList.
+        If id exist BasePlate will be replaced.
+        :param newBasePlate: BasePlate object
+        :return: 1 if BasePlate was overwriten else 0
+        """
+        for bpPos in range(len(self.basePlateList)):
+            if self.basePlateList[bpPos].id == newBasePlate.id:
+                self.basePlateList[bpPos] = newBasePlate
+                return 1
+        self.basePlateList.append(newBasePlate)
+
     def getFeederById(self, idFeeder):
         for feeder in self.feederList:
             if feeder.id == idFeeder:
                 return feeder
         self.logger.printCout('Mconf: feeder {} not found'.format(idFeeder))
+
+    def getBasePlateById(self, idBp):
+        for basePlate in self.basePlateList:
+            if basePlate.id == idBp:
+                return basePlate
+        self.logger.printCout('Mconf: basePlate {} not found'.format(idBp))
 
     def makeFilteredFeederList(self, strFilt):
         """
@@ -606,4 +684,3 @@ class MachineConf:
             else:
                 self.logger.printCout('Filtered list feeder not found {}'.format(idFeed))
         return feederListOut
-
