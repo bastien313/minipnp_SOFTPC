@@ -51,14 +51,27 @@ class BasePlate:
         :param realRef2: position of ref 2 (corector)
         :param vectorRef: vector theorical of ref2 - ref1
         """
-        self._realRef = [paramList['realRef1'], paramList['realRef2']]
-        self._vectorRef = paramList['vectorRef']
+        self._realRef = [
+            paramList['realRef1'] if 'realRef1' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0},
+            paramList['realRef2'] if 'realRef2' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
+        ]
+        self._vectorRef = paramList['vectorRef'] if 'vectorRef' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
         self._vectorRef['Z'] = 0.0 if 'Z' not in self._vectorRef else self._vectorRef['Z']
         self._id = int(paramList['id']) if 'id' in paramList else 0
         self._name = paramList['name'] if 'name' in paramList else 'Noname'
-        self._zRamp = 0
-        self._rotationOffset = 0.0
+        self._zRamp = float(paramList['zRamp']) if 'zRamp' in paramList else 0.0
+        self._rotationOffset = float(paramList['rotationOffset']) if 'rotationOffset' in paramList else 0.0
         self._type = 'BasePlate'
+
+        self._realRef[0]['X'] = float(paramList['ref0X']) if 'ref0X' in paramList else self._realRef[0]['X']
+        self._realRef[0]['Y'] = float(paramList['ref0Y']) if 'ref0Y' in paramList else self._realRef[0]['Y']
+        self._realRef[0]['Z'] = float(paramList['ref0Z']) if 'ref0Z' in paramList else self._realRef[0]['Z']
+        self._realRef[1]['X'] = float(paramList['ref1X']) if 'ref1X' in paramList else self._realRef[1]['X']
+        self._realRef[1]['Y'] = float(paramList['ref1Y']) if 'ref1Y' in paramList else self._realRef[1]['Y']
+        self._realRef[1]['Z'] = float(paramList['ref1Z']) if 'ref1Z' in paramList else self._realRef[1]['Z']
+        self._vectorRef['X'] = float(paramList['vectorX']) if 'vectorX' in paramList else self._vectorRef['X']
+        self._vectorRef['Y'] = float(paramList['vectorY']) if 'vectorY' in paramList else self._vectorRef['Y']
+        self._vectorRef['Z'] = float(paramList['vectorZ']) if 'vectorZ' in paramList else self._vectorRef['Z']
 
     def setRealRef(self, position, refId):
         self._realRef[refId] = position
@@ -66,15 +79,21 @@ class BasePlate:
     def getRealRef(self, refId):
         return self._realRef[refId]
 
+    def setTheorVector(self, vector):
+        self._vectorRef = vector
+
+    def getTheorVector(self):
+        return self._vectorRef
+
     def computeFromRef(self):
         """
         Compute rotationOffset and z ramp from loaded referances.
         """
-        angleTheorical = math.cos(self._vectorRef['X'] / math.hypot(self._vectorRef['X'], self._vectorRef['Y']))
+        angleTheorical = math.acos(self._vectorRef['X'] / math.hypot(self._vectorRef['X'], self._vectorRef['Y']))
         recaledPos = {'X': self._realRef[1]['X'] - self._realRef[0]['X'],
                       'Y': self._realRef[1]['Y'] - self._realRef[0]['Y'],
                       'Z': self._realRef[1]['Z'] - self._realRef[0]['Z']}
-        realAngle = math.cos(recaledPos['X'] / math.hypot(self._vectorRef['X'], self._vectorRef['Y']))
+        realAngle = math.acos(recaledPos['X'] / math.hypot(self._vectorRef['X'], self._vectorRef['Y']))
 
         self._rotationOffset = realAngle - angleTheorical
         self._zRamp = (self._realRef[1]['Z'] - self._realRef[0]['Z']) / math.hypot(self._vectorRef['X'],
@@ -87,15 +106,33 @@ class BasePlate:
         theorRef2Pos = {
             'X': self._realRef[0]['X'] + self._vectorRef['X'],
             'Y': self._realRef[0]['Y'] + self._vectorRef['Y'],
-            'Z': self._realRef[0]['Z'],
+            'Z': self._realRef[0]['Z'] + self._vectorRef['Z'],
         }
         self._realRef[1] = self.getPointCorrected(theorRef2Pos)
 
+    def setZramp(self, ramp):
+        """
+        Set z ramp value.
+        """
+        self._zRamp = ramp
+
+    def getZramp(self):
+        """
+        Return z ramp value.
+        """
+        return self._zRamp
+
+    def setRotation(self, rot):
+        """
+        Set rotation value, WARNING rotation must be in radians.
+        """
+        self._rotationOffset = rot
+
     def getRotationOffset(self):
         """
-        Return rotation ofset in degrees.
+        Return rotation offset in radians.
         """
-        return math.degrees(self._rotationOffset)
+        return self._rotationOffset
 
     def getPointCorrected(self, point):
         """
@@ -112,9 +149,9 @@ class BasePlate:
 
         newPoint = {
             'X': (pointRecaled['X'] * math.cos(self._rotationOffset)) - (
-                        pointRecaled['Y'] * math.sin(self._rotationOffset)),
+                    pointRecaled['Y'] * math.sin(self._rotationOffset)),
             'Y': (pointRecaled['X'] * math.sin(self._rotationOffset)) + (
-                        pointRecaled['Y'] * math.cos(self._rotationOffset)),
+                    pointRecaled['Y'] * math.cos(self._rotationOffset)),
             'Z': pointRecaled['Z'] * self._zRamp
         }
 
@@ -133,12 +170,31 @@ class BasePlate:
         bpRoot = etree.SubElement(rootLxml, 'basePlate_' + str(self._id))
         etree.SubElement(bpRoot, 'name').text = self._name
         etree.SubElement(bpRoot, 'type').text = self._type
-        xe.addPosToXml(bpRoot, 'ref0Pos', self._realRef[0]['X'], self._realRef[0]['Y'], self._realRef[0]['Z'])
-        xe.addPosToXml(bpRoot, 'ref1Pos', self._realRef[1]['X'], self._realRef[1]['Y'], self._realRef[1]['Z'])
-        xe.addPosToXml(bpRoot, 'vectorRef', self._vectorRef['X'], self._vectorRef['Y'], self._vectorRef['Z'])
+        etree.SubElement(bpRoot, 'ref0X').text = str(self._realRef[0]['X'])
+        etree.SubElement(bpRoot, 'ref0Y').text = str(self._realRef[0]['Y'])
+        etree.SubElement(bpRoot, 'ref0Z').text = str(self._realRef[0]['Z'])
+        etree.SubElement(bpRoot, 'ref1X').text = str(self._realRef[1]['X'])
+        etree.SubElement(bpRoot, 'ref1Y').text = str(self._realRef[1]['Y'])
+        etree.SubElement(bpRoot, 'ref1Z').text = str(self._realRef[1]['Z'])
+        etree.SubElement(bpRoot, 'vectorX').text = str(self._vectorRef['X'])
+        etree.SubElement(bpRoot, 'vectorY').text = str(self._vectorRef['Y'])
+        etree.SubElement(bpRoot, 'vectorZ').text = str(self._vectorRef['Z'])
         etree.SubElement(bpRoot, 'zRamp').text = str(self._zRamp)
-        etree.SubElement(bpRoot, 'rotation(radian)').text = str(self._rotationOffset)
+        etree.SubElement(bpRoot, 'rotationOffset').text = str(self._rotationOffset)
         return bpRoot
+
+    def _getId(self):
+        return self._id
+
+    def _getType(self):
+        return self._type
+
+    def _getName(self):
+        return self._name
+
+    id = property(fget=_getId)
+    type = property(fget=_getType)
+    name = property(fget=_getName)
 
 
 class StripFeederBasePlate(BasePlate):
@@ -146,10 +202,17 @@ class StripFeederBasePlate(BasePlate):
         if not 'vectorRef' in paramList:
             paramList['vectorRef'] = {'X': 73.2, 'Y': 196.0}
         BasePlate.__init__(self, paramList)
-        self._stripStep = paramList['stripStep'] if 'stripStep' in paramList else 10.6
+        self._stripStep = float(paramList['stripStep']) if 'stripStep' in paramList else 10.6
         self._vectorFirstCmp = paramList['vectorFistCmp'] if 'vectorFistCmp' in paramList else {'X': 6.2295,
                                                                                                 'Y': 196.16, 'Z': 0.0}
         self._type = 'StripFeederBasePlate'
+
+        self._vectorFirstCmp['X'] = float(paramList['vectorCmpX']) if 'vectorX' in paramList else self._vectorFirstCmp[
+            'X']
+        self._vectorFirstCmp['Y'] = float(paramList['vectorCmpY']) if 'vectorY' in paramList else self._vectorFirstCmp[
+            'Y']
+        self._vectorFirstCmp['Z'] = float(paramList['vectorCmpZ']) if 'vectorZ' in paramList else self._vectorFirstCmp[
+            'Z']
 
     def getTheoricalFirstCmpPosition(self, stripId):
         """
@@ -166,9 +229,22 @@ class StripFeederBasePlate(BasePlate):
     def saveInLxml(self, rootLxml):
         bpRoot = BasePlate.saveInLxml(self, rootLxml)
         etree.SubElement(bpRoot, 'stripStep').text = str(self._stripStep)
-        xe.addPosToXml(bpRoot, 'vectorFistCmp', self._vectorFirstCmp['X'], self._vectorFirstCmp['Y'],
-                       self._vectorFirstCmp['Z'])
+        etree.SubElement(bpRoot, 'vectorCmpX').text = str(self._vectorFirstCmp['X'])
+        etree.SubElement(bpRoot, 'vectorCmpY').text = str(self._vectorFirstCmp['Y'])
+        etree.SubElement(bpRoot, 'vectorCmpZ').text = str(self._vectorFirstCmp['Z'])
         return bpRoot
+
+    def getStripStep(self):
+        return self._stripStep
+
+    def setStripStep(self, step):
+        self._stripStep = step
+
+    def getVectorFirstCmp(self):
+        return self._vectorFirstCmp
+
+    def setVectorFirstCmp(self, vector):
+        self._vectorFirstCmp = vector
 
 
 class Feeder:
@@ -507,7 +583,6 @@ class MachineConf:
 
         # Write feeder parameters
         feederRoot = etree.SubElement(machineRoot, 'feeder')
-
         for feeder in self.feederList:
             feeder.saveInLxml(feederRoot)
 
@@ -559,9 +634,9 @@ class MachineConf:
         basePlateData['id'] = int(idBp)
         # create feeder
         if basePlateData['type'] == 'BasePlate':
-            self.addFeeder(BasePlate(basePlateData))
+            self.addBasePlate(BasePlate(basePlateData))
         elif basePlateData['type'] == 'StripFeederBasePlate':
-            self.addFeeder(StripFeederBasePlate(basePlateData))
+            self.addBasePlate(StripFeederBasePlate(basePlateData))
 
     def __axisLoadFromXml(self, axis, axisRoot):
         """
@@ -608,9 +683,10 @@ class MachineConf:
             for feeder in feederRoot:
                 self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
 
-            basePlateRoot = machineRoot.find('feeder')
-            for basePlate in basePlateRoot:
-                self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
+            basePlateRoot = machineRoot.find('basePlate')
+            if len(basePlateRoot):
+                for basePlate in basePlateRoot:
+                    self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
 
     def __makeNewFile(self):
         """
@@ -627,9 +703,16 @@ class MachineConf:
         for feederPos in range(len(self.feederList)):
             if self.feederList[feederPos].id == id:
                 idFound = feederPos
-
         if type(idFound) is int:
             del self.feederList[idFound]
+
+    def deleteBasePlate(self, id):
+        idFound = 'None'
+        for bpPos in range(len(self.basePlateList)):
+            if self.basePlateList[bpPos].id == id:
+                idFound = bpPos
+        if type(idFound) is int:
+            del self.basePlateList[idFound]
 
     def addFeeder(self, newFeeder):
         """

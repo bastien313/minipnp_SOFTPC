@@ -125,5 +125,41 @@
         <yEndPos>37.5</yEndPos>
       </feeder_6>
     </feeder>
+    <basePlate>
+      <basePlate_0>
+        <name>tt</name>
+        <type>BasePlate</type>
+        <ref0X>13.0</ref0X>
+        <ref0Y>14.0</ref0Y>
+        <ref0Z>0.0</ref0Z>
+        <ref1X>12.65100503297499</ref1X>
+        <ref1Y>23.993908270190957</ref1Y>
+        <ref1Z>0.30000000000000004</ref1Z>
+        <vectorX>0.0</vectorX>
+        <vectorY>10.0</vectorY>
+        <vectorZ>3.0</vectorZ>
+        <zRamp>0.1</zRamp>
+        <rotationOffset>0.03490658503988659</rotationOffset>
+      </basePlate_0>
+      <basePlate_1>
+        <name>Noname</name>
+        <type>StripFeederBasePlate</type>
+        <ref0X>0.0</ref0X>
+        <ref0Y>0.0</ref0Y>
+        <ref0Z>0.0</ref0Z>
+        <ref1X>69.76817962374027</ref1X>
+        <ref1Y>197.24766440186184</ref1Y>
+        <ref1Z>0.0</ref1Z>
+        <vectorX>73.2</vectorX>
+        <vectorY>196.0</vectorY>
+        <vectorZ>0.0</vectorZ>
+        <zRamp>0.0</zRamp>
+        <rotationOffset>0.017453292519943295</rotationOffset>
+        <stripStep>4.0</stripStep>
+        <vectorCmpX>1.0</vectorCmpX>
+        <vectorCmpY>2.0</vectorCmpY>
+        <vectorCmpZ>3.0</vectorCmpZ>
+      </basePlate_1>
+    </basePlate>
   </machine>
 </root>
