@@ -201,8 +201,8 @@ class ValidWindow(tk.Toplevel):
     def __init__(self, frame, userFrame, callBack=lambda x: None, yesText='Yes', noText='No', **kwargs):
         tk.Toplevel.__init__(self, frame, **kwargs)
         btnFrame = tk.Frame(self)
-        tk.Button(btnFrame, text=yesText, command=lambda: callBack(True)).grid(row=0, column=0)
-        tk.Button(btnFrame, text=noText, command=lambda: callBack(False)).grid(row=0, column=1)
+        ttk.Button(btnFrame, text=yesText, command=lambda: callBack(True)).grid(row=0, column=0)
+        ttk.Button(btnFrame, text=noText, command=lambda: callBack(False)).grid(row=0, column=1)
         userFrame.grid(row=0, column=0)
         btnFrame.grid(row=1, column=0)
 
@@ -247,8 +247,8 @@ class entryWindow():
             elem.grid(row=id, column=1)
             id += 1
 
-        btnOk = tk.Button(btnFrame, text='OK', command=self.__okBtn)
-        btnCanc = tk.Button(btnFrame, text='Cancel', command=self.__cancelBtn)
+        btnOk = ttk.Button(btnFrame, text='OK', command=self.__okBtn)
+        btnCanc = ttk.Button(btnFrame, text='Cancel', command=self.__cancelBtn)
 
         btnCanc.grid(row=0, column=0)
         btnOk.grid(row=0, column=1)
@@ -433,13 +433,13 @@ class GenericBasePlateFrame(tk.Frame):
                                                    text="Param", labelanchor='n', padx=10, pady=10)
         GenericBasePlateFrame._updateIHMFromBasePlate(self, bpData)
 
-        btnRef1GoTo = tk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
-        btnRef1Get = tk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
-        btnRef1Theor = tk.Button(self._parametersFrame, text='Theo.', command=self._calcTheo)
-        btnRef2GoTo = tk.Button(self._parametersFrame, text='Go To', command=self._goToRef2)
-        btnRef2Get = tk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
-        btnRef2Calc = tk.Button(self._parametersFrame, text='Calc.', command=self._ref2Calc)
-        btnRandZCalc = tk.Button(self._parametersFrame, text='Calc.', command=self._RandZCalc)
+        btnRef1GoTo = ttk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
+        btnRef1Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
+        btnRef1Theor = ttk.Button(self._parametersFrame, text='Theo.', command=self._calcTheo)
+        btnRef2GoTo = ttk.Button(self._parametersFrame, text='Go To', command=self._goToRef2)
+        btnRef2Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
+        btnRef2Calc = ttk.Button(self._parametersFrame, text='Calc.', command=self._ref2Calc)
+        btnRandZCalc = ttk.Button(self._parametersFrame, text='Calc.', command=self._RandZCalc)
 
         self._ref1Frame.grid(row=0, column=0)
         self._ref2Frame.grid(row=0, column=1)
@@ -453,8 +453,8 @@ class GenericBasePlateFrame(tk.Frame):
         btnRef2Calc.grid(row=3, column=1)
         btnRandZCalc.grid(row=1, column=3)
 
-        tk.Button(btnFrame, command=self._save, text='Save').grid(row=0, column=0, padx=10)
-        tk.Button(btnFrame, command=self._delete, text='Delete').grid(row=0, column=1, padx=10)
+        ttk.Button(btnFrame, command=self._save, text='Save').grid(row=0, column=0, padx=10)
+        ttk.Button(btnFrame, command=self._delete, text='Delete').grid(row=0, column=1, padx=10)
 
     def _updateIHMFromBasePlate(self, bp):
         """
@@ -577,7 +577,7 @@ class BasePlateFrame(tk.Frame):
         tk.Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
 
         self._motherFrame = fenetre
-        self.__newBtn = tk.Button(self, command=self.__newBpBtn, text='New')
+        self.__newBtn = ttk.Button(self, command=self.__newBpBtn, text='New')
         self.controller = controller
         self.__machineConf = machineConf
         self.__logger = logger
@@ -585,7 +585,7 @@ class BasePlateFrame(tk.Frame):
         self.__strBp = tk.StringVar(self)
         self.__strBp.set(self.__bpList[0])
 
-        self.__bpOm = tk.OptionMenu(self, self.__strBp, *self.__bpList)
+        self.__bpOm = ttk.OptionMenu(self, self.__strBp, *self.__bpList)
 
         self.__bpFrame = tk.Frame(self, width=500, height=500)
 
@@ -630,16 +630,16 @@ class BasePlateFrame(tk.Frame):
         self._newBpTypeSel = tk.StringVar()
         self._newBpTypeSel.set(listeOptions[0])
         self._newBpId = completeEntry(self._newBpWindow, trashFunc, varType='int')
-        om = tk.OptionMenu(self._newBpWindow, self._newBpTypeSel, *listeOptions)
+        om = ttk.OptionMenu(self._newBpWindow, self._newBpTypeSel, *listeOptions)
         om.configure(width=12)
 
         tk.Label(self._newBpWindow, text='Type: ').grid(row=0, column=0, sticky='ew')
         om.grid(row=0, column=1, sticky='ew')
         tk.Label(self._newBpWindow, text='Id: ').grid(row=1, column=0, sticky='ew')
         self._newBpId.grid(row=1, column=1, sticky='ew')
-        tk.Button(self._newBpWindow, text='Cancel', command=self._newBpWindow.destroy).grid(row=2, column=0,
+        ttk.Button(self._newBpWindow, text='Cancel', command=self._newBpWindow.destroy).grid(row=2, column=0,
                                                                                             sticky='ew')
-        tk.Button(self._newBpWindow, text='Ok', command=self.__addBasePlate).grid(row=2, column=1, sticky='ew')
+        ttk.Button(self._newBpWindow, text='Ok', command=self.__addBasePlate).grid(row=2, column=1, sticky='ew')
         self._newBpWindow.grab_set()  # Lock focus en new window
 
     def __addBasePlate(self):
@@ -731,8 +731,8 @@ class CompositeFeederFrame(tk.Frame):
         tk.Label(parametersFrame, text="Composition").grid(row=0, column=0)
         self.feederDesc.grid(row=0, column=1)
 
-        tk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
-        tk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
+        ttk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
+        ttk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
 
         self.pickId = completeEntry(testFrame, trashFunc, varType='int')
         self.stripId = completeEntry(testFrame, trashFunc, varType='int')
@@ -743,7 +743,7 @@ class CompositeFeederFrame(tk.Frame):
         self.pickId.grid(row=0, column=1)
         tk.Label(testFrame, text="Cmp").grid(row=1, column=0)
         self.pickId.grid(row=1, column=1)
-        tk.Button(testFrame, command=self.__pick, text='Pick').grid(row=2, column=0, padx=10, sticky='ew')
+        ttk.Button(testFrame, command=self.__pick, text='Pick').grid(row=2, column=0, padx=10, sticky='ew')
 
     def __save(self):
         newFeeder = mch.CompositeFeeder({'id': self.id.var, 'name': self.name.var,
@@ -812,8 +812,8 @@ class StripFeederFrame(tk.Frame):
         self.yFirst.var = feederData.pos['Y']
         self.zFirst = completeEntry(posFirstCmpFrame, trashFunc, varType='float')
         self.zFirst.var = feederData.pos['Z']
-        btnFirstGo = tk.Button(posFirstCmpFrame, text='Go to', command=self.__goToFirst)
-        btnFirstGet = tk.Button(posFirstCmpFrame, text='Get Pos.', command=self.__getPosFirst)
+        btnFirstGo = ttk.Button(posFirstCmpFrame, text='Go to', command=self.__goToFirst)
+        btnFirstGet = ttk.Button(posFirstCmpFrame, text='Get Pos.', command=self.__getPosFirst)
 
         tk.Label(posFirstCmpFrame, text="X").grid(row=0, column=0)
         self.xFirst.grid(row=0, column=1)
@@ -829,8 +829,8 @@ class StripFeederFrame(tk.Frame):
         self.xLast.var = feederData.endPos['X']
         self.yLast = completeEntry(posLastCmpFrame, trashFunc, varType='float')
         self.yLast.var = feederData.endPos['Y']
-        btnLastGo = tk.Button(posLastCmpFrame, text='Go To', command=self.__goToLast)
-        btnLastGet = tk.Button(posLastCmpFrame, text='Get Pos.', command=self.__getPosLast)
+        btnLastGo = ttk.Button(posLastCmpFrame, text='Go To', command=self.__goToLast)
+        btnLastGet = ttk.Button(posLastCmpFrame, text='Get Pos.', command=self.__getPosLast)
 
         tk.Label(posLastCmpFrame, text="X").grid(row=0, column=0)
         self.xLast.grid(row=0, column=1)
@@ -847,7 +847,7 @@ class StripFeederFrame(tk.Frame):
         self.cmpStep.var = 4.0
         self.nextCmp = completeEntry(otherParam, trashFunc, varType='int')
         self.nextCmp.var = feederData.nextComponent
-        btnTheorCalc = tk.Button(otherParam, text='Theor. Calc', command=self.__theorCalc)
+        btnTheorCalc = ttk.Button(otherParam, text='Theor. Calc', command=self.__theorCalc)
 
         tk.Label(otherParam, text="Cmp/strip").grid(row=0, column=0)
         self.componentPerStrip.grid(row=0, column=1)
@@ -857,15 +857,15 @@ class StripFeederFrame(tk.Frame):
         self.nextCmp.grid(row=2, column=1)
         btnTheorCalc.grid(row=3, column=1)
 
-        tk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
-        tk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
+        ttk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
+        ttk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
 
         self.pickId = completeEntry(testFrame, trashFunc, varType='int')
         self.pickId.var = 0
 
         tk.Label(testFrame, text="Cmp").grid(row=0, column=0)
         self.pickId.grid(row=0, column=1)
-        tk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=2, padx=10)
+        ttk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=2, padx=10)
 
     def __save(self):
         newFeeder = mch.StripFeeder({'id': self.id.var, 'name': self.name.var,
@@ -922,7 +922,7 @@ class FeederFrame(tk.Frame):
         tk.Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
 
         self._motherFrame = fenetre
-        self.__newBtn = tk.Button(self, command=self.__newFeederBtn, text='New')
+        self.__newBtn = ttk.Button(self, command=self.__newFeederBtn, text='New')
         self.controller = controller
         self.__machineConf = machineConf
         self.__logger = logger
@@ -930,7 +930,7 @@ class FeederFrame(tk.Frame):
         self.__strFeeder = tk.StringVar(self)
         self.__strFeeder.set(self.__feederList[0])
 
-        self.__feederOm = tk.OptionMenu(self, self.__strFeeder, *self.__feederList)
+        self.__feederOm = ttk.OptionMenu(self, self.__strFeeder, *self.__feederList)
 
         self.__feederFrame = tk.Frame(self, width=500, height=500)
 
@@ -975,16 +975,16 @@ class FeederFrame(tk.Frame):
         self._newFeederTypeSel = tk.StringVar()
         self._newFeederTypeSel.set(listeOptions[0])
         self._newFeederId = completeEntry(self._newFeedWindow, trashFunc, varType='int')
-        om = tk.OptionMenu(self._newFeedWindow, self._newFeederTypeSel, *listeOptions)
+        om = ttk.OptionMenu(self._newFeedWindow, self._newFeederTypeSel, *listeOptions)
         om.configure(width=12)
 
         tk.Label(self._newFeedWindow, text='Type: ').grid(row=0, column=0, sticky='ew')
         om.grid(row=0, column=1, sticky='ew')
         tk.Label(self._newFeedWindow, text='Id: ').grid(row=1, column=0, sticky='ew')
         self._newFeederId.grid(row=1, column=1, sticky='ew')
-        tk.Button(self._newFeedWindow, text='Cancel', command=self._newFeedWindow.destroy).grid(row=2, column=0,
+        ttk.Button(self._newFeedWindow, text='Cancel', command=self._newFeedWindow.destroy).grid(row=2, column=0,
                                                                                                 sticky='ew')
-        tk.Button(self._newFeedWindow, text='Ok', command=self.__addFeeder).grid(row=2, column=1, sticky='ew')
+        ttk.Button(self._newFeedWindow, text='Ok', command=self.__addFeeder).grid(row=2, column=1, sticky='ew')
         self._newFeedWindow.grab_set()  # Lock focus en new window
 
     def __addFeeder(self):
@@ -1158,7 +1158,7 @@ class ParamFrame(tk.Frame):
         self._frameAxis.grid(row=0, column=0, columnspan=4)
         self._frameRef.grid(row=1, column=0, columnspan=3, rowspan=2, sticky='ns')
         self._frameMisc.grid(row=1, column=3, sticky='ns')
-        tk.Button(self, text='Save', command=self.__paramSave).grid(row=2, column=3)
+        ttk.Button(self, text='Save', command=self.__paramSave).grid(row=2, column=3)
 
     def __paramSave(self):
         self._machineConf.saveToXml()
@@ -1241,15 +1241,15 @@ class SerialFrame(tk.LabelFrame):
 
         self._listCom = ['0']
         self._comSel = tk.StringVar(self)
-        self._comSelOM = tk.OptionMenu(self, self._comSel, *self._listCom)
+        self._comSelOM = ttk.OptionMenu(self, self._comSel, *self._listCom)
         self._comSelOM['width'] = 7
         self._serialSpeedLab = tk.Label(self, text="Speed")
         self._comSpeedVar = tk.IntVar(self, 115200)
         self._comSpeedEntry = completeEntry(self, trashFunc(), varType='int')
         self._comSpeedEntry.var = 115200
 
-        self._openBtn = tk.Button(self, text='Motor On', command=self.__openCom)
-        self._closeBtn = tk.Button(self, text='Motor Off', command=self.__closeCom)
+        self._openBtn = ttk.Button(self, text='Motor On', command=self.__openCom)
+        self._closeBtn = ttk.Button(self, text='Motor Off', command=self.__closeCom)
 
         # self._comSelOM.grid(row=0, column=0)
         # self._serialSpeedLab.grid(row=1, column=1)
@@ -1299,14 +1299,14 @@ class CtrlFrame(tk.Frame):
         self._frameConsole = tk.LabelFrame(self, text="Console", labelanchor='n', padx=10, pady=10)
         self.serialFrame = SerialFrame(self, self.controller, text='Misc', labelanchor='n', padx=5, pady=5)
 
-        self._xp = tk.Button(self._frameArrow, text='X+', height=2, width=4)
-        self._xm = tk.Button(self._frameArrow, text='X-', height=2, width=4)
-        self._yp = tk.Button(self._frameArrow, text='Y+', height=2, width=4)
-        self._ym = tk.Button(self._frameArrow, text='Y-', height=2, width=4)
-        self._zp = tk.Button(self._frameArrow, text='Z+', height=2, width=4)
-        self._zm = tk.Button(self._frameArrow, text='Z-', height=2, width=4)
-        self._cp = tk.Button(self._frameArrow, text='C+', height=2, width=4)
-        self._cm = tk.Button(self._frameArrow, text='C-', height=2, width=4)
+        self._xp = ttk.Button(self._frameArrow, text='X+', width=4)
+        self._xm = ttk.Button(self._frameArrow, text='X-',  width=4)
+        self._yp = ttk.Button(self._frameArrow, text='Y+',  width=4)
+        self._ym = ttk.Button(self._frameArrow, text='Y-',  width=4)
+        self._zp = ttk.Button(self._frameArrow, text='Z+',  width=4)
+        self._zm = ttk.Button(self._frameArrow, text='Z-',  width=4)
+        self._cp = ttk.Button(self._frameArrow, text='C+',  width=4)
+        self._cm = ttk.Button(self._frameArrow, text='C-',  width=4)
 
         self._xp.bind("<ButtonPress>", self.controller.xpPress)
         self._xp.bind("<ButtonRelease>", self.controller.xRelease)
@@ -1337,11 +1337,11 @@ class CtrlFrame(tk.Frame):
         self._cp.grid(row=0, column=4, padx=10)
         self._cm.grid(row=2, column=4, padx=10)
 
-        self._homeX = tk.Button(self._frameHome, text='X', height=2, width=4, command=self.controller.homeX)
-        self._homeY = tk.Button(self._frameHome, text='Y', height=2, width=4, command=self.controller.homeY)
-        self._homeZ = tk.Button(self._frameHome, text='Z', height=2, width=4, command=self.controller.homeZ)
-        self._homeC = tk.Button(self._frameHome, text='C', height=2, width=4, command=self.controller.homeC)
-        self._homeALL = tk.Button(self._frameHome, text='ALL', height=2, width=4, command=self.controller.homeAll)
+        self._homeX = ttk.Button(self._frameHome, text='X',  width=4, command=self.controller.homeX)
+        self._homeY = ttk.Button(self._frameHome, text='Y', width=4, command=self.controller.homeY)
+        self._homeZ = ttk.Button(self._frameHome, text='Z', width=4, command=self.controller.homeZ)
+        self._homeC = ttk.Button(self._frameHome, text='C', width=4, command=self.controller.homeC)
+        self._homeALL = ttk.Button(self._frameHome, text='ALL', width=4, command=self.controller.homeAll)
 
         self._homeX.grid(row=0, column=0)
         self._homeY.grid(row=0, column=1)
@@ -1440,8 +1440,8 @@ class CtrlFrame(tk.Frame):
         self._textConsole = tk.Text(self._frameConsole, width=30, height=20, wrap=tk.NONE, state="disabled")
         self._commandVar = tk.StringVar(self._frameConsole)
         self._commandEntry = tk.Entry(self._frameConsole, textvariable=self._commandVar, width=40)
-        self._clearB = tk.Button(self._frameConsole, text='Clear', command=self.__clearConsole, height=2, width=10)
-        self._sendB = tk.Button(self._frameConsole, text='Send', command=self.__sendtmp, height=2, width=10)
+        self._clearB = ttk.Button(self._frameConsole, text='Clear', command=self.__clearConsole,  width=10)
+        self._sendB = ttk.Button(self._frameConsole, text='Send', command=self.__sendtmp,  width=10)
         self._consoleScrollY = tk.Scrollbar(self._frameConsole, command=self._textConsole.yview)
         self._consoleScrollX = tk.Scrollbar(self._frameConsole, command=self._textConsole.xview, orient=tk.HORIZONTAL)
         self._textConsole.config(yscrollcommand=self._consoleScrollY.set)
@@ -1606,7 +1606,7 @@ class ImportFrame(tk.Frame):
         self._posTVar = tk.IntVar(self, 5)
         self._posTEntry = tk.Entry(self, textvariable=self._posTVar, width=15)
 
-        self._import = tk.Button(self, text='Import', command=self.__importCmd, width=15)
+        self._import = ttk.Button(self, text='Import', command=self.__importCmd, width=15)
 
         self._labName.grid(row=0, column=0, columnspan=2, sticky='e')
         self._posName.grid(row=0, column=2, columnspan=2, sticky='w')
@@ -1656,8 +1656,8 @@ class componentFrame(tk.Frame):
 
         self._isPlaced = tk.Checkbutton(self, text='P', variable=self._isPlaceVar, command=self.__cmpChange)
         self._isEnable = tk.Checkbutton(self, text='E', variable=self._isEnableVar, command=self.__cmpChange)
-        self._goTo = tk.Button(self, text='GoTo', command=self.__goToCmd)
-        self._place = tk.Button(self, text='Place', command=self.__placeCmp)
+        self._goTo = ttk.Button(self, text='GoTo', command=self.__goToCmd)
+        self._place = ttk.Button(self, text='Place', command=self.__placeCmp)
 
         # self._listFeeder = self.controller.getFeederList()
         self._val = completeEntry(self, self.__cmpChange, varType='str')
@@ -1738,16 +1738,16 @@ class JobFrame(tk.Frame):
         imgSize = (25, 25)
 
         self.__playImg = ImageTk.PhotoImage(Image.open('./resources/play.png').resize(imgSize))
-        self.__playBtn = tk.Button(self, image=self.__playImg)
+        self.__playBtn = ttk.Button(self, image=self.__playImg)
 
         self.__pauseImg = ImageTk.PhotoImage(Image.open('./resources/pause.png').resize(imgSize))
-        self.__pauseBtn = tk.Button(self, image=self.__pauseImg)
+        self.__pauseBtn = ttk.Button(self, image=self.__pauseImg)
 
         self.__stopImg = ImageTk.PhotoImage(Image.open('./resources/stop.png').resize(imgSize))
-        self.__stopBtn = tk.Button(self, image=self.__stopImg)
+        self.__stopBtn = ttk.Button(self, image=self.__stopImg)
 
         self.__buildImg = ImageTk.PhotoImage(Image.open('./resources/build.png').resize(imgSize))
-        self.__buildBtn = tk.Button(self, image=self.__buildImg)
+        self.__buildBtn = ttk.Button(self, image=self.__buildImg)
 
         self.__jobDesc = tk.Label(self, text='')
 
@@ -1820,8 +1820,8 @@ class globalCmpFrame(tk.LabelFrame):
         self._placedEdit.var = ''
         self._enableEdit.var = ''
 
-        btnFilterApply = tk.Button(self._filterFrame, text='Filter', command=self.filterApply)
-        btnEditApply = tk.Button(self._filterFrame, text='Edit', command=self.__editApply)
+        btnFilterApply = ttk.Button(self._filterFrame, text='Filter', command=self.filterApply)
+        btnEditApply = ttk.Button(self._filterFrame, text='Edit', command=self.__editApply)
 
         tk.Label(self._filterFrame, text='Value:').grid(row=0, column=0)
         tk.Label(self._filterFrame, text='Ref:').grid(row=0, column=1)
@@ -2034,8 +2034,8 @@ class BoardFrame(tk.Frame):
         self._ref1Y = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
         self._ref2X = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
         self._ref2Y = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref1updt = tk.Button(self._referenceFrame, command=self.__getPosRef1, text='Get Pos')
-        self._ref2updt = tk.Button(self._referenceFrame, command=self.__getPosRef2, text='Get Pos')
+        self._ref1updt = ttk.Button(self._referenceFrame, command=self.__getPosRef1, text='Get Pos')
+        self._ref2updt = ttk.Button(self._referenceFrame, command=self.__getPosRef2, text='Get Pos')
 
         tk.Label(self._referenceFrame, text="N°1").grid(row=1, column=0)
         tk.Label(self._referenceFrame, text="N°2").grid(row=2, column=0)
@@ -2142,22 +2142,22 @@ class DtbFrame(tk.Frame):
         self._modelList = ['toto']
         self._strModel = tk.StringVar()
         self._strModel.set(self._modelList[0])
-        self._modelOm = tk.OptionMenu(frameTop, self._strModel, *self._modelList)
+        self._modelOm = ttk.OptionMenu(frameTop, self._strModel, *self._modelList)
 
         self._aliasList = ['toto']
         self._strAlias = tk.StringVar()
         self._strAlias.set(self._aliasList[0])
-        self._aliasOm = tk.OptionMenu(frameAlias, self._strAlias, *self._aliasList)
+        self._aliasOm = ttk.OptionMenu(frameAlias, self._strAlias, *self._aliasList)
 
-        newModBtn = tk.Button(frameTop, text='New', width=15,
+        newModBtn = ttk.Button(frameTop, text='New', width=15,
                               command=lambda: entryWindow(self, 'New model', ['Model Name'], ['Name'],
                                                           self.__userAddModelReturn, 0))
-        dellModBtn = tk.Button(frameTop, text='Delete', width=15, command=self.__deleteModel)
-        addBtn = tk.Button(frameAlias, text='Add',
+        dellModBtn = ttk.Button(frameTop, text='Delete', width=15, command=self.__deleteModel)
+        addBtn = ttk.Button(frameAlias, text='Add',
                            command=lambda: entryWindow(self, 'New Alias', ['Alias Name'], ['Name'],
                                                        self.__userAddAliasReturn, 0))
-        dellBtn = tk.Button(frameAlias, text='Del', command=self.__deleteAlias)
-        saveBtn = tk.Button(frameCtrl, text='Save', command=self.controller.saveInFile)
+        dellBtn = ttk.Button(frameAlias, text='Del', command=self.__deleteAlias)
+        saveBtn = ttk.Button(frameCtrl, text='Save', command=self.controller.saveInFile)
 
         self._sX = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
         self._sY = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
@@ -2388,13 +2388,13 @@ class ScanFrame(tk.Frame):
 
         self._labMes = tk.Label(self, text='Measure: 00000')
         self._zScan = completeEntry(frame=self, traceFunc=trashFunc, varType='double')
-        self._btnGoTo = tk.Button(self, text='Go TO')
-        self._btnScanPoint = tk.Button(self, text='Scan point')
-        self._btnScanXLine = tk.Button(self, text='Scan Line X')
-        self._btnScanYLine = tk.Button(self, text='Scan Line Y')
-        self._btnScan3D = tk.Button(self, text='Scan 3D')
-        self._btnFace = tk.Button(self, text='Face 3D')
-        self._btnCircle = tk.Button(self, text='circle')
+        self._btnGoTo = ttk.Button(self, text='Go TO')
+        self._btnScanPoint = ttk.Button(self, text='Scan point')
+        self._btnScanXLine = ttk.Button(self, text='Scan Line X')
+        self._btnScanYLine = ttk.Button(self, text='Scan Line Y')
+        self._btnScan3D = ttk.Button(self, text='Scan 3D')
+        self._btnFace = ttk.Button(self, text='Face 3D')
+        self._btnCircle = ttk.Button(self, text='circle')
 
         self._labMes.grid(row=0, column=0, columnspan=2)
         tk.Label(self, text='zScan:').grid(row=1, column=0)
@@ -2460,7 +2460,7 @@ class DebugFrame(tk.Frame):
         c.config(scrollregion=c.bbox("all"))
         for i in range(0, 26):
             for t in range(0, 7):
-                tk.Button(self._fr, width=10, height=2, text="{}{}".format(chr(i + 65), t)).grid(row=i, column=t)
+                ttk.Button(self._fr, width=10, text="{}{}".format(chr(i + 65), t)).grid(row=i, column=t)
         c.create_window(0, 0, window=self._fr)
         self._fr.update_idletasks()
         c.config(scrollregion=c.bbox("all"))
