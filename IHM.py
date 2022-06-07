@@ -1790,6 +1790,7 @@ class JobFrame(tk.Frame):
         self.__jobDesc['text'] = desc
 
 
+
 class globalCmpFrame(tk.LabelFrame):
     def __init__(self, fenetre, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
@@ -1798,8 +1799,10 @@ class globalCmpFrame(tk.LabelFrame):
         self.controller = controller
 
         self._filterFrame = tk.Frame(self)
-        self._cmpFrameScrol = ScrollableFrameText(self)
-        self._cmpFrameScrol.setSize(width=750, height=500)
+        #self._cmpFrameScrol = ScrollableFrameText(self)
+        #self._cmpFrameScrol.setSize(width=750, height=500)
+        self._cmpFrameScrol = ttk.Treeview(self, columns=('Value', 'Ref', 'Package', 'Model', 'Feeder', 'Placed', 'Enabled'),
+                                           show='headings')
 
         self._filterFrame.grid(row=0, column=0)
         self._cmpFrameScrol.grid(row=1, column=0)
@@ -1868,6 +1871,8 @@ class globalCmpFrame(tk.LabelFrame):
         self.controller.board.filter['placed'] = self._placedFilter.var
         self.controller.board.filter['enable'] = self._enableFilter.var
 
+
+
         list = self._cmpFrameScrol.userFrame.grid_slaves()
         for l in list:
             if type(l) is componentFrame:
@@ -1876,6 +1881,9 @@ class globalCmpFrame(tk.LabelFrame):
         self._cmpFrameScrol.clear()
         idRow = 1
         for cmp in self.cmpDisplayList:
+            self._cmpFrameScrol.insert(parent=cmp.value, index=tk.END)
+
+
             self._cmpFrameScrol.insert(componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp))
             # componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp).grid(row=idRow, column=0)
             idRow += 1
