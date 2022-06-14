@@ -430,7 +430,7 @@ class GenericBasePlateFrame(tk.Frame):
         self._ref2Frame = XYZFrame(self._parametersFrame, text="Ref 2", labelanchor='n', padx=10, pady=10)
         self._vectorFrame = XYZFrame(self._parametersFrame, text="Vector", labelanchor='n', padx=10, pady=10)
         self._rotAndZFrame = MultipleEntryFrame(self._parametersFrame, {'Rot(deg)': 'float', 'Zramp': 'float'},
-                                                   text="Param", labelanchor='n', padx=10, pady=10)
+                                                text="Param", labelanchor='n', padx=10, pady=10)
         GenericBasePlateFrame._updateIHMFromBasePlate(self, bpData)
 
         btnRef1GoTo = ttk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
@@ -517,7 +517,7 @@ class GenericBasePlateFrame(tk.Frame):
             self._ref2Frame.z = pos['Z']
 
     def _ref2Calc(self):
-        self._save()# Update basplate from IHM
+        self._save()  # Update basplate from IHM
         basePlate = self._machine.getBasePlateById(self.id.var)
         basePlate.computeFromAngle()
         self._updateIHMFromBasePlate(basePlate)
@@ -540,9 +540,9 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
         GenericBasePlateFrame.__init__(self, fenetre, bpData, machine, logger, controller, **kwargs)
 
         self._additionalFrame = tk.Frame(self._parametersFrame)
-        self._vector = XYZFrame(self._additionalFrame,text="Vect cmp 0", labelanchor='n', padx=10, pady=10)
-        self._misc = MultipleEntryFrame(self._additionalFrame, {'Strip Step':'float'},text="Misc", labelanchor='n', padx=10, pady=10)
-
+        self._vector = XYZFrame(self._additionalFrame, text="Vect cmp 0", labelanchor='n', padx=10, pady=10)
+        self._misc = MultipleEntryFrame(self._additionalFrame, {'Strip Step': 'float'}, text="Misc", labelanchor='n',
+                                        padx=10, pady=10)
 
         self._additionalFrame.grid(row=0, column=4)
         self._vector.grid(row=0, column=0)
@@ -557,7 +557,8 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
             'realRef2': {'X': self._ref2Frame.x, 'Y': self._ref2Frame.y, 'Z': self._ref2Frame.z},
             'vectorRef': {'X': self._vectorFrame.x, 'Y': self._vectorFrame.y, 'Z': self._vectorFrame.z},
             'rotationOffset': math.radians(self._rotAndZFrame['Rot(deg)']), 'zRamp': self._rotAndZFrame['Zramp'],
-            'stripStep': self._misc['Strip Step'], 'vectorFistCmp': {'X': self._vector.x, 'Y': self._vector.y, 'Z':self._vector.z}
+            'stripStep': self._misc['Strip Step'],
+            'vectorFistCmp': {'X': self._vector.x, 'Y': self._vector.y, 'Z': self._vector.z}
         })
         self._machine.addBasePlate(newBp)
         self._machine.saveToXml()
@@ -569,7 +570,6 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
         self._vector.x = bp.getVectorFirstCmp()['X']
         self._vector.y = bp.getVectorFirstCmp()['Y']
         self._vector.z = bp.getVectorFirstCmp()['Z']
-
 
 
 class BasePlateFrame(tk.Frame):
@@ -638,7 +638,7 @@ class BasePlateFrame(tk.Frame):
         tk.Label(self._newBpWindow, text='Id: ').grid(row=1, column=0, sticky='ew')
         self._newBpId.grid(row=1, column=1, sticky='ew')
         ttk.Button(self._newBpWindow, text='Cancel', command=self._newBpWindow.destroy).grid(row=2, column=0,
-                                                                                            sticky='ew')
+                                                                                             sticky='ew')
         ttk.Button(self._newBpWindow, text='Ok', command=self.__addBasePlate).grid(row=2, column=1, sticky='ew')
         self._newBpWindow.grab_set()  # Lock focus en new window
 
@@ -651,8 +651,8 @@ class BasePlateFrame(tk.Frame):
 
         if self.__machineConf.getBasePlateById(self._newBpId.var):
             MsgBox = messagebox.askokcancel('Base plate confirm',
-                                               'Id {} already exist.\nContiniue?'.format(self._newBpId.var),
-                                               icon='warning')
+                                            'Id {} already exist.\nContiniue?'.format(self._newBpId.var),
+                                            icon='warning')
             if not MsgBox:
                 return
 
@@ -676,12 +676,12 @@ class BasePlateFrame(tk.Frame):
             if bp.id == bpId:
                 if bp.type == 'BasePlate':
                     self.__bpFrame = GenericBasePlateFrame(self, bp, self.__machineConf, self.__logger,
-                                                      self.controller)
+                                                           self.controller)
                     self.__bpFrame.grid(row=1, column=0, columnspan=3)
                     return
                 elif bp.type == 'StripFeederBasePlate':
                     self.__bpFrame = StripFeederBasePlateFrame(self, bp, self.__machineConf, self.__logger,
-                                                          self.controller)
+                                                               self.controller)
                     self.__bpFrame.grid(row=1, column=0, columnspan=3)
                     return
                 else:
@@ -983,7 +983,7 @@ class FeederFrame(tk.Frame):
         tk.Label(self._newFeedWindow, text='Id: ').grid(row=1, column=0, sticky='ew')
         self._newFeederId.grid(row=1, column=1, sticky='ew')
         ttk.Button(self._newFeedWindow, text='Cancel', command=self._newFeedWindow.destroy).grid(row=2, column=0,
-                                                                                                sticky='ew')
+                                                                                                 sticky='ew')
         ttk.Button(self._newFeedWindow, text='Ok', command=self.__addFeeder).grid(row=2, column=1, sticky='ew')
         self._newFeedWindow.grab_set()  # Lock focus en new window
 
@@ -996,8 +996,8 @@ class FeederFrame(tk.Frame):
 
         if self.__machineConf.getFeederById(self._newFeederId.var):
             MsgBox = messagebox.askokcancel('Feeder confirm',
-                                               'Id {} already exist.\nContiniue?'.format(self._newFeederId.var),
-                                               icon='warning')
+                                            'Id {} already exist.\nContiniue?'.format(self._newFeederId.var),
+                                            icon='warning')
             if not MsgBox:
                 return
 
@@ -1300,13 +1300,13 @@ class CtrlFrame(tk.Frame):
         self.serialFrame = SerialFrame(self, self.controller, text='Misc', labelanchor='n', padx=5, pady=5)
 
         self._xp = ttk.Button(self._frameArrow, text='X+', width=4)
-        self._xm = ttk.Button(self._frameArrow, text='X-',  width=4)
-        self._yp = ttk.Button(self._frameArrow, text='Y+',  width=4)
-        self._ym = ttk.Button(self._frameArrow, text='Y-',  width=4)
-        self._zp = ttk.Button(self._frameArrow, text='Z+',  width=4)
-        self._zm = ttk.Button(self._frameArrow, text='Z-',  width=4)
-        self._cp = ttk.Button(self._frameArrow, text='C+',  width=4)
-        self._cm = ttk.Button(self._frameArrow, text='C-',  width=4)
+        self._xm = ttk.Button(self._frameArrow, text='X-', width=4)
+        self._yp = ttk.Button(self._frameArrow, text='Y+', width=4)
+        self._ym = ttk.Button(self._frameArrow, text='Y-', width=4)
+        self._zp = ttk.Button(self._frameArrow, text='Z+', width=4)
+        self._zm = ttk.Button(self._frameArrow, text='Z-', width=4)
+        self._cp = ttk.Button(self._frameArrow, text='C+', width=4)
+        self._cm = ttk.Button(self._frameArrow, text='C-', width=4)
 
         self._xp.bind("<ButtonPress>", self.controller.xpPress)
         self._xp.bind("<ButtonRelease>", self.controller.xRelease)
@@ -1337,7 +1337,7 @@ class CtrlFrame(tk.Frame):
         self._cp.grid(row=0, column=4, padx=10)
         self._cm.grid(row=2, column=4, padx=10)
 
-        self._homeX = ttk.Button(self._frameHome, text='X',  width=4, command=self.controller.homeX)
+        self._homeX = ttk.Button(self._frameHome, text='X', width=4, command=self.controller.homeX)
         self._homeY = ttk.Button(self._frameHome, text='Y', width=4, command=self.controller.homeY)
         self._homeZ = ttk.Button(self._frameHome, text='Z', width=4, command=self.controller.homeZ)
         self._homeC = ttk.Button(self._frameHome, text='C', width=4, command=self.controller.homeC)
@@ -1440,8 +1440,8 @@ class CtrlFrame(tk.Frame):
         self._textConsole = tk.Text(self._frameConsole, width=30, height=20, wrap=tk.NONE, state="disabled")
         self._commandVar = tk.StringVar(self._frameConsole)
         self._commandEntry = tk.Entry(self._frameConsole, textvariable=self._commandVar, width=40)
-        self._clearB = ttk.Button(self._frameConsole, text='Clear', command=self.__clearConsole,  width=10)
-        self._sendB = ttk.Button(self._frameConsole, text='Send', command=self.__sendtmp,  width=10)
+        self._clearB = ttk.Button(self._frameConsole, text='Clear', command=self.__clearConsole, width=10)
+        self._sendB = ttk.Button(self._frameConsole, text='Send', command=self.__sendtmp, width=10)
         self._consoleScrollY = tk.Scrollbar(self._frameConsole, command=self._textConsole.yview)
         self._consoleScrollX = tk.Scrollbar(self._frameConsole, command=self._textConsole.xview, orient=tk.HORIZONTAL)
         self._textConsole.config(yscrollcommand=self._consoleScrollY.set)
@@ -1641,7 +1641,7 @@ class ImportFrame(tk.Frame):
         self._masterIHM.initBoardMenu()
 
 
-class componentFrame(tk.Frame):
+class ComponentFrame(tk.Frame):
     """Frame used for display component information."""
 
     def __init__(self, fenetre, controller, cmp, **kwargs):
@@ -1790,19 +1790,28 @@ class JobFrame(tk.Frame):
         self.__jobDesc['text'] = desc
 
 
-
-class globalCmpFrame(tk.LabelFrame):
+class GlobalCmpFrame(tk.LabelFrame):
     def __init__(self, fenetre, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
         self.cmpList = []
+        self._refList = []
         self.cmpDisplayList = []
         self.controller = controller
 
         self._filterFrame = tk.Frame(self)
-        #self._cmpFrameScrol = ScrollableFrameText(self)
-        #self._cmpFrameScrol.setSize(width=750, height=500)
-        self._cmpFrameScrol = ttk.Treeview(self, columns=('Value', 'Ref', 'Package', 'Model', 'Feeder', 'Placed', 'Enabled'),
-                                           show='headings')
+        # self._cmpFrameScrol = ScrollableFrameText(self)
+        # self._cmpFrameScrol.setSize(width=750, height=500)
+        self._cmpFrameScrol = ttk.Treeview(self)
+        self._cmpFrameScrol['columns'] = ('Value', 'Ref', 'Package', 'Model', 'Feeder', 'Placed', 'Enabled')
+        tree.column("#0", width=270, minwidth=270, stretch=tk.NO)
+        self._cmpFrameScrol.heading('#0', text='', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Value', text='Value', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Ref', text='Ref', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Package', text='Package', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Model', text='Model', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Feeder', text='Feeder', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Placed', text='Placed', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Enabled', text='Enabled', anchor=tk.CENTER)
 
         self._filterFrame.grid(row=0, column=0)
         self._cmpFrameScrol.grid(row=1, column=0)
@@ -1861,8 +1870,26 @@ class globalCmpFrame(tk.LabelFrame):
         """
 
     def __displayFilterList(self):
+        for i in self._cmpFrameScrol.get_children():
+            self._cmpFrameScrol.delete(i)
+        self.update()
+
+        #Build reference list.
+        valueList = []
+        for cmp in self.cmpList:
+            if cmp.value not in valueList:
+                valueList.append(cmp.value)
+
+        for value in valueList:
+            self._cmpFrameScrol.insert(parent="", index="end", iid=value, text=value)
+
+
+
+
+    def __displayFilterListold(self):
         # for frame in self.cmpDisplayFrameList:
         # frame.destroy()
+
 
         self.controller.board.filter['value'] = self._valueFilter.var
         self.controller.board.filter['ref'] = self._refFilter.var
@@ -1871,11 +1898,9 @@ class globalCmpFrame(tk.LabelFrame):
         self.controller.board.filter['placed'] = self._placedFilter.var
         self.controller.board.filter['enable'] = self._enableFilter.var
 
-
-
         list = self._cmpFrameScrol.userFrame.grid_slaves()
         for l in list:
-            if type(l) is componentFrame:
+            if type(l) is ComponentFrame:
                 l.destroy()
 
         self._cmpFrameScrol.clear()
@@ -1883,8 +1908,7 @@ class globalCmpFrame(tk.LabelFrame):
         for cmp in self.cmpDisplayList:
             self._cmpFrameScrol.insert(parent=cmp.value, index=tk.END)
 
-
-            self._cmpFrameScrol.insert(componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp))
+            self._cmpFrameScrol.insert(ComponentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp))
             # componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp).grid(row=idRow, column=0)
             idRow += 1
 
@@ -1950,7 +1974,7 @@ class globalCmpFrame(tk.LabelFrame):
         slaveList = self._cmpFrameScrol.userFrame.grid_slaves()
 
         for slave in slaveList:
-            if type(slave) is componentFrame:
+            if type(slave) is ComponentFrame:
                 if len(self._modelEdit.var.replace(' ', '')):
                     slave.cmp.model = self._modelEdit.var
                 if len(self._feederEdit.var.replace(' ', '')):
@@ -1973,6 +1997,9 @@ class globalCmpFrame(tk.LabelFrame):
     def setCmpList(self, cmpList):
         self.cmpList = cmpList
 
+
+
+
     def setFilter(self, value, ref, pack, model, place, enable):
         self._valueFilter.var = value
         self._refFilter.var = ref
@@ -1984,7 +2011,7 @@ class globalCmpFrame(tk.LabelFrame):
     def componentHaveChanged(self, ref):
         slaveList = self._cmpFrameScrol.userFrame.grid_slaves()
         for slave in slaveList:
-            if type(slave) is componentFrame:
+            if type(slave) is ComponentFrame:
                 if slave.cmp.ref == ref:
                     slave.update()
 
@@ -2002,7 +2029,7 @@ class BoardFrame(tk.Frame):
 
         self.controller = controller
 
-        self._rootCmpFrame = globalCmpFrame(self, controller)
+        self._rootCmpFrame = GlobalCmpFrame(self, controller)
         self.jobFrame = JobFrame(self)
 
         self._boardFrame = tk.LabelFrame(self, text="Board", labelanchor='n', padx=10, pady=0)
@@ -2158,12 +2185,12 @@ class DtbFrame(tk.Frame):
         self._aliasOm = ttk.OptionMenu(frameAlias, self._strAlias, *self._aliasList)
 
         newModBtn = ttk.Button(frameTop, text='New', width=15,
-                              command=lambda: entryWindow(self, 'New model', ['Model Name'], ['Name'],
-                                                          self.__userAddModelReturn, 0))
+                               command=lambda: entryWindow(self, 'New model', ['Model Name'], ['Name'],
+                                                           self.__userAddModelReturn, 0))
         dellModBtn = ttk.Button(frameTop, text='Delete', width=15, command=self.__deleteModel)
         addBtn = ttk.Button(frameAlias, text='Add',
-                           command=lambda: entryWindow(self, 'New Alias', ['Alias Name'], ['Name'],
-                                                       self.__userAddAliasReturn, 0))
+                            command=lambda: entryWindow(self, 'New Alias', ['Alias Name'], ['Name'],
+                                                        self.__userAddAliasReturn, 0))
         dellBtn = ttk.Button(frameAlias, text='Del', command=self.__deleteAlias)
         saveBtn = ttk.Button(frameCtrl, text='Save', command=self.controller.saveInFile)
 

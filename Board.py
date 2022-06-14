@@ -260,4 +260,7 @@ class Board:
     def values(self):
         return self.cmpDic.values()
 
+    def values(self):
+        return self.cmpDic.values()
+
     angleCorr = property(fget=__calcAngle)
