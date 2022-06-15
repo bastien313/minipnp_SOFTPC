@@ -1794,7 +1794,6 @@ class GlobalCmpFrame(tk.LabelFrame):
     def __init__(self, fenetre, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
         self.cmpList = []
-        self._refList = []
         self.cmpDisplayList = []
         self.controller = controller
 
@@ -1802,14 +1801,25 @@ class GlobalCmpFrame(tk.LabelFrame):
         # self._cmpFrameScrol = ScrollableFrameText(self)
         # self._cmpFrameScrol.setSize(width=750, height=500)
         self._cmpFrameScrol = ttk.Treeview(self)
-        self._cmpFrameScrol['columns'] = ('Value', 'Ref', 'Package', 'Model', 'Feeder', 'Placed', 'Enabled')
-        tree.column("#0", width=270, minwidth=270, stretch=tk.NO)
-        self._cmpFrameScrol.heading('#0', text='', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Value', text='Value', anchor=tk.CENTER)
+        self._cmpFrameScrol['columns'] = ('Ref', 'Package', 'Model', 'Feeder', 'X','Y','T', 'Placed', 'Enabled')
+        self._cmpFrameScrol.column("#0", width=100, minwidth=100, stretch=tk.NO)
+        self._cmpFrameScrol.column("Ref", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpFrameScrol.column("Package", width=100, minwidth=100, stretch=tk.NO)
+        self._cmpFrameScrol.column("Model", width=100, minwidth=100, stretch=tk.NO)
+        self._cmpFrameScrol.column("Feeder", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpFrameScrol.column("X", width=60, minwidth=60, stretch=tk.NO)
+        self._cmpFrameScrol.column("Y", width=60, minwidth=60, stretch=tk.NO)
+        self._cmpFrameScrol.column("T", width=60, minwidth=60, stretch=tk.NO)
+        self._cmpFrameScrol.column("Placed", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpFrameScrol.column("Enabled", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpFrameScrol.heading('#0', text='Value', anchor=tk.CENTER)
         self._cmpFrameScrol.heading('Ref', text='Ref', anchor=tk.CENTER)
         self._cmpFrameScrol.heading('Package', text='Package', anchor=tk.CENTER)
         self._cmpFrameScrol.heading('Model', text='Model', anchor=tk.CENTER)
         self._cmpFrameScrol.heading('Feeder', text='Feeder', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('X', text='X', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('Y', text='Y', anchor=tk.CENTER)
+        self._cmpFrameScrol.heading('T', text='T', anchor=tk.CENTER)
         self._cmpFrameScrol.heading('Placed', text='Placed', anchor=tk.CENTER)
         self._cmpFrameScrol.heading('Enabled', text='Enabled', anchor=tk.CENTER)
 
@@ -1870,19 +1880,30 @@ class GlobalCmpFrame(tk.LabelFrame):
         """
 
     def __displayFilterList(self):
+        self.controller.board.filter['value'] = self._valueFilter.var
+        self.controller.board.filter['ref'] = self._refFilter.var
+        self.controller.board.filter['package'] = self._packageFilter.var
+        self.controller.board.filter['model'] = self._modelFilter.var
+        self.controller.board.filter['placed'] = self._placedFilter.var
+        self.controller.board.filter['enable'] = self._enableFilter.var
+
         for i in self._cmpFrameScrol.get_children():
             self._cmpFrameScrol.delete(i)
         self.update()
 
         #Build reference list.
         valueList = []
-        for cmp in self.cmpList:
+        for cmp in self.cmpDisplayList:
             if cmp.value not in valueList:
                 valueList.append(cmp.value)
 
         for value in valueList:
             self._cmpFrameScrol.insert(parent="", index="end", iid=value, text=value)
 
+        for cmp in self.cmpDisplayList:
+            dataCmp = (cmp.ref, cmp.package, cmp.model, cmp.feeder,f'{cmp.posX}',f'{cmp.posY}',f'{cmp.rot}',
+                       f'{cmp.isPlaced}', f'{cmp.isEnable}')
+            self._cmpFrameScrol.insert(iid=cmp.ref, text=cmp.value, parent=cmp.value, index="end", values=dataCmp)
 
 
 
@@ -1971,6 +1992,11 @@ class GlobalCmpFrame(tk.LabelFrame):
         self.__displayFilterList()
 
     def __editApply(self):
+        selList = self._cmpFrameScrol.selection()
+        #for sel in selList:
+        #    if self._cmpFrameScrol.parent(sel) is '':
+
+    def __editApply_old(self):
         slaveList = self._cmpFrameScrol.userFrame.grid_slaves()
 
         for slave in slaveList:
@@ -2511,7 +2537,7 @@ class PnpIHM:
 
         self.mainWindow = tk.Tk()  # Instance of main window.
         self.mainWindow.title('MiniPnp - OXILEC')
-        self.mainWindow.maxsize(width=1350, height=700)
+        #self.mainWindow.maxsize(width=1500, height=800)
 
         self.ctrlWindow = CtrlFrame(self.mainWindow, self.ctrl.directCtrl)
         logger.ihmDirect = self.ctrlWindow
