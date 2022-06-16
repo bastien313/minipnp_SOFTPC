@@ -278,8 +278,8 @@ class completeEntry(tk.Entry):
     Used for disable trace when var is not edited by user IHM.
     """
 
-    def __init__(self, frame, traceFunc=None, varType='str'):
-        tk.Entry.__init__(self, frame, width=15, state='normal')
+    def __init__(self, frame, traceFunc=None, varType='str', **kwargs):
+        tk.Entry.__init__(self, frame, **kwargs)
         self._frame = frame
         self._traceFunc = traceFunc
         self._varString = tk.StringVar(self._frame, '0')
@@ -1366,18 +1366,14 @@ class CtrlFrame(tk.Frame):
         self._labZ = tk.Label(self._frameConfArrow, text="Z")
         self._labC = tk.Label(self._frameConfArrow, text="C")
 
-        self._stepX = tk.DoubleVar(self._frameConfArrow, 0.1)
-        self._stepY = tk.DoubleVar(self._frameConfArrow, 0.1)
-        self._stepZ = tk.DoubleVar(self._frameConfArrow, 0.1)
-        self._stepC = tk.DoubleVar(self._frameConfArrow, 0.1)
-        self._stepXEntry = tk.Entry(self._frameConfArrow, textvariable=self._stepX, width=15,
-                                    validate='key', validatecommand=(checkEntryCmdDouble, '%P', '%S'))
-        self._stepYEntry = tk.Entry(self._frameConfArrow, textvariable=self._stepY, width=15,
-                                    validate='key', validatecommand=(checkEntryCmdDouble, '%P', '%S'))
-        self._stepZEntry = tk.Entry(self._frameConfArrow, textvariable=self._stepZ, width=15,
-                                    validate='key', validatecommand=(checkEntryCmdDouble, '%P', '%S'))
-        self._stepCEntry = tk.Entry(self._frameConfArrow, textvariable=self._stepC, width=15,
-                                    validate='key', validatecommand=(checkEntryCmdDouble, '%P', '%S'))
+        self._stepXEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepYEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepZEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepCEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepXEntry.var = 0.1
+        self._stepYEntry.var = 0.1
+        self._stepZEntry.var = 0.1
+        self._stepCEntry.var = 0.1
 
         self._contEnaVar = tk.IntVar(self._frameConfArrow, 1)
         self._contEna = tk.Checkbutton(self._frameConfArrow, variable=self._contEnaVar)
@@ -1395,21 +1391,22 @@ class CtrlFrame(tk.Frame):
         self._stepCEntry.grid(row=4, column=1)
         self._contEna.grid(row=1, column=3, rowspan=4)
 
-        self._posX = tk.DoubleVar(self._framePos, 0.1)
-        self._posY = tk.DoubleVar(self._framePos, 0.1)
-        self._posZ = tk.DoubleVar(self._framePos, 0.1)
-        self._posC = tk.DoubleVar(self._framePos, 0.1)
-        self._pres = tk.DoubleVar(self._framePos, 0.1)
-        self._posXEntry = tk.Entry(self._framePos, textvariable=self._posX, width=15, font='Arial 30', state='disable'
+        self._posXEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
                                    , disabledbackground='white')
-        self._posYEntry = tk.Entry(self._framePos, textvariable=self._posY, width=15, font='Arial 30', state='disable'
+        self._posYEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
                                    , disabledbackground='white')
-        self._posZEntry = tk.Entry(self._framePos, textvariable=self._posZ, width=15, font='Arial 30', state='disable'
+        self._posZEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
                                    , disabledbackground='white')
-        self._posCEntry = tk.Entry(self._framePos, textvariable=self._posC, width=15, font='Arial 30', state='disable'
+        self._posCEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
                                    , disabledbackground='white')
-        self._presEntry = tk.Entry(self._framePos, textvariable=self._pres, width=15, font='Arial 30', state='disable'
+        self._presEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
                                    , disabledbackground='white')
+        self._posXEntry.var = 0.1
+        self._posYEntry.var = 0.1
+        self._posZEntry.var = 0.1
+        self._posCEntry.var = 0.1
+        self._presEntryvar = 0.1
+
         self._labPosX = tk.Label(self._framePos, text="X", font='Arial 30 bold')
         self._labPosY = tk.Label(self._framePos, text="Y", font='Arial 30 bold')
         self._labPosZ = tk.Label(self._framePos, text="Z", font='Arial 30 bold')
@@ -1438,8 +1435,8 @@ class CtrlFrame(tk.Frame):
         self._labPres.grid(row=4, column=2)
 
         self._textConsole = tk.Text(self._frameConsole, width=30, height=20, wrap=tk.NONE, state="disabled")
-        self._commandVar = tk.StringVar(self._frameConsole)
-        self._commandEntry = tk.Entry(self._frameConsole, textvariable=self._commandVar, width=40)
+        self._commandEntry = completeEntry(frame=self._frameConsole, traceFunc=trashFunc, varType='str', width=40)
+        self._commandEntry.var=''
         self._clearB = ttk.Button(self._frameConsole, text='Clear', command=self.__clearConsole, width=10)
         self._sendB = ttk.Button(self._frameConsole, text='Send', command=self.__sendtmp, width=10)
         self._consoleScrollY = tk.Scrollbar(self._frameConsole, command=self._textConsole.yview)
@@ -1463,7 +1460,7 @@ class CtrlFrame(tk.Frame):
 
     def __sendtmp(self):
         # self.insertToConsole(self._commandVar.get())
-        self.controller._driver.externalGcodeLine(self._commandVar.get())
+        self.controller._driver.externalGcodeLine(self._commandVar.var)
 
     def insertToConsole(self, str):
         """
@@ -1486,31 +1483,31 @@ class CtrlFrame(tk.Frame):
         self._textConsole.configure(state='disabled')
 
     def _setPosX(self, value):
-        self._posX.set(round(value, 4))
+        self._posX.var = (round(value, 4))
 
     def _setPosY(self, value):
-        self._posY.set(round(value, 4))
+        self._posY.var = (round(value, 4))
 
     def _setPosZ(self, value):
-        self._posZ.set(round(value, 4))
+        self._posZ.var = (round(value, 4))
 
     def _setPosC(self, value):
-        self._posC.set(round(value, 4))
+        self._posC.var = (round(value, 4))
 
     def _setPres(self, value):
-        self._pres.set(round(value, 4))
+        self._pres.var = (round(value, 4))
 
     def _getStepX(self):
-        return self._stepX.get()
+        return self._stepX.var()
 
     def _getStepY(self):
-        return self._stepY.get()
+        return self._stepY.var()
 
     def _getStepZ(self):
-        return self._stepZ.get()
+        return self._stepZ.var()
 
     def _getStepC(self):
-        return self._stepC.get()
+        return self._stepC.var()
 
     def _getEvState(self):
         return self._evVar.get()
@@ -1570,61 +1567,52 @@ class ImportFrame(tk.Frame):
         self._controller = controller
         self._masterIHM = masterIHM
 
-        self._labSep = tk.Label(self, text="Separator")
-        self._sepVar = tk.StringVar(self, ",")
-        self._sepEntry = tk.Entry(self, textvariable=self._sepVar, width=15)
+        self._sepEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='str')
+        self._sepEntry.var = ','
 
-        self._labSl = tk.Label(self, text="Start line")
-        self._slVar = tk.IntVar(self, 1)
-        self._slEntry = tk.Entry(self, textvariable=self._slVar, width=15)
+        self._slEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._slEntry.var = 1
 
-        self._labPosRef = tk.Label(self, text="Reference (C1)")
-        self._posRefVar = tk.IntVar(self, 0)
-        self._posRefEntry = tk.Entry(self, textvariable=self._posRefVar, width=15)
+        self._posRefEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posRefEntry.var = 0
 
-        self._labPosVal = tk.Label(self, text="Value (100nF)")
-        self._posValVar = tk.IntVar(self, 1)
-        self._posValEntry = tk.Entry(self, textvariable=self._posValVar, width=15)
+        self._posValEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posValEntry.var = 1
 
-        self._labPosPack = tk.Label(self, text="Package")
-        self._posPackVar = tk.IntVar(self, 2)
-        self._posPackEntry = tk.Entry(self, textvariable=self._posPackVar, width=15)
+        self._posPackEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posPackEntry.var = 2
 
-        self._labPosX = tk.Label(self, text="X")
-        self._posXVar = tk.IntVar(self, 3)
-        self._posXEntry = tk.Entry(self, textvariable=self._posXVar, width=15)
+        self._posXEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posXEntry.var = 3
 
-        self._labPosY = tk.Label(self, text="Y")
-        self._posYVar = tk.IntVar(self, 4)
-        self._posYEntry = tk.Entry(self, textvariable=self._posYVar, width=15)
+        self._posYEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posYEntry.var = 4
 
-        self._labName = tk.Label(self, text="Name")
-        self._nameVar = tk.StringVar(self, "N")
-        self._posName = tk.Entry(self, textvariable=self._nameVar, width=20)
+        self._posTEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='str')
+        self._posTEntry.var = 5
 
-        self._labPosT = tk.Label(self, text="T")
-        self._posTVar = tk.IntVar(self, 5)
-        self._posTEntry = tk.Entry(self, textvariable=self._posTVar, width=15)
+        self._posName = completeEntry(frame=self, traceFunc=trashFunc, varType='str')
+        self._posName.var = 'n'
 
         self._import = ttk.Button(self, text='Import', command=self.__importCmd, width=15)
 
-        self._labName.grid(row=0, column=0, columnspan=2, sticky='e')
+        tk.Label(self, text="Name").grid(row=0, column=0, columnspan=2, sticky='e')
         self._posName.grid(row=0, column=2, columnspan=2, sticky='w')
 
-        self._labPosRef.grid(row=2, column=0)
-        self._labPosVal.grid(row=3, column=0)
-        self._labPosPack.grid(row=4, column=0)
-        self._labSep.grid(row=5, column=0)
+        tk.Label(self, text="Reference (C1)").grid(row=2, column=0)
+        tk.Label(self, text="Value (100nF)").grid(row=3, column=0)
+        tk.Label(self, text="Package").grid(row=4, column=0)
+        tk.Label(self, text="Separator").grid(row=5, column=0)
 
         self._posRefEntry.grid(row=2, column=1)
         self._posValEntry.grid(row=3, column=1)
         self._posPackEntry.grid(row=4, column=1)
         self._sepEntry.grid(row=5, column=1)
 
-        self._labPosX.grid(row=2, column=2)
-        self._labPosY.grid(row=3, column=2)
-        self._labPosT.grid(row=4, column=2)
-        self._labSl.grid(row=5, column=2)
+        tk.Label(self, text="X").grid(row=2, column=2)
+        tk.Label(self, text="Y").grid(row=3, column=2)
+        tk.Label(self, text="T").grid(row=4, column=2)
+        tk.Label(self, text="Start line").grid(row=5, column=2)
 
         self._posXEntry.grid(row=2, column=3)
         self._posYEntry.grid(row=3, column=3)
@@ -1634,108 +1622,19 @@ class ImportFrame(tk.Frame):
         self._import.grid(row=6, column=0, columnspan=4)
 
     def __importCmd(self):
-        dicConf = {'X': self._posXVar.get(), 'Y': self._posYVar.get(), 'T': self._posTVar.get(),
-                   'REF': self._posRefVar.get(), 'VAL': self._posValVar.get(), 'MOD': self._posPackVar.get()}
-        self._controller.createFromCsv(self._nameVar.get(), self._pathFile, self._sepVar.get(), self._slVar.get(),
+        dicConf = {'X': self._posXEntry.var, 'Y': self._posYEntry.var, 'T': self._posTEntry.var,
+                   'REF': self._posRefEntry.var, 'VAL': self._posValEntry.var, 'MOD': self._posPackEntry.var}
+        self._controller.createFromCsv(self._posName.var, self._pathFile, self._sepEntry.var, self._slEntry.var,
                                        dicConf)
         self._masterIHM.initBoardMenu()
-
-
-class ComponentFrame(tk.Frame):
-    """Frame used for display component information."""
-
-    def __init__(self, fenetre, controller, cmp, **kwargs):
-        tk.Frame.__init__(self, fenetre, **kwargs)
-
-        self.controller = controller
-        self.cmp = cmp
-
-        self.tree = ttk.Treeview(self)
-        self._isPlaceVar = tk.IntVar(self, 0)
-        self._isEnableVar = tk.IntVar(self, 0)
-
-        self._isPlaced = tk.Checkbutton(self, text='P', variable=self._isPlaceVar, command=self.__cmpChange)
-        self._isEnable = tk.Checkbutton(self, text='E', variable=self._isEnableVar, command=self.__cmpChange)
-        self._goTo = ttk.Button(self, text='GoTo', command=self.__goToCmd)
-        self._place = ttk.Button(self, text='Place', command=self.__placeCmp)
-
-        # self._listFeeder = self.controller.getFeederList()
-        self._val = completeEntry(self, self.__cmpChange, varType='str')
-        self._val.configure(width=11)
-        self._ref = completeEntry(self, self.__cmpChange, varType='str')
-        self._ref.configure(width=11)
-        self._package = completeEntry(self, self.__cmpChange, varType='str')
-        self._package.configure(width=11)
-        self._model = completeEntry(self, self.__cmpChange, varType='str')
-        self._model.configure(width=11)
-        self._x = completeEntry(self, self.__cmpChange, varType='double')
-        self._x.configure(width=11)
-        self._y = completeEntry(self, self.__cmpChange, varType='double')
-        self._y.configure(width=11)
-        self._t = completeEntry(self, self.__cmpChange, varType='double')
-        self._t.configure(width=11)
-        self._feeder = completeEntry(self, self.__cmpChange, varType='str')
-        self._feeder.configure(width=11)
-
-        self._val.grid(row=0, column=0)
-        self._ref.grid(row=0, column=1)
-        self._package.grid(row=0, column=2)
-        self._model.grid(row=0, column=3)
-        self._feeder.grid(row=0, column=4)
-        self._x.grid(row=0, column=5)
-        self._y.grid(row=0, column=6)
-        self._t.grid(row=0, column=7)
-        self._isPlaced.grid(row=0, column=8)
-        self._isEnable.grid(row=0, column=9)
-        self._goTo.grid(row=0, column=10)
-        self._place.grid(row=0, column=11)
-
-        self.update()
-
-    def __cmpChange(self, *args):
-        """
-        Called when IHM change parameters
-        :return:
-        """
-        self.cmp.posX = self._x.var
-        self.cmp.posY = self._y.var
-        self.cmp.rot = self._t.var
-        self.cmp.ref = self._ref.var
-        self.cmp.value = self._val.var
-        self.cmp.package = self._package.var
-        self.cmp.model = self._model.var
-        self.cmp.feeder = self._feeder.var
-        self.cmp.isPlaced = self._isPlaceVar.get()
-        self.cmp.isEnable = self._isEnableVar.get()
-
-    def __placeCmp(self):
-        self.controller.pickAndPlaceCmp(self._ref.var)
-
-    def __goToCmd(self):
-        self.controller.goToCmp(self._ref.var)
-
-    def update(self):
-        """
-        Update IHM with data in cmp.
-        :param cmp, is component class:
-        :return:
-        """
-        self._x.var = self.cmp.posX
-        self._y.var = self.cmp.posY
-        self._t.var = self.cmp.rot
-        self._ref.var = self.cmp.ref
-        self._val.var = self.cmp.value
-        self._package.var = self.cmp.package
-        self._model.var = self.cmp.model
-        self._feeder.var = self.cmp.feeder
-        self._isPlaceVar.set(self.cmp.isPlaced)
-        self._isEnableVar.set(self.cmp.isEnable)
 
 
 class JobFrame(tk.Frame):
     def __init__(self, fenetre, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
         imgSize = (25, 25)
+
+        self.globalFrame = fenetre
 
         self.__playImg = ImageTk.PhotoImage(Image.open('./resources/play.png').resize(imgSize))
         self.__playBtn = ttk.Button(self, image=self.__playImg)
@@ -1793,38 +1692,46 @@ class JobFrame(tk.Frame):
 class GlobalCmpFrame(tk.LabelFrame):
     def __init__(self, fenetre, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
-        self.cmpList = []
+        self.board = 0
         self.cmpDisplayList = []
         self.controller = controller
 
         self._filterFrame = tk.Frame(self)
-        # self._cmpFrameScrol = ScrollableFrameText(self)
-        # self._cmpFrameScrol.setSize(width=750, height=500)
-        self._cmpFrameScrol = ttk.Treeview(self)
-        self._cmpFrameScrol['columns'] = ('Ref', 'Package', 'Model', 'Feeder', 'X','Y','T', 'Placed', 'Enabled')
-        self._cmpFrameScrol.column("#0", width=100, minwidth=100, stretch=tk.NO)
-        self._cmpFrameScrol.column("Ref", width=50, minwidth=50, stretch=tk.NO)
-        self._cmpFrameScrol.column("Package", width=100, minwidth=100, stretch=tk.NO)
-        self._cmpFrameScrol.column("Model", width=100, minwidth=100, stretch=tk.NO)
-        self._cmpFrameScrol.column("Feeder", width=50, minwidth=50, stretch=tk.NO)
-        self._cmpFrameScrol.column("X", width=60, minwidth=60, stretch=tk.NO)
-        self._cmpFrameScrol.column("Y", width=60, minwidth=60, stretch=tk.NO)
-        self._cmpFrameScrol.column("T", width=60, minwidth=60, stretch=tk.NO)
-        self._cmpFrameScrol.column("Placed", width=50, minwidth=50, stretch=tk.NO)
-        self._cmpFrameScrol.column("Enabled", width=50, minwidth=50, stretch=tk.NO)
-        self._cmpFrameScrol.heading('#0', text='Value', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Ref', text='Ref', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Package', text='Package', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Model', text='Model', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Feeder', text='Feeder', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('X', text='X', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Y', text='Y', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('T', text='T', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Placed', text='Placed', anchor=tk.CENTER)
-        self._cmpFrameScrol.heading('Enabled', text='Enabled', anchor=tk.CENTER)
+        self._cmpFrame = tk.Frame(self)
+        self._btnFrame = tk.Frame(self)
 
         self._filterFrame.grid(row=0, column=0)
-        self._cmpFrameScrol.grid(row=1, column=0)
+        self._cmpFrame.grid(row=1, column=0)
+        self._btnFrame.grid(row=2, column=0)
+
+        self._cmpTreeView = ttk.Treeview(self._cmpFrame, height=20)
+        treeScroll = ttk.Scrollbar(self._cmpFrame)
+        treeScroll.configure(command=self._cmpTreeView.yview)
+        self._cmpTreeView.configure(yscrollcommand=treeScroll.set)
+        self._cmpTreeView['columns'] = ('Ref', 'Package', 'Model', 'Feeder', 'X', 'Y', 'T', 'Placed', 'Enabled')
+        self._cmpTreeView.column("#0", width=100, minwidth=100, stretch=tk.NO)
+        self._cmpTreeView.column("Ref", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpTreeView.column("Package", width=100, minwidth=100, stretch=tk.NO)
+        self._cmpTreeView.column("Model", width=100, minwidth=100, stretch=tk.NO)
+        self._cmpTreeView.column("Feeder", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpTreeView.column("X", width=60, minwidth=60, stretch=tk.NO)
+        self._cmpTreeView.column("Y", width=60, minwidth=60, stretch=tk.NO)
+        self._cmpTreeView.column("T", width=60, minwidth=60, stretch=tk.NO)
+        self._cmpTreeView.column("Placed", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpTreeView.column("Enabled", width=50, minwidth=50, stretch=tk.NO)
+        self._cmpTreeView.heading('#0', text='Value', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Ref', text='Ref', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Package', text='Package', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Model', text='Model', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Feeder', text='Feeder', anchor=tk.CENTER)
+        self._cmpTreeView.heading('X', text='X', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Y', text='Y', anchor=tk.CENTER)
+        self._cmpTreeView.heading('T', text='T', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Placed', text='Placed', anchor=tk.CENTER)
+        self._cmpTreeView.heading('Enabled', text='Enabled', anchor=tk.CENTER)
+
+        self._cmpTreeView.grid(row=0, column=0)
+        treeScroll.grid(row=0, column=1, sticky='ns')
 
         self._valueFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
         self._refFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
@@ -1844,6 +1751,10 @@ class GlobalCmpFrame(tk.LabelFrame):
 
         btnFilterApply = ttk.Button(self._filterFrame, text='Filter', command=self.filterApply)
         btnEditApply = ttk.Button(self._filterFrame, text='Edit', command=self.__editApply)
+
+        self._btnGoTo = ttk.Button(self._btnFrame, text='GoTo', command=self.__goToCmd)
+        self._bntPlace = ttk.Button(self._btnFrame, text='Place', command=self.__placeCmp)
+        self._bntEdit = ttk.Button(self._btnFrame, text='Edit', command=self.__editCmp)
 
         tk.Label(self._filterFrame, text='Value:').grid(row=0, column=0)
         tk.Label(self._filterFrame, text='Ref:').grid(row=0, column=1)
@@ -1872,14 +1783,44 @@ class GlobalCmpFrame(tk.LabelFrame):
         self._feederEdit.grid(row=2, column=4)
         btnEditApply.grid(row=2, column=10)
 
-    def __filterChange(self):
-        """
-        Called when filter enter text change.
-        Update onl board database object.
-        :return:
-        """
+        self._btnGoTo.grid(row=0, column=0)
+        self._bntPlace.grid(row=0, column=1)
+        self._bntEdit.grid(row=0, column=2)
+
+    def disableComponentButton(self):
+        self._btnGoTo['state'] = 'disable'
+        self._bntPlace['state'] = 'disable'
+        self._bntEdit['state'] = 'disable'
+
+    def enableComponentButton(self):
+        self._btnGoTo['state'] = 'normal'
+        self._bntPlace['state'] = 'normal'
+        self._bntEdit['state'] = 'normal'
+
+    def __placeCmp(self):
+        refSel = self.__getSelectedRef()
+        if len(refSel):
+            if len(refSel) == 1:
+                print('solo  ' + refSel[0])
+                print(refSel)
+                self.controller.pickAndPlaceCmp(refSel[0])
+            else:
+                print('multi   ')
+                print(refSel)
+                self.controller.buildLongJob(refSel)
+
+    def __goToCmd(self):
+        refSel = self.__getSelectedRef()
+        if len(refSel):
+            self.controller.goToCmp(refSel[0])
+
+    def __editCmp(self):
+        kiki = 0
 
     def __displayFilterList(self):
+        """
+        Display all component on treeview wich match with filter.
+        """
         self.controller.board.filter['value'] = self._valueFilter.var
         self.controller.board.filter['ref'] = self._refFilter.var
         self.controller.board.filter['package'] = self._packageFilter.var
@@ -1887,53 +1828,29 @@ class GlobalCmpFrame(tk.LabelFrame):
         self.controller.board.filter['placed'] = self._placedFilter.var
         self.controller.board.filter['enable'] = self._enableFilter.var
 
-        for i in self._cmpFrameScrol.get_children():
-            self._cmpFrameScrol.delete(i)
+        for i in self._cmpTreeView.get_children():
+            self._cmpTreeView.delete(i)
         self.update()
 
-        #Build reference list.
+        # Build reference list.
         valueList = []
         for cmp in self.cmpDisplayList:
             if cmp.value not in valueList:
                 valueList.append(cmp.value)
 
         for value in valueList:
-            self._cmpFrameScrol.insert(parent="", index="end", iid=value, text=value)
+            self._cmpTreeView.insert(parent="", index="end", iid=value, text=value)
 
         for cmp in self.cmpDisplayList:
-            dataCmp = (cmp.ref, cmp.package, cmp.model, cmp.feeder,f'{cmp.posX}',f'{cmp.posY}',f'{cmp.rot}',
+            dataCmp = (cmp.ref, cmp.package, cmp.model, cmp.feeder, f'{cmp.posX}', f'{cmp.posY}', f'{cmp.rot}',
                        f'{cmp.isPlaced}', f'{cmp.isEnable}')
-            self._cmpFrameScrol.insert(iid=cmp.ref, text=cmp.value, parent=cmp.value, index="end", values=dataCmp)
-
-
-
-    def __displayFilterListold(self):
-        # for frame in self.cmpDisplayFrameList:
-        # frame.destroy()
-
-
-        self.controller.board.filter['value'] = self._valueFilter.var
-        self.controller.board.filter['ref'] = self._refFilter.var
-        self.controller.board.filter['package'] = self._packageFilter.var
-        self.controller.board.filter['model'] = self._modelFilter.var
-        self.controller.board.filter['placed'] = self._placedFilter.var
-        self.controller.board.filter['enable'] = self._enableFilter.var
-
-        list = self._cmpFrameScrol.userFrame.grid_slaves()
-        for l in list:
-            if type(l) is ComponentFrame:
-                l.destroy()
-
-        self._cmpFrameScrol.clear()
-        idRow = 1
-        for cmp in self.cmpDisplayList:
-            self._cmpFrameScrol.insert(parent=cmp.value, index=tk.END)
-
-            self._cmpFrameScrol.insert(ComponentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp))
-            # componentFrame(self._cmpFrameScrol.userFrame, self.controller, cmp).grid(row=idRow, column=0)
-            idRow += 1
+            self._cmpTreeView.insert(iid=cmp.ref, text=cmp.value, parent=cmp.value, index="end", values=dataCmp)
 
     def filterApply(self):
+        """
+        Called by filter button or other for take care of filter writen in relative case.
+        call __displayFilterList() for update display.
+        """
         self.cmpDisplayList = []
         valueFilterList = self._valueFilter.var.split('|')
         valueEnable = True if len(self._valueFilter.var.replace('|', '')) else False
@@ -1948,7 +1865,7 @@ class GlobalCmpFrame(tk.LabelFrame):
         enableFilterList = self._enableFilter.var.split('|')
         enableEnable = True if len(self._enableFilter.var.replace('|', '')) else False
 
-        for cmp in self.cmpList:
+        for cmp in self.board.cmpDic.values():
             valueAuthorized = not valueEnable
             refAuthorized = not refEnable
             packageAuthorized = not packageEnable
@@ -1991,42 +1908,55 @@ class GlobalCmpFrame(tk.LabelFrame):
 
         self.__displayFilterList()
 
+    def __getSelectedRef(self):
+        """
+        Return an array of the reference displayed AND selected.
+        """
+        selectedRef = []
+        for selectedLine in self._cmpTreeView.selection():
+            if self._cmpTreeView.parent(selectedLine) == '':
+                # Selected line is a parent (group of component ex: 100nF).
+                for cmp in self.cmpDisplayList:
+                    if cmp.value == selectedLine:
+                        if cmp.ref not in selectedRef:
+                            selectedRef.append(cmp.ref)
+            else:
+                # Selected line is a child(comopnent ex: C2)
+                if selectedLine not in selectedRef:
+                    selectedRef.append(selectedLine)
+        return selectedRef
+
     def __editApply(self):
-        selList = self._cmpFrameScrol.selection()
-        #for sel in selList:
-        #    if self._cmpFrameScrol.parent(sel) is '':
+        """
+        Called by pressing apply button.
+        This fonction modify all component selected and update display.
+        """
+        for selRef in self.__getSelectedRef():
+            cmp = self.board.cmpDic[selRef]
+            if len(self._modelEdit.var.replace(' ', '')):
+                cmp.model = self._modelEdit.var
+            if len(self._feederEdit.var.replace(' ', '')):
+                cmp.feeder = int(self._feederEdit.var)
+            if self._placedEdit.var == '1':
+                cmp.isPlaced = 1
+            elif self._placedEdit.var == '0':
+                cmp.isPlaced = 0
+            if self._enableEdit.var == '1':
+                cmp.isEnable = 1
+            elif self._enableEdit.var == '0':
+                cmp.isEnable = 0
+            self.componentHaveChanged(selRef)
 
-    def __editApply_old(self):
-        slaveList = self._cmpFrameScrol.userFrame.grid_slaves()
-
-        for slave in slaveList:
-            if type(slave) is ComponentFrame:
-                if len(self._modelEdit.var.replace(' ', '')):
-                    slave.cmp.model = self._modelEdit.var
-                if len(self._feederEdit.var.replace(' ', '')):
-                    slave.cmp.feeder = int(self._feederEdit.var)
-                if self._placedEdit.var == '1':
-                    slave.cmp.isPlaced = 1
-                elif self._placedEdit.var == '0':
-                    slave.cmp.isPlaced = 0
-                if self._enableEdit.var == '1':
-                    slave.cmp.isEnable = 1
-                elif self._enableEdit.var == '0':
-                    slave.cmp.isEnable = 0
-                slave.update()
-
-        self._modelEdit.var = ''
-        self._feederEdit.var = ''
-        self._placedEdit.var = ''
-        self._enableEdit.var = ''
-
-    def setCmpList(self, cmpList):
-        self.cmpList = cmpList
-
-
-
+    def setBoard(self, board):
+        """
+        Set board object.
+        """
+        self.board = board
 
     def setFilter(self, value, ref, pack, model, place, enable):
+        """
+        Set all filter entertext with specified value.
+        """
         self._valueFilter.var = value
         self._refFilter.var = ref
         self._packageFilter.var = pack
@@ -2035,11 +1965,14 @@ class GlobalCmpFrame(tk.LabelFrame):
         self._enableFilter.var = enable
 
     def componentHaveChanged(self, ref):
-        slaveList = self._cmpFrameScrol.userFrame.grid_slaves()
-        for slave in slaveList:
-            if type(slave) is ComponentFrame:
-                if slave.cmp.ref == ref:
-                    slave.update()
+        """
+        Call this for update displayed component when a component change.
+        """
+        if ref in self.__getSelectedRef():
+            cmp = self.board.cmpDic[ref]
+            newValue = [cmp.ref, cmp.package, cmp.model, cmp.feeder,
+                        cmp.posX, cmp.posY, cmp.rot, cmp.isPlaced, cmp.isEnable]
+            self._cmpTreeView.item(ref, values=newValue)
 
 
 class BoardFrame(tk.Frame):
@@ -2055,10 +1988,10 @@ class BoardFrame(tk.Frame):
 
         self.controller = controller
 
-        self._rootCmpFrame = GlobalCmpFrame(self, controller)
+        self.rootCmpFrame = GlobalCmpFrame(self, controller)
         self.jobFrame = JobFrame(self)
-
         self._boardFrame = tk.LabelFrame(self, text="Board", labelanchor='n', padx=10, pady=0)
+
         self._paramBoardFrame = tk.LabelFrame(self._boardFrame, text="Parameters", labelanchor='n', padx=10, pady=0)
         self._referenceFrame = tk.LabelFrame(self._boardFrame, text="References", labelanchor='n', padx=10, pady=0)
         # self._viewFrame = tk.LabelFrame(self, text="View", labelanchor='n', padx=10, pady=10)
@@ -2071,9 +2004,9 @@ class BoardFrame(tk.Frame):
         self._sizeY = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
         self._sizeZ = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
 
-        self._rootCmpFrame.grid(row=1, column=1)
-        self.jobFrame.grid(row=0, column=1)
         self._boardFrame.grid(row=0, column=0, rowspan=2)
+        self.jobFrame.grid(row=0, column=1)
+        self.rootCmpFrame.grid(row=1, column=1, rowspan=2, sticky='ns')
 
         self._paramBoardFrame.grid(row=0, column=0)
         self._boardDraw.grid(row=1, column=0)
@@ -2150,12 +2083,12 @@ class BoardFrame(tk.Frame):
         self._boardDraw.drawBoard(self.controller.board, self.controller.modList)
 
     def bomCreate(self, board):
-        self._rootCmpFrame.setFilter(value=board.filter['value'], ref=board.filter['ref'], pack=board.filter['package'],
-                                     model=board.filter['model'], place=board.filter['placed'],
-                                     enable=board.filter['enable'])
+        self.rootCmpFrame.setFilter(value=board.filter['value'], ref=board.filter['ref'], pack=board.filter['package'],
+                                    model=board.filter['model'], place=board.filter['placed'],
+                                    enable=board.filter['enable'])
 
-        self._rootCmpFrame.setCmpList(board.cmpDic.values())
-        self._rootCmpFrame.filterApply()
+        self.rootCmpFrame.setBoard(board)
+        self.rootCmpFrame.filterApply()
         self._boardDraw.drawBoard(board, self.controller.modList)
 
     def cmpHaveChanged(self, ref):
@@ -2164,7 +2097,7 @@ class BoardFrame(tk.Frame):
         :param ref:
         :return:
         """
-        self._rootCmpFrame.componentHaveChanged(ref)
+        self.rootCmpFrame.componentHaveChanged(ref)
 
     def __getPosRef1(self):
         try:
@@ -2537,7 +2470,7 @@ class PnpIHM:
 
         self.mainWindow = tk.Tk()  # Instance of main window.
         self.mainWindow.title('MiniPnp - OXILEC')
-        #self.mainWindow.maxsize(width=1500, height=800)
+        # self.mainWindow.maxsize(width=1500, height=800)
 
         self.ctrlWindow = CtrlFrame(self.mainWindow, self.ctrl.directCtrl)
         logger.ihmDirect = self.ctrlWindow

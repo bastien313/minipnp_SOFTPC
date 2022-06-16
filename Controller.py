@@ -263,10 +263,10 @@ class BoardController:
         self.__longJob = job.ThreadJobExecutor()
 
     def initIHMcallBack(self):
-        self.ihm.jobFrame.setBuildCallBack(self.__buildLongJob)
-        self.ihm.jobFrame.setStopCallBack(self.__stopJob)
-        self.ihm.jobFrame.setPauseCallBack(self.__pauseJob)
-        self.ihm.jobFrame.setPlayCallBack(self.__startLongJob)
+        self.ihm.jobFrame.setBuildCallBack(self.buildLongJob)
+        self.ihm.jobFrame.setStopCallBack(self.stopJob)
+        self.ihm.jobFrame.setPauseCallBack(self.pauseJob)
+        self.ihm.jobFrame.setPlayCallBack(self.startLongJob)
 
         self.ihm.jobFrame.playButtonState(0)
         self.ihm.jobFrame.pauseButtonState(0)
@@ -303,32 +303,35 @@ class BoardController:
 
     def __longjobError(self, status):
         self.logger.printCout('Long job error: ' + self.__longJob.getStateDescription())
-        self.__pauseJob()
+        self.pauseJob()
 
     def __endLongJob(self, status):
         self.logger.printCout('Long job End: ' + self.__longJob.getStateDescription())
-        self.__stopJob()
+        self.stopJob()
 
     def __littlejobError(self, status):
         self.logger.printCout('Little job error: ' + self.__littleJob.getStateDescription())
-        self.__pauseJob()
+        self.pauseJob()
 
     def __endLittleJob(self, status):
         self.logger.printCout('Little job End: ' + self.__littleJob.getStateDescription())
-        self.__stopJob()
+        self.stopJob()
 
     def __jobNotify(self, str):
         self.ihm.jobFrame.jobDescription(str)
         self.logger.printCout('Job: ' + str)
 
-    def __buildLongJob(self):
+    def buildLongJob(self, refList=None):
         """
         Build long job and unluck button play and stop.
         :return:
         """
+        if not refList:
+            refList = [cmp.ref for cmp in self.ihm.rootCmpFrame.cmpDisplayList]
+            print('notref')
         longJob = job.Job(name='Standard Long job')
         for cmp in self.board.values():
-            if cmp.isEnable and not cmp.isPlaced:
+            if cmp.isEnable and not cmp.isPlaced and cmp.ref in refList:
                 cmpJob = self.__buildPickAndPlaceJob(cmp.ref)
                 if cmpJob:
                     cmpJob.append(job.ExternalCallTask(callBack=self.__isPlacedCallBack, param=cmp.ref,
@@ -338,7 +341,7 @@ class BoardController:
 
         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
         longJob.jobConfigure()
-        print(longJob)
+        #print(longJob)
         self.__longJob = job.ThreadJobExecutor(job=longJob, driver=self.driver,
                                                errorFunc=self.__longjobError, endFunc=self.__endLongJob,
                                                notifyFunc=self.__jobNotify)
@@ -346,7 +349,8 @@ class BoardController:
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.jobDescription(self.__longJob.getStateDescription())
 
-    def __stopJob(self):
+    def stopJob(self):
+        self.ihm.rootCmpFrame.enableComponentButton()
         if self.__longJob.is_alive():
             self.__longJob.stop()
             self.ihm.jobFrame.jobDescription('Long job stopped.')
@@ -360,7 +364,8 @@ class BoardController:
         self.ihm.jobFrame.buildButtonState(1)
         self.ihm.jobFrame.jobDescription('')
 
-    def __startLongJob(self):
+    def startLongJob(self):
+        self.ihm.rootCmpFrame.disableComponentButton()
         self.ihm.jobFrame.playButtonState(0)
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.pauseButtonState(1)
@@ -371,13 +376,14 @@ class BoardController:
             self.__longJob.start()
 
     def __startLittleJob(self):
+        self.ihm.rootCmpFrame.disableComponentButton()
         self.ihm.jobFrame.playButtonState(0)
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.pauseButtonState(0)
         self.ihm.jobFrame.buildButtonState(0)
         self.__littleJob.start()
 
-    def __pauseJob(self):
+    def pauseJob(self):
         if self.__littleJob.is_alive():
             self.__littleJob.stop()
 

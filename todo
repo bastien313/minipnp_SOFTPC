@@ -2,7 +2,6 @@ fin de feeder ne bloque pas le pgramme
 revoir correction composants sur pcb OK? correction lineaire a faire?.
 supprimer la msie en file gcode.
 remplacer la valeur 2 dans  def __getCorrectedPositionLinear(self, cmpId):
-la lsite des port serie ne se rafraichit pas snas redemarer le programme.
 Ajouter la pssibilité le metre of les axes independameent + metre off C quand on lutilise pas.
 
 Bloquer Job et avertir utilisateur si model n'existe pas.
