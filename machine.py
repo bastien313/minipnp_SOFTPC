@@ -197,7 +197,7 @@ class BasePlate:
     name = property(fget=_getName)
 
 
-class StripFeederBasePlate(BasePlate):
+class BasePlateForStripFeeder(BasePlate):
     def __init__(self, paramList):
         if not 'vectorRef' in paramList:
             paramList['vectorRef'] = {'X': 73.2, 'Y': 196.0}
@@ -252,6 +252,8 @@ class Feeder:
         self.type = 'feeder'
         self.id = int(paramList['id']) if 'id' in paramList else 0
         self.basePlateId = int(paramList['basePlateId']) if 'basePlateId' in paramList else 0
+        self.localBasePlate = paramList['localBasePlate'] if 'localBasePlate' in paramList else BasePlate(
+            {'name': 'Local'})
         self.name = paramList['name'] if 'name' in paramList else 'noname'
         self.pos = {'X': float(paramList['xPos']) if 'xPos' in paramList else 1.0,
                     'Y': float(paramList['yPos']) if 'yPos' in paramList else 1.0,
@@ -298,6 +300,8 @@ class Feeder:
         etree.SubElement(feederRoot, 'xPos').text = str(self.pos['X'])
         etree.SubElement(feederRoot, 'yPos').text = str(self.pos['Y'])
         etree.SubElement(feederRoot, 'zPos').text = str(self.pos['Z'])
+        etree.SubElement(feederRoot, 'basePlateId').text = str(self.basePlateId)
+        self.localBasePlate.saveInLxml(feederRoot)
         return feederRoot
 
 
@@ -428,6 +432,17 @@ class StripFeeder(Feeder):
     def reload(self):
         self.nextComponent = 0
         self._haveComponent = True
+
+class StripFeederBasePlate(Feeder):
+    def __init__(self, paramList, saveMachineFunction):
+        Feeder.__init__(self, paramList, saveMachineFunction)
+        self.type = 'stripfeederbaseplate'
+        self.componentPerStrip = int(paramList['componentPerStrip']) if 'componentPerStrip' in paramList else 1
+        self.componentStep = float(paramList['componentStep']) if 'componentStep' in paramList else 1
+
+        # Adress of next component to be picked up
+        self.nextComponent = int(paramList['nextComponent']) if 'nextComponent' in paramList else 0
+
 
 
 class ReelFeeder(Feeder):
@@ -601,10 +616,19 @@ class MachineConf:
         :param feederRoot:
         :return: none
         """
-        feederData = {}
+        feederData = {'basePlateId': '0'}
+        # load default base plate id for compatibility with old feeder.
         # import dara from xml
         for element in feederRoot:
             feederData[element.tag] = element.text
+
+        if 'basePlate_0' in feederData:
+            bpObject = self.__basePlateLoadFromXml(idBp=0, bpRoot=feederRoot.find('basePlate_0'),
+                                                   addTobasePlateList=False)
+            feederData['basePlate_0'] = bpObject
+        else:
+            del feederData['basePlate_0']
+
 
         feederData['id'] = int(idFeeder)
         # create feeder
@@ -618,13 +642,13 @@ class MachineConf:
             feederData['feederList'] = self.makeFilteredFeederList(feederData['feederListStr'])
             self.addFeeder(CompositeFeeder(feederData, self.saveToXml))
 
-    def __basePlateLoadFromXml(self, idBp, bpRoot):
+    def __basePlateLoadFromXml(self, idBp, bpRoot, addTobasePlateList=True):
         """
         Load one basePlate from xml file.
-        Create selected object and insert in self.feederList.
-        :param idFeeder: id of feeder
-        :param feederRoot:
-        :return: none
+        Create selected object and insert in self.basePlateList.
+        :param idBp: id of basePlate
+        :param bpRoot:
+        :return: basePlate object
         """
         basePlateData = {}
         # import dara from xml
@@ -634,9 +658,14 @@ class MachineConf:
         basePlateData['id'] = int(idBp)
         # create feeder
         if basePlateData['type'] == 'BasePlate':
-            self.addBasePlate(BasePlate(basePlateData))
+            bpObject = BasePlate(basePlateData)
         elif basePlateData['type'] == 'StripFeederBasePlate':
-            self.addBasePlate(StripFeederBasePlate(basePlateData))
+            bpObject = BasePlateForStripFeeder(basePlateData)
+
+        if addTobasePlateList:
+            self.addBasePlate(bpObject)
+
+        return bpObject
 
     def __axisLoadFromXml(self, axis, axisRoot):
         """

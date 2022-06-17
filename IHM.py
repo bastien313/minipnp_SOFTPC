@@ -42,81 +42,6 @@ def checkIntEntry(value_if_allowed, text):
         return False
 
 
-class ScrollableFrameText(tk.Frame):
-    def __init__(self, base_frame, *args, **kwargs):
-        super().__init__(base_frame, *args, **kwargs)
-        self._holder = tk.Text(self)
-        self._vsb = tk.Scrollbar(self, orient="vertical", command=self._holder.yview)
-        self._holder.configure(yscrollcommand=self._vsb.set)
-        self._holder.grid(row=0, column=0, sticky="nsew")
-        self._vsb.grid(row=0, column=1, sticky="nsew")
-
-    def setSize(self, width, height):
-        bite = 1
-        # self.configure(minwidth=width, minheight=height)
-
-    def insert(self, objects):
-        self._holder.window_create("end", window=objects)
-        self._holder.insert("end", "\n")
-        # self._holder.insert(tk.END, objects)
-
-    def clear(self):
-        self._holder.delete("1.0", tk.END)
-
-    def __getUserFrame(self):
-        return self._holder
-
-    userFrame = property(fget=__getUserFrame)
-
-
-class ScrollableFrame(tk.Frame):
-    """
-    Vertical and horizontal scrolable frame.
-    use ScrollableFrame.userFrame for put widget into.
-    Use set size to expand the maximum view.
-    """
-
-    def __init__(self, container, *args, **kwargs):
-        super().__init__(container, *args, **kwargs)
-
-        vsb = tk.Scrollbar(self, orient=tk.VERTICAL)
-        vsb.grid(row=0, column=1, sticky=tk.N + tk.S)
-        hsb = tk.Scrollbar(self, orient=tk.HORIZONTAL)
-        hsb.grid(row=1, column=0, sticky=tk.E + tk.W)
-        self._c = tk.Canvas(self, yscrollcommand=vsb.set, xscrollcommand=hsb.set)
-        self._c.grid(row=0, column=0, sticky="news")
-
-        vsb.config(command=self._c.yview)
-        hsb.config(command=self._c.xview)
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self._fr = tk.Frame(self._c)
-
-        self._c.create_window(0, 0, window=self._fr)
-        self._fr.update_idletasks()
-        self._c.config(scrollregion=self._c.bbox("all"))
-
-        self._fr.bind("<Configure>",
-                      self.onFrameConfigure)  # bind an event whenever the size of the viewPort frame changes.
-        # self._c.bind("<Configure>",
-        #                 self.onCanvasConfigure)  # bind an event whenever the size of the viewPort frame changes.
-
-        self.onFrameConfigure(
-            None)  # perform an initial stretch on render, otherwise the scroll region has a tiny border until the first resize
-
-    def onFrameConfigure(self, event):
-        '''Reset the scroll region to encompass the inner frame'''
-        self._c.configure(scrollregion=self._c.bbox("all"))
-
-    def setSize(self, width, height):
-        self._c.configure(width=width, height=height)
-
-    def __getUserFrame(self):
-        return self._fr
-
-    userFrame = property(fget=__getUserFrame)
-
-
 class BoarDrawing(tk.Frame):
     def __init__(self, fenetre, *args, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
@@ -207,7 +132,7 @@ class ValidWindow(tk.Toplevel):
         btnFrame.grid(row=1, column=0)
 
 
-class entryWindow():
+class EntryWindow():
     def __init__(self, frame, name, lstLab, listEntry, cbValid, cbDiscart):
         """
         Initialise litle windows
@@ -272,7 +197,7 @@ class entryWindow():
         self._tl.destroy()
 
 
-class completeEntry(tk.Entry):
+class CompleteEntry(tk.Entry):
     """
     Entry wich contain its own Var and traceCotrol.
     Used for disable trace when var is not edited by user IHM.
@@ -345,7 +270,7 @@ class MultipleEntryFrame(tk.LabelFrame):
 
         idDict = 0
         for key, varType in parametersDict.items():
-            self.entryDict[key] = completeEntry(self, trashFunc, varType=varType)
+            self.entryDict[key] = CompleteEntry(self, trashFunc, varType=varType)
             tk.Label(self, text=key).grid(row=idDict, column=0)
             self.entryDict[key].grid(row=idDict, column=1)
             idDict += 1
@@ -393,29 +318,30 @@ class XYZFrame(MultipleEntryFrame):
     z = property(fset=_setZ, fget=_getZ)
 
 
-class GenericBasePlateFrame(tk.Frame):
-    def __init__(self, fenetre, bpData, machine, logger, controller, **kwargs):
-        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+class GenericBasePlateFrame(tk.LabelFrame):
+    def __init__(self, fenetre, bpData, machine, logger, controller,commandFrame=True, **kwargs):
+        tk.LabelFrame.__init__(self, fenetre, text='BasePlate', labelanchor='n', padx=10, pady=10, width=500, height=300, **kwargs)
         self._controller = controller
-        identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
-        self._parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
+        identificationFrame = tk.Frame(self)
+        self._parametersFrame = tk.Frame(self)
         btnFrame = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
 
-        identificationFrame.grid(row=0, column=0, columnspan=2, sticky='ew')
-        self._parametersFrame.grid(row=1, column=0, columnspan=2)
-        btnFrame.grid(row=2, column=0, sticky='ew')
+        identificationFrame.grid(row=0, column=0)
+        self._parametersFrame.grid(row=1, column=0)
+        if commandFrame:
+            btnFrame.grid(row=2, column=0,columnspan=2, sticky='ew')
 
         self._mother = fenetre
         self._machine = machine
         self._logger = logger
-        self.id = completeEntry(identificationFrame, trashFunc, varType='int')
+        self.id = CompleteEntry(identificationFrame, trashFunc, varType='int')
         self.id.var = bpData.id
         self.id['width'] = 10
-        self.type = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.type = CompleteEntry(identificationFrame, trashFunc, varType='str')
         self.type.var = bpData.type
         self.type['state'] = 'disable'
         self.type['width'] = 20
-        self.name = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.name = CompleteEntry(identificationFrame, trashFunc, varType='str')
         self.name.var = bpData.name
         self.name['width'] = 50
 
@@ -426,32 +352,32 @@ class GenericBasePlateFrame(tk.Frame):
         tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
         self.name.grid(row=1, column=2)
 
-        self._ref1Frame = XYZFrame(self._parametersFrame, text="Ref 1", labelanchor='n', padx=10, pady=10)
-        self._ref2Frame = XYZFrame(self._parametersFrame, text="Ref 2", labelanchor='n', padx=10, pady=10)
-        self._vectorFrame = XYZFrame(self._parametersFrame, text="Vector", labelanchor='n', padx=10, pady=10)
+        self._ref1Frame = XYZFrame(self._parametersFrame, text="Ref 1", labelanchor='n', padx=5, pady=5)
+        self._ref2Frame = XYZFrame(self._parametersFrame, text="Ref 2", labelanchor='n', padx=5, pady=5)
+        self._vectorFrame = XYZFrame(self._parametersFrame, text="Vector Ref", labelanchor='n', padx=5, pady=5)
         self._rotAndZFrame = MultipleEntryFrame(self._parametersFrame, {'Rot(deg)': 'float', 'Zramp': 'float'},
-                                                text="Param", labelanchor='n', padx=10, pady=10)
+                                                text="Corrector", labelanchor='n', padx=5, pady=5)
         GenericBasePlateFrame._updateIHMFromBasePlate(self, bpData)
 
         btnRef1GoTo = ttk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
         btnRef1Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
-        btnRef1Theor = ttk.Button(self._parametersFrame, text='Theo.', command=self._calcTheo)
+        btnRef1Theor = ttk.Button(self._parametersFrame, text='Theo. vector', command=self._calcTheo)
         btnRef2GoTo = ttk.Button(self._parametersFrame, text='Go To', command=self._goToRef2)
         btnRef2Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
-        btnRef2Calc = ttk.Button(self._parametersFrame, text='Calc.', command=self._ref2Calc)
-        btnRandZCalc = ttk.Button(self._parametersFrame, text='Calc.', command=self._RandZCalc)
+        btnRef2Calc = ttk.Button(self._parametersFrame, text='Calc. Ref2', command=self._ref2Calc)
+        btnRandZCalc = ttk.Button(self._parametersFrame, text='Calc. Corr.', command=self._RandZCalc)
 
-        self._ref1Frame.grid(row=0, column=0)
-        self._ref2Frame.grid(row=0, column=1)
-        self._vectorFrame.grid(row=0, column=2)
-        self._rotAndZFrame.grid(row=0, column=3)
-        btnRef1GoTo.grid(row=1, column=0)
-        btnRef1Get.grid(row=2, column=0)
-        btnRef1Theor.grid(row=3, column=0)
-        btnRef2GoTo.grid(row=1, column=1)
-        btnRef2Get.grid(row=2, column=1)
-        btnRef2Calc.grid(row=3, column=1)
-        btnRandZCalc.grid(row=1, column=3)
+        self._ref1Frame.grid(row=0, column=2,columnspan=2,sticky='ns')
+        self._ref2Frame.grid(row=0, column=4,columnspan=2,sticky='ns')
+        self._vectorFrame.grid(row=0, column=0,columnspan=2,sticky='ns')
+        self._rotAndZFrame.grid(row=0, column=6,columnspan=2,sticky='ns')
+        btnRef1GoTo.grid(row=1, column=4)
+        btnRef1Get.grid(row=1, column=5)
+        btnRef1Theor.grid(row=2, column=4,columnspan=2,sticky='ew')
+        btnRef2GoTo.grid(row=1, column=2)
+        btnRef2Get.grid(row=1, column=3)
+        btnRef2Calc.grid(row=2, column=6,columnspan=2,sticky='ew')
+        btnRandZCalc.grid(row=1, column=6,columnspan=2,sticky='ew')
 
         ttk.Button(btnFrame, command=self._save, text='Save').grid(row=0, column=0, padx=10)
         ttk.Button(btnFrame, command=self._delete, text='Delete').grid(row=0, column=1, padx=10)
@@ -539,19 +465,19 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
     def __init__(self, fenetre, bpData, machine, logger, controller, **kwargs):
         GenericBasePlateFrame.__init__(self, fenetre, bpData, machine, logger, controller, **kwargs)
 
-        self._additionalFrame = tk.Frame(self._parametersFrame)
+        self._additionalFrame = tk.Frame(self)
         self._vector = XYZFrame(self._additionalFrame, text="Vect cmp 0", labelanchor='n', padx=10, pady=10)
         self._misc = MultipleEntryFrame(self._additionalFrame, {'Strip Step': 'float'}, text="Misc", labelanchor='n',
                                         padx=10, pady=10)
 
-        self._additionalFrame.grid(row=0, column=4)
+        self._additionalFrame.grid(row=1, column=2)
         self._vector.grid(row=0, column=0)
         self._misc.grid(row=0, column=1)
 
         self._updateIHMFromBasePlate(bpData)
 
     def _save(self):
-        newBp = mch.StripFeederBasePlate({
+        newBp = mch.BasePlateForStripFeeder({
             'id': self.id.var, 'name': self.name.var,
             'realRef1': {'X': self._ref1Frame.x, 'Y': self._ref1Frame.y, 'Z': self._ref1Frame.z},
             'realRef2': {'X': self._ref2Frame.x, 'Y': self._ref2Frame.y, 'Z': self._ref2Frame.z},
@@ -629,7 +555,7 @@ class BasePlateFrame(tk.Frame):
         listeOptions = ('Generic', 'Strip base')
         self._newBpTypeSel = tk.StringVar()
         self._newBpTypeSel.set(listeOptions[0])
-        self._newBpId = completeEntry(self._newBpWindow, trashFunc, varType='int')
+        self._newBpId = CompleteEntry(self._newBpWindow, trashFunc, varType='int')
         om = ttk.OptionMenu(self._newBpWindow, self._newBpTypeSel, *listeOptions)
         om.configure(width=12)
 
@@ -659,7 +585,7 @@ class BasePlateFrame(tk.Frame):
         if self._newBpTypeSel.get() == 'Generic':
             newBp = mch.BasePlate({'id': self._newBpId.var})
         elif self._newBpTypeSel.get() == 'Strip base':
-            newBp = mch.StripFeederBasePlate({'id': self._newBpId.var})
+            newBp = mch.BasePlateForStripFeeder({'id': self._newBpId.var})
 
         self.__machineConf.addBasePlate(newBp)
         self.__strBp.set(str(newBp.id))
@@ -706,14 +632,14 @@ class CompositeFeederFrame(tk.Frame):
         self.__mother = fenetre
         self.__machine = machine
         self.__logger = logger
-        self.id = completeEntry(identificationFrame, trashFunc, varType='int')
+        self.id = CompleteEntry(identificationFrame, trashFunc, varType='int')
         self.id.var = feederData.id
         self.id['width'] = 10
-        self.type = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.type = CompleteEntry(identificationFrame, trashFunc, varType='str')
         self.type.var = feederData.type
         self.type['state'] = 'disable'
         self.type['width'] = 20
-        self.name = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.name = CompleteEntry(identificationFrame, trashFunc, varType='str')
         self.name.var = feederData.name
         self.name['width'] = 50
 
@@ -724,7 +650,7 @@ class CompositeFeederFrame(tk.Frame):
         tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
         self.name.grid(row=1, column=2)
 
-        self.feederDesc = completeEntry(parametersFrame, trashFunc, varType='str')
+        self.feederDesc = CompleteEntry(parametersFrame, trashFunc, varType='str')
         self.feederDesc.var = feederData.feederListToStr()
         self.feederDesc['width'] = 50
 
@@ -734,8 +660,8 @@ class CompositeFeederFrame(tk.Frame):
         ttk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
         ttk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
 
-        self.pickId = completeEntry(testFrame, trashFunc, varType='int')
-        self.stripId = completeEntry(testFrame, trashFunc, varType='int')
+        self.pickId = CompleteEntry(testFrame, trashFunc, varType='int')
+        self.stripId = CompleteEntry(testFrame, trashFunc, varType='int')
         self.pickId.var = 0
         self.stripId.var = 0
 
@@ -788,14 +714,14 @@ class StripFeederFrame(tk.Frame):
         self.__mother = fenetre
         self.__machine = machine
         self.__logger = logger
-        self.id = completeEntry(identificationFrame, trashFunc, varType='int')
+        self.id = CompleteEntry(identificationFrame, trashFunc, varType='int')
         self.id.var = feederData.id
         self.id['width'] = 10
-        self.type = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.type = CompleteEntry(identificationFrame, trashFunc, varType='str')
         self.type.var = feederData.type
         self.type['state'] = 'disable'
         self.type['width'] = 20
-        self.name = completeEntry(identificationFrame, trashFunc, varType='str')
+        self.name = CompleteEntry(identificationFrame, trashFunc, varType='str')
         self.name.var = feederData.name
         self.name['width'] = 50
 
@@ -806,11 +732,11 @@ class StripFeederFrame(tk.Frame):
         tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
         self.name.grid(row=1, column=2)
 
-        self.xFirst = completeEntry(posFirstCmpFrame, trashFunc, varType='float')
+        self.xFirst = CompleteEntry(posFirstCmpFrame, trashFunc, varType='float')
         self.xFirst.var = feederData.pos['X']
-        self.yFirst = completeEntry(posFirstCmpFrame, trashFunc, varType='float')
+        self.yFirst = CompleteEntry(posFirstCmpFrame, trashFunc, varType='float')
         self.yFirst.var = feederData.pos['Y']
-        self.zFirst = completeEntry(posFirstCmpFrame, trashFunc, varType='float')
+        self.zFirst = CompleteEntry(posFirstCmpFrame, trashFunc, varType='float')
         self.zFirst.var = feederData.pos['Z']
         btnFirstGo = ttk.Button(posFirstCmpFrame, text='Go to', command=self.__goToFirst)
         btnFirstGet = ttk.Button(posFirstCmpFrame, text='Get Pos.', command=self.__getPosFirst)
@@ -824,10 +750,10 @@ class StripFeederFrame(tk.Frame):
         btnFirstGo.grid(row=3, column=1, pady=5)
         btnFirstGet.grid(row=3, column=0, pady=5)
 
-        self.step = completeEntry(posLastCmpFrame, trashFunc, varType='float')
-        self.xLast = completeEntry(posLastCmpFrame, trashFunc, varType='float')
+        self.step = CompleteEntry(posLastCmpFrame, trashFunc, varType='float')
+        self.xLast = CompleteEntry(posLastCmpFrame, trashFunc, varType='float')
         self.xLast.var = feederData.endPos['X']
-        self.yLast = completeEntry(posLastCmpFrame, trashFunc, varType='float')
+        self.yLast = CompleteEntry(posLastCmpFrame, trashFunc, varType='float')
         self.yLast.var = feederData.endPos['Y']
         btnLastGo = ttk.Button(posLastCmpFrame, text='Go To', command=self.__goToLast)
         btnLastGet = ttk.Button(posLastCmpFrame, text='Get Pos.', command=self.__getPosLast)
@@ -841,11 +767,11 @@ class StripFeederFrame(tk.Frame):
         btnLastGo.grid(row=3, column=1, pady=5)
         btnLastGet.grid(row=3, column=0, pady=5)
 
-        self.componentPerStrip = completeEntry(otherParam, trashFunc, varType='int')
+        self.componentPerStrip = CompleteEntry(otherParam, trashFunc, varType='int')
         self.componentPerStrip.var = feederData.componentPerStrip
-        self.cmpStep = completeEntry(otherParam, trashFunc, varType='float')
+        self.cmpStep = CompleteEntry(otherParam, trashFunc, varType='float')
         self.cmpStep.var = 4.0
-        self.nextCmp = completeEntry(otherParam, trashFunc, varType='int')
+        self.nextCmp = CompleteEntry(otherParam, trashFunc, varType='int')
         self.nextCmp.var = feederData.nextComponent
         btnTheorCalc = ttk.Button(otherParam, text='Theor. Calc', command=self.__theorCalc)
 
@@ -860,7 +786,7 @@ class StripFeederFrame(tk.Frame):
         ttk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
         ttk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
 
-        self.pickId = completeEntry(testFrame, trashFunc, varType='int')
+        self.pickId = CompleteEntry(testFrame, trashFunc, varType='int')
         self.pickId.var = 0
 
         tk.Label(testFrame, text="Cmp").grid(row=0, column=0)
@@ -974,7 +900,7 @@ class FeederFrame(tk.Frame):
         listeOptions = ('Strip', 'Composite')
         self._newFeederTypeSel = tk.StringVar()
         self._newFeederTypeSel.set(listeOptions[0])
-        self._newFeederId = completeEntry(self._newFeedWindow, trashFunc, varType='int')
+        self._newFeederId = CompleteEntry(self._newFeedWindow, trashFunc, varType='int')
         om = ttk.OptionMenu(self._newFeedWindow, self._newFeederTypeSel, *listeOptions)
         om.configure(width=12)
 
@@ -1058,9 +984,9 @@ class ParamFrame(tk.Frame):
         self._frameBoard = tk.LabelFrame(self._frameRef, text="Board", labelanchor='n', padx=10, pady=10)
         self._frameTrash = tk.LabelFrame(self._frameRef, text="Trash", labelanchor='n', padx=10, pady=10)
 
-        self._XstepBymmEntry = completeEntry(self._frameX, self.__paramChange, 'double')
-        self._XmaxAccelEntry = completeEntry(self._frameX, self.__paramChange, 'double')
-        self._XmaxSpeedEntry = completeEntry(self._frameX, self.__paramChange, 'double')
+        self._XstepBymmEntry = CompleteEntry(self._frameX, self.__paramChange, 'double')
+        self._XmaxAccelEntry = CompleteEntry(self._frameX, self.__paramChange, 'double')
+        self._XmaxSpeedEntry = CompleteEntry(self._frameX, self.__paramChange, 'double')
 
         self._XstepBymmEntry.configure(state='normal')
         tk.Label(self._frameX, text="Step/mm").grid(row=0, column=0)
@@ -1070,9 +996,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameX, text="Accel (mm/s²)").grid(row=4, column=0)
         self._XmaxAccelEntry.grid(row=5, column=0)
 
-        self._YstepBymmEntry = completeEntry(self._frameY, self.__paramChange, 'double')
-        self._YmaxAccelEntry = completeEntry(self._frameY, self.__paramChange, 'double')
-        self._YmaxSpeedEntry = completeEntry(self._frameY, self.__paramChange, 'double')
+        self._YstepBymmEntry = CompleteEntry(self._frameY, self.__paramChange, 'double')
+        self._YmaxAccelEntry = CompleteEntry(self._frameY, self.__paramChange, 'double')
+        self._YmaxSpeedEntry = CompleteEntry(self._frameY, self.__paramChange, 'double')
 
         tk.Label(self._frameY, text="Step/mm").grid(row=0, column=0)
         self._YstepBymmEntry.grid(row=1, column=0)
@@ -1081,9 +1007,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameY, text="Accel (mm/s²)").grid(row=4, column=0)
         self._YmaxAccelEntry.grid(row=5, column=0)
 
-        self._ZstepBymmEntry = completeEntry(self._frameZ, self.__paramChange, 'double')
-        self._ZmaxAccelEntry = completeEntry(self._frameZ, self.__paramChange, 'double')
-        self._ZmaxSpeedEntry = completeEntry(self._frameZ, self.__paramChange, 'double')
+        self._ZstepBymmEntry = CompleteEntry(self._frameZ, self.__paramChange, 'double')
+        self._ZmaxAccelEntry = CompleteEntry(self._frameZ, self.__paramChange, 'double')
+        self._ZmaxSpeedEntry = CompleteEntry(self._frameZ, self.__paramChange, 'double')
 
         tk.Label(self._frameZ, text="Step/mm").grid(row=0, column=0)
         self._ZstepBymmEntry.grid(row=1, column=0)
@@ -1092,9 +1018,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameZ, text="Accel (mm/s)²").grid(row=4, column=0)
         self._ZmaxAccelEntry.grid(row=5, column=0)
 
-        self._CstepBymmEntry = completeEntry(self._frameC, self.__paramChange, 'double')
-        self._CmaxAccelEntry = completeEntry(self._frameC, self.__paramChange, 'double')
-        self._CmaxSpeedEntry = completeEntry(self._frameC, self.__paramChange, 'double')
+        self._CstepBymmEntry = CompleteEntry(self._frameC, self.__paramChange, 'double')
+        self._CmaxAccelEntry = CompleteEntry(self._frameC, self.__paramChange, 'double')
+        self._CmaxSpeedEntry = CompleteEntry(self._frameC, self.__paramChange, 'double')
 
         tk.Label(self._frameC, text="Step/deg").grid(row=0, column=0)
         self._CstepBymmEntry.grid(row=1, column=0)
@@ -1103,9 +1029,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameC, text="Accel (deg/s²)").grid(row=4, column=0)
         self._CmaxAccelEntry.grid(row=5, column=0)
 
-        self._XposScanEntry = completeEntry(self._frameScan, self.__paramChange, 'double')
-        self._YposScanEntry = completeEntry(self._frameScan, self.__paramChange, 'double')
-        self._ZposScanEntry = completeEntry(self._frameScan, self.__paramChange, 'double')
+        self._XposScanEntry = CompleteEntry(self._frameScan, self.__paramChange, 'double')
+        self._YposScanEntry = CompleteEntry(self._frameScan, self.__paramChange, 'double')
+        self._ZposScanEntry = CompleteEntry(self._frameScan, self.__paramChange, 'double')
 
         tk.Label(self._frameScan, text="X").grid(row=0, column=0)
         self._XposScanEntry.grid(row=1, column=0)
@@ -1114,9 +1040,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameScan, text="Z").grid(row=4, column=0)
         self._ZposScanEntry.grid(row=5, column=0)
 
-        self._XposBoardEntry = completeEntry(self._frameBoard, self.__paramChange, 'double')
-        self._YposBoardEntry = completeEntry(self._frameBoard, self.__paramChange, 'double')
-        self._ZposBoardEntry = completeEntry(self._frameBoard, self.__paramChange, 'double')
+        self._XposBoardEntry = CompleteEntry(self._frameBoard, self.__paramChange, 'double')
+        self._YposBoardEntry = CompleteEntry(self._frameBoard, self.__paramChange, 'double')
+        self._ZposBoardEntry = CompleteEntry(self._frameBoard, self.__paramChange, 'double')
 
         tk.Label(self._frameBoard, text="X").grid(row=0, column=0)
         self._XposBoardEntry.grid(row=1, column=0)
@@ -1125,9 +1051,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameBoard, text="Z").grid(row=4, column=0)
         self._ZposBoardEntry.grid(row=5, column=0)
 
-        self._XposTrashEntry = completeEntry(self._frameTrash, self.__paramChange, 'double')
-        self._YposTrashEntry = completeEntry(self._frameTrash, self.__paramChange, 'double')
-        self._ZposTrashEntry = completeEntry(self._frameTrash, self.__paramChange, 'double')
+        self._XposTrashEntry = CompleteEntry(self._frameTrash, self.__paramChange, 'double')
+        self._YposTrashEntry = CompleteEntry(self._frameTrash, self.__paramChange, 'double')
+        self._ZposTrashEntry = CompleteEntry(self._frameTrash, self.__paramChange, 'double')
 
         tk.Label(self._frameTrash, text="X").grid(row=0, column=0)
         self._XposTrashEntry.grid(row=1, column=0)
@@ -1136,9 +1062,9 @@ class ParamFrame(tk.Frame):
         tk.Label(self._frameTrash, text="Z").grid(row=4, column=0)
         self._ZposTrashEntry.grid(row=5, column=0)
 
-        self._ZposHeadEntry = completeEntry(self._frameMisc, self.__paramChange, 'double')
+        self._ZposHeadEntry = CompleteEntry(self._frameMisc, self.__paramChange, 'double')
         self._ZposHeadLab = tk.Label(self._frameMisc, text="Z Head")
-        self._ZLiftEntry = completeEntry(self._frameMisc, self.__paramChange, 'double')
+        self._ZLiftEntry = CompleteEntry(self._frameMisc, self.__paramChange, 'double')
         self._ZLiftLab = tk.Label(self._frameMisc, text="Z Lift")
 
         self._ZposHeadLab.grid(row=0, column=0)
@@ -1245,7 +1171,7 @@ class SerialFrame(tk.LabelFrame):
         self._comSelOM['width'] = 7
         self._serialSpeedLab = tk.Label(self, text="Speed")
         self._comSpeedVar = tk.IntVar(self, 115200)
-        self._comSpeedEntry = completeEntry(self, trashFunc(), varType='int')
+        self._comSpeedEntry = CompleteEntry(self, trashFunc(), varType='int')
         self._comSpeedEntry.var = 115200
 
         self._openBtn = ttk.Button(self, text='Motor On', command=self.__openCom)
@@ -1366,10 +1292,10 @@ class CtrlFrame(tk.Frame):
         self._labZ = tk.Label(self._frameConfArrow, text="Z")
         self._labC = tk.Label(self._frameConfArrow, text="C")
 
-        self._stepXEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
-        self._stepYEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
-        self._stepZEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
-        self._stepCEntry = completeEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepXEntry = CompleteEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepYEntry = CompleteEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepZEntry = CompleteEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
+        self._stepCEntry = CompleteEntry(frame=self._frameConfArrow, traceFunc=trashFunc, varType='double')
         self._stepXEntry.var = 0.1
         self._stepYEntry.var = 0.1
         self._stepZEntry.var = 0.1
@@ -1391,16 +1317,16 @@ class CtrlFrame(tk.Frame):
         self._stepCEntry.grid(row=4, column=1)
         self._contEna.grid(row=1, column=3, rowspan=4)
 
-        self._posXEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
-                                   , disabledbackground='white')
-        self._posYEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
-                                   , disabledbackground='white')
-        self._posZEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
-                                   , disabledbackground='white')
-        self._posCEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
-                                   , disabledbackground='white')
-        self._presEntry = completeEntry(frame=self._framePos, traceFunc=trashFunc, varType='double',width=15, font='Arial 30', state='disable'
-                                   , disabledbackground='white')
+        self._posXEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+                                        , disabledbackground='white')
+        self._posYEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+                                        , disabledbackground='white')
+        self._posZEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+                                        , disabledbackground='white')
+        self._posCEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+                                        , disabledbackground='white')
+        self._presEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+                                        , disabledbackground='white')
         self._posXEntry.var = 0.1
         self._posYEntry.var = 0.1
         self._posZEntry.var = 0.1
@@ -1435,7 +1361,7 @@ class CtrlFrame(tk.Frame):
         self._labPres.grid(row=4, column=2)
 
         self._textConsole = tk.Text(self._frameConsole, width=30, height=20, wrap=tk.NONE, state="disabled")
-        self._commandEntry = completeEntry(frame=self._frameConsole, traceFunc=trashFunc, varType='str', width=40)
+        self._commandEntry = CompleteEntry(frame=self._frameConsole, traceFunc=trashFunc, varType='str', width=40)
         self._commandEntry.var=''
         self._clearB = ttk.Button(self._frameConsole, text='Clear', command=self.__clearConsole, width=10)
         self._sendB = ttk.Button(self._frameConsole, text='Send', command=self.__sendtmp, width=10)
@@ -1567,31 +1493,31 @@ class ImportFrame(tk.Frame):
         self._controller = controller
         self._masterIHM = masterIHM
 
-        self._sepEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='str')
+        self._sepEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='str')
         self._sepEntry.var = ','
 
-        self._slEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._slEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='int')
         self._slEntry.var = 1
 
-        self._posRefEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posRefEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='int')
         self._posRefEntry.var = 0
 
-        self._posValEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posValEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='int')
         self._posValEntry.var = 1
 
-        self._posPackEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posPackEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='int')
         self._posPackEntry.var = 2
 
-        self._posXEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posXEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='int')
         self._posXEntry.var = 3
 
-        self._posYEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='int')
+        self._posYEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='int')
         self._posYEntry.var = 4
 
-        self._posTEntry = completeEntry(frame=self, traceFunc=trashFunc, varType='str')
+        self._posTEntry = CompleteEntry(frame=self, traceFunc=trashFunc, varType='str')
         self._posTEntry.var = 5
 
-        self._posName = completeEntry(frame=self, traceFunc=trashFunc, varType='str')
+        self._posName = CompleteEntry(frame=self, traceFunc=trashFunc, varType='str')
         self._posName.var = 'n'
 
         self._import = ttk.Button(self, text='Import', command=self.__importCmd, width=15)
@@ -1733,17 +1659,17 @@ class GlobalCmpFrame(tk.LabelFrame):
         self._cmpTreeView.grid(row=0, column=0)
         treeScroll.grid(row=0, column=1, sticky='ns')
 
-        self._valueFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._refFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._packageFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._modelFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._placedFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._enableFilter = completeEntry(self._filterFrame, trashFunc, varType='str')
+        self._valueFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._refFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._packageFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._modelFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._placedFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._enableFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str')
 
-        self._modelEdit = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._feederEdit = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._placedEdit = completeEntry(self._filterFrame, trashFunc, varType='str')
-        self._enableEdit = completeEntry(self._filterFrame, trashFunc, varType='str')
+        self._modelEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._feederEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._placedEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str')
+        self._enableEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str')
         self._modelEdit.var = ''
         self._feederEdit.var = ''
         self._placedEdit.var = ''
@@ -2000,9 +1926,9 @@ class BoardFrame(tk.Frame):
 
         self._boardDraw = BoarDrawing(self._boardFrame)
 
-        self._sizeX = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
-        self._sizeY = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
-        self._sizeZ = completeEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
+        self._sizeX = CompleteEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
+        self._sizeY = CompleteEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
+        self._sizeZ = CompleteEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
 
         self._boardFrame.grid(row=0, column=0, rowspan=2)
         self.jobFrame.grid(row=0, column=1)
@@ -2022,12 +1948,12 @@ class BoardFrame(tk.Frame):
         self._sizeY.grid(row=1, column=2)
         self._sizeZ.grid(row=1, column=3)
 
-        self._ref1 = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
-        self._ref2 = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
-        self._ref1X = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref1Y = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref2X = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref2Y = completeEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
+        self._ref1 = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
+        self._ref2 = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
+        self._ref1X = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
+        self._ref1Y = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
+        self._ref2X = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
+        self._ref2Y = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
         self._ref1updt = ttk.Button(self._referenceFrame, command=self.__getPosRef1, text='Get Pos')
         self._ref2updt = ttk.Button(self._referenceFrame, command=self.__getPosRef2, text='Get Pos')
 
@@ -2144,25 +2070,25 @@ class DtbFrame(tk.Frame):
         self._aliasOm = ttk.OptionMenu(frameAlias, self._strAlias, *self._aliasList)
 
         newModBtn = ttk.Button(frameTop, text='New', width=15,
-                               command=lambda: entryWindow(self, 'New model', ['Model Name'], ['Name'],
+                               command=lambda: EntryWindow(self, 'New model', ['Model Name'], ['Name'],
                                                            self.__userAddModelReturn, 0))
         dellModBtn = ttk.Button(frameTop, text='Delete', width=15, command=self.__deleteModel)
         addBtn = ttk.Button(frameAlias, text='Add',
-                            command=lambda: entryWindow(self, 'New Alias', ['Alias Name'], ['Name'],
+                            command=lambda: EntryWindow(self, 'New Alias', ['Alias Name'], ['Name'],
                                                         self.__userAddAliasReturn, 0))
         dellBtn = ttk.Button(frameAlias, text='Del', command=self.__deleteAlias)
         saveBtn = ttk.Button(frameCtrl, text='Save', command=self.controller.saveInFile)
 
-        self._sX = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._sY = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._sZ = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._scanHentry = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._sX = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._sY = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._sZ = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._scanHentry = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
 
-        self._pickupSpeed = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._placeSpeed = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._pickupDelay = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._placeDelay = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
-        self._moveSpeed = completeEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._pickupSpeed = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._placeSpeed = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._pickupDelay = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._placeDelay = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._moveSpeed = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
 
         self._sX.var = 0.0
         self._sY.var = 0.0
@@ -2381,7 +2307,7 @@ class ScanFrame(tk.Frame):
         self._logger = logger
 
         self._labMes = tk.Label(self, text='Measure: 00000')
-        self._zScan = completeEntry(frame=self, traceFunc=trashFunc, varType='double')
+        self._zScan = CompleteEntry(frame=self, traceFunc=trashFunc, varType='double')
         self._btnGoTo = ttk.Button(self, text='Go TO')
         self._btnScanPoint = ttk.Button(self, text='Scan point')
         self._btnScanXLine = ttk.Button(self, text='Scan Line X')

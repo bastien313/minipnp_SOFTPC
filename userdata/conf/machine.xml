@@ -46,6 +46,22 @@
         <xPos>1.0</xPos>
         <yPos>1.0</yPos>
         <zPos>1.0</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>1</componentPerStrip>
         <nextComponent>0</nextComponent>
         <xEndPos>1.0</xEndPos>
@@ -58,6 +74,22 @@
         <xPos>148.4803</xPos>
         <yPos>233.0911</yPos>
         <zPos>-29.8677</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <nextComponent>48</nextComponent>
         <xEndPos>147.4865</xEndPos>
@@ -70,6 +102,22 @@
         <xPos>165.0803</xPos>
         <yPos>233.0911</yPos>
         <zPos>-29.9</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <nextComponent>48</nextComponent>
         <xEndPos>164.0865</xEndPos>
@@ -82,6 +130,22 @@
         <xPos>181.6806</xPos>
         <yPos>233.0911</yPos>
         <zPos>-29.8677</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <nextComponent>6</nextComponent>
         <xEndPos>180.6568</xEndPos>
@@ -94,6 +158,22 @@
         <xPos>220.0</xPos>
         <yPos>233.0911</yPos>
         <zPos>-29.8677</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <nextComponent>48</nextComponent>
         <xEndPos>219.5</xEndPos>
@@ -106,6 +186,22 @@
         <xPos>236.6</xPos>
         <yPos>233.2</yPos>
         <zPos>-29.8677</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <nextComponent>48</nextComponent>
         <xEndPos>236.0</xEndPos>
@@ -118,6 +214,22 @@
         <xPos>253.2</xPos>
         <yPos>233.2</yPos>
         <zPos>-29.8677</zPos>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <nextComponent>49</nextComponent>
         <xEndPos>252.7</xEndPos>
@@ -147,8 +259,8 @@
         <ref0X>0.0</ref0X>
         <ref0Y>0.0</ref0Y>
         <ref0Z>0.0</ref0Z>
-        <ref1X>69.76817962374027</ref1X>
-        <ref1Y>197.24766440186184</ref1Y>
+        <ref1X>73.2</ref1X>
+        <ref1Y>196.0</ref1Y>
         <ref1Z>0.0</ref1Z>
         <vectorX>73.2</vectorX>
         <vectorY>196.0</vectorY>
@@ -160,6 +272,21 @@
         <vectorCmpY>2.0</vectorCmpY>
         <vectorCmpZ>3.0</vectorCmpZ>
       </basePlate_1>
+      <basePlate_5>
+        <name>Noname</name>
+        <type>BasePlate</type>
+        <ref0X>0.0</ref0X>
+        <ref0Y>0.0</ref0Y>
+        <ref0Z>0.0</ref0Z>
+        <ref1X>9.8</ref1X>
+        <ref1Y>10.196077677224707</ref1Y>
+        <ref1Z>0.0</ref1Z>
+        <vectorX>10.0</vectorX>
+        <vectorY>10.0</vectorY>
+        <vectorZ>0.0</vectorZ>
+        <zRamp>0.0</zRamp>
+        <rotationOffset>0.08726646259971647</rotationOffset>
+      </basePlate_5>
     </basePlate>
   </machine>
 </root>
