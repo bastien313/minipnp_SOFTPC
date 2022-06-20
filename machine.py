@@ -226,6 +226,8 @@ class BasePlateForStripFeeder(BasePlate):
             'Z': self._realRef[0]['Z'] + self._vectorFirstCmp['Z']
         }
 
+
+
     def saveInLxml(self, rootLxml):
         bpRoot = BasePlate.saveInLxml(self, rootLxml)
         etree.SubElement(bpRoot, 'stripStep').text = str(self._stripStep)
@@ -248,18 +250,15 @@ class BasePlateForStripFeeder(BasePlate):
 
 
 class Feeder:
-    def __init__(self, paramList, saveMachineFunction):
+    def __init__(self, paramList, machine):
         self.type = 'feeder'
         self.id = int(paramList['id']) if 'id' in paramList else 0
         self.basePlateId = int(paramList['basePlateId']) if 'basePlateId' in paramList else 0
         self.localBasePlate = paramList['localBasePlate'] if 'localBasePlate' in paramList else BasePlate(
             {'name': 'Local'})
         self.name = paramList['name'] if 'name' in paramList else 'noname'
-        self.pos = {'X': float(paramList['xPos']) if 'xPos' in paramList else 1.0,
-                    'Y': float(paramList['yPos']) if 'yPos' in paramList else 1.0,
-                    'Z': float(paramList['zPos']) if 'zPos' in paramList else 1.0}
         self._haveComponent = True
-        self.saveMachineFunction = saveMachineFunction
+        self._machine = machine
 
     def setPosition(self, positionDict):
         """
@@ -297,9 +296,6 @@ class Feeder:
         feederRoot = etree.SubElement(rootLxml, 'feeder_' + str(self.id))
         etree.SubElement(feederRoot, 'name').text = self.name
         etree.SubElement(feederRoot, 'type').text = self.type
-        etree.SubElement(feederRoot, 'xPos').text = str(self.pos['X'])
-        etree.SubElement(feederRoot, 'yPos').text = str(self.pos['Y'])
-        etree.SubElement(feederRoot, 'zPos').text = str(self.pos['Z'])
         etree.SubElement(feederRoot, 'basePlateId').text = str(self.basePlateId)
         self.localBasePlate.saveInLxml(feederRoot)
         return feederRoot
@@ -358,24 +354,29 @@ class CompositeFeeder(Feeder):
 
 
 class StripFeeder(Feeder):
-    def __init__(self, paramList, saveMachineFunction):
-        Feeder.__init__(self, paramList, saveMachineFunction)
+    def __init__(self,machine, paramList):
+        Feeder.__init__(self,machine, paramList)
         self.type = 'stripfeeder'
         self.componentPerStrip = int(paramList['componentPerStrip']) if 'componentPerStrip' in paramList else 1
-        self.endPos = {'X': float(paramList['xEndPos']) if 'xEndPos' in paramList else 1.0,
-                       'Y': float(paramList['yEndPos']) if 'yEndPos' in paramList else 1.0}
-
+        self.localBasePlate = paramList['localBasePlate'] if 'localBasePlate' in paramList else BasePlateForStripFeeder(
+            {'name': 'Local'})
+        self.componentStep = float(paramList['componentStep']) if 'componentStep' in paramList else 1
+        self.stripIdInBasePlate = int(paramList['stripIdInBasePlate']) if 'stripIdInBasePlate' in paramList else 0
         # Adress of next component to be picked up
         self.nextComponent = int(paramList['nextComponent']) if 'nextComponent' in paramList else 0
 
     def saveInLxml(self, rootLxml):
         feederRoot = Feeder.saveInLxml(self, rootLxml)
         etree.SubElement(feederRoot, 'componentPerStrip').text = str(self.componentPerStrip)
+        etree.SubElement(feederRoot, 'componentStep').text = str(self.componentStep)
         etree.SubElement(feederRoot, 'nextComponent').text = str(self.nextComponent)
-        etree.SubElement(feederRoot, 'xEndPos').text = str(self.endPos['X'])
-        etree.SubElement(feederRoot, 'yEndPos').text = str(self.endPos['Y'])
-        etree.SubElement(feederRoot, 'yEndPos').text = str(self.endPos['Y'])
+        etree.SubElement(feederRoot, 'stripIdInBasePlate').text = str(self.stripIdInBasePlate)
 
+    def __getCorrectedPosition(self, cmpId):
+        basePlate = self.localBasePlate if self.basePlateId == 0 else
+        firstCmpPosTheor = getTheoricalFirstCmpPosition(self, stripId):
+
+    @deprecated
     def __getCorrectedPositionLinear(self, cmpId):
         xRamp = (self.endPos['X'] - self.pos['X']) / (self.componentPerStrip - 1)
         yRamp = (self.endPos['Y'] - self.pos['Y']) / (self.componentPerStrip - 1)
@@ -425,7 +426,7 @@ class StripFeeder(Feeder):
                 self.nextComponent = 0
                 self._haveComponent = False
 
-            self.saveMachineFunction()
+            self._machine.saveToXml()
             return 0 if self._haveComponent else 1
         return 1
 
@@ -458,20 +459,6 @@ class ReelFeeder(Feeder):
         etree.SubElement(feederRoot, 'I2Caddr').text = str(self.I2Caddr)
         etree.SubElement(feederRoot, 'step').text = str(self.step)
         etree.SubElement(feederRoot, 'compByStep').text = str(self.compByStep)
-
-    def __repr__(self):
-        return '{} {}: name = {}, X = {}, Y = {}, Z = {} \n  address = {}, step = {}, compByStep = {}'.format(self.type,
-                                                                                                              self.id,
-                                                                                                              self.name,
-                                                                                                              self.pos[
-                                                                                                                  'X'],
-                                                                                                              self.pos[
-                                                                                                                  'Y'],
-                                                                                                              self.pos[
-                                                                                                                  'Z'],
-                                                                                                              self.I2Caddr,
-                                                                                                              self.step,
-                                                                                                              self.compByStep)
 
 
 class MachineConf:
@@ -633,14 +620,14 @@ class MachineConf:
         feederData['id'] = int(idFeeder)
         # create feeder
         if feederData['type'] == 'feeder':
-            self.addFeeder(Feeder(feederData, self.saveToXml))
+            self.addFeeder(Feeder(feederData, self))
         elif feederData['type'] == 'reelfeeder':
-            self.addFeeder(ReelFeeder(feederData, self.saveToXml))
+            self.addFeeder(ReelFeeder(feederData, self))
         elif feederData['type'] == 'stripfeeder':
-            self.addFeeder(StripFeeder(feederData, self.saveToXml))
+            self.addFeeder(StripFeeder(feederData, self))
         elif feederData['type'] == 'compositefeeder':
             feederData['feederList'] = self.makeFilteredFeederList(feederData['feederListStr'])
-            self.addFeeder(CompositeFeeder(feederData, self.saveToXml))
+            self.addFeeder(CompositeFeeder(feederData, self))
 
     def __basePlateLoadFromXml(self, idBp, bpRoot, addTobasePlateList=True):
         """

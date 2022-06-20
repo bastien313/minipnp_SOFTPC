@@ -285,6 +285,13 @@ class MultipleEntryFrame(tk.LabelFrame):
         On redirige vers self._dictionnaire[index] = valeur"""
         self.entryDict[index].var = valeur
 
+    def disable(self):
+        for entry in self.entryDict.values():
+            entry['state'] = 'disable'
+
+    def enable(self):
+        for entry in self.entryDict.values():
+            entry['state'] = 'normal'
 
 class XYZFrame(MultipleEntryFrame):
     def __init__(self, fenetre, **kwargs):
@@ -319,8 +326,9 @@ class XYZFrame(MultipleEntryFrame):
 
 
 class GenericBasePlateFrame(tk.LabelFrame):
-    def __init__(self, fenetre, bpData, machine, logger, controller,commandFrame=True, **kwargs):
-        tk.LabelFrame.__init__(self, fenetre, text='BasePlate', labelanchor='n', padx=10, pady=10, width=500, height=300, **kwargs)
+    def __init__(self, fenetre, bpData, machine, logger, controller, commandFrame=True, **kwargs):
+        tk.LabelFrame.__init__(self, fenetre, text='BasePlate', labelanchor='n', padx=10, pady=10, width=500,
+                               height=300, **kwargs)
         self._controller = controller
         identificationFrame = tk.Frame(self)
         self._parametersFrame = tk.Frame(self)
@@ -329,7 +337,7 @@ class GenericBasePlateFrame(tk.LabelFrame):
         identificationFrame.grid(row=0, column=0)
         self._parametersFrame.grid(row=1, column=0)
         if commandFrame:
-            btnFrame.grid(row=2, column=0,columnspan=2, sticky='ew')
+            btnFrame.grid(row=2, column=0, columnspan=2, sticky='ew')
 
         self._mother = fenetre
         self._machine = machine
@@ -359,25 +367,25 @@ class GenericBasePlateFrame(tk.LabelFrame):
                                                 text="Corrector", labelanchor='n', padx=5, pady=5)
         GenericBasePlateFrame._updateIHMFromBasePlate(self, bpData)
 
-        btnRef1GoTo = ttk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
-        btnRef1Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
-        btnRef1Theor = ttk.Button(self._parametersFrame, text='Theo. vector', command=self._calcTheo)
-        btnRef2GoTo = ttk.Button(self._parametersFrame, text='Go To', command=self._goToRef2)
-        btnRef2Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
-        btnRef2Calc = ttk.Button(self._parametersFrame, text='Calc. Ref2', command=self._ref2Calc)
-        btnRandZCalc = ttk.Button(self._parametersFrame, text='Calc. Corr.', command=self._RandZCalc)
+        self._btnRef1GoTo = ttk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
+        self._btnRef1Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
+        self._btnRef1Theor = ttk.Button(self._parametersFrame, text='Theo. vector', command=self._calcTheo)
+        self._btnRef2GoTo = ttk.Button(self._parametersFrame, text='Go To', command=self._goToRef2)
+        self._btnRef2Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
+        self._btnRef2Calc = ttk.Button(self._parametersFrame, text='Calc. Ref2', command=self._ref2Calc)
+        self._btnRandZCalc = ttk.Button(self._parametersFrame, text='Calc. Corr.', command=self._RandZCalc)
 
-        self._ref1Frame.grid(row=0, column=2,columnspan=2,sticky='ns')
-        self._ref2Frame.grid(row=0, column=4,columnspan=2,sticky='ns')
-        self._vectorFrame.grid(row=0, column=0,columnspan=2,sticky='ns')
-        self._rotAndZFrame.grid(row=0, column=6,columnspan=2,sticky='ns')
-        btnRef1GoTo.grid(row=1, column=4)
-        btnRef1Get.grid(row=1, column=5)
-        btnRef1Theor.grid(row=2, column=4,columnspan=2,sticky='ew')
-        btnRef2GoTo.grid(row=1, column=2)
-        btnRef2Get.grid(row=1, column=3)
-        btnRef2Calc.grid(row=2, column=6,columnspan=2,sticky='ew')
-        btnRandZCalc.grid(row=1, column=6,columnspan=2,sticky='ew')
+        self._ref1Frame.grid(row=0, column=2, columnspan=2, sticky='ns')
+        self._ref2Frame.grid(row=0, column=4, columnspan=2, sticky='ns')
+        self._vectorFrame.grid(row=0, column=0, columnspan=2, sticky='ns')
+        self._rotAndZFrame.grid(row=0, column=6, columnspan=2, sticky='ns')
+        self._btnRef1GoTo.grid(row=1, column=4)
+        self._btnRef1Get.grid(row=1, column=5)
+        self._btnRef1Theor.grid(row=2, column=4, columnspan=2, sticky='ew')
+        self._btnRef2GoTo.grid(row=1, column=2)
+        self._btnRef2Get.grid(row=1, column=3)
+        self._btnRef2Calc.grid(row=2, column=6, columnspan=2, sticky='ew')
+        self._btnRandZCalc.grid(row=1, column=6, columnspan=2, sticky='ew')
 
         ttk.Button(btnFrame, command=self._save, text='Save').grid(row=0, column=0, padx=10)
         ttk.Button(btnFrame, command=self._delete, text='Delete').grid(row=0, column=1, padx=10)
@@ -460,10 +468,41 @@ class GenericBasePlateFrame(tk.LabelFrame):
         self._ref2Frame.z = self._ref1Frame.z + self._vectorFrame.z
         self._save()  # Update basplate from IHM
 
+    def disableModification(self):
+        self.id['state'] = 'disable'
+        self.name['state'] = 'disable'
+        self._ref1Frame.disable()
+        self._ref2Frame.disable()
+        self._vectorFrame.disable()
+        self._rotAndZFrame.disable()
+        #self._btnRef1GoTo
+        self._btnRef1Get['state'] = 'disable'
+        self._btnRef1Theor['state'] = 'disable'
+        #self._btnRef2GoTo
+        self._btnRef2Get['state'] = 'disable'
+        self._btnRef2Calc['state'] = 'disable'
+        self._btnRandZCalc['state'] = 'disable'
+
+    def enableModification(self):
+        self.id['state'] = 'normal'
+        self.name['state'] = 'normal'
+        self._ref1Frame.enable()
+        self._ref2Frame.enable()
+        self._vectorFrame.enable()
+        self._rotAndZFrame.enable()
+        #self._btnRef1GoTo
+        self._btnRef1Get['state'] = 'normal'
+        self._btnRef1Theor['state'] = 'normal'
+        #self._btnRef2GoTo
+        self._btnRef2Get['state'] = 'normal'
+        self._btnRef2Calc['state'] = 'normal'
+        self._btnRandZCalc['state'] = 'normal'
+
+
 
 class StripFeederBasePlateFrame(GenericBasePlateFrame):
-    def __init__(self, fenetre, bpData, machine, logger, controller, **kwargs):
-        GenericBasePlateFrame.__init__(self, fenetre, bpData, machine, logger, controller, **kwargs)
+    def __init__(self, fenetre, bpData, machine, logger, controller, commandFrame=True, **kwargs):
+        GenericBasePlateFrame.__init__(self, fenetre, bpData, machine, logger, controller, commandFrame, **kwargs)
 
         self._additionalFrame = tk.Frame(self)
         self._vector = XYZFrame(self._additionalFrame, text="Vect cmp 0", labelanchor='n', padx=10, pady=10)
@@ -471,8 +510,8 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
                                         padx=10, pady=10)
 
         self._additionalFrame.grid(row=1, column=2)
-        self._vector.grid(row=0, column=0)
-        self._misc.grid(row=0, column=1)
+        self._vector.grid(row=0, column=0, sticky='ew')
+        self._misc.grid(row=1, column=0)
 
         self._updateIHMFromBasePlate(bpData)
 
@@ -484,7 +523,9 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
             'vectorRef': {'X': self._vectorFrame.x, 'Y': self._vectorFrame.y, 'Z': self._vectorFrame.z},
             'rotationOffset': math.radians(self._rotAndZFrame['Rot(deg)']), 'zRamp': self._rotAndZFrame['Zramp'],
             'stripStep': self._misc['Strip Step'],
-            'vectorFistCmp': {'X': self._vector.x, 'Y': self._vector.y, 'Z': self._vector.z}
+            'vectorFistCmp': {'X': self._vector.x, 'Y': self._vector.y, 'Z': self._vector.z},
+            'basePlateId': int(self.__strBasePlate) if self.__strBasePlate != 'Local' else 0,
+            'localBasePlate': self._feeder.localBasePlate
         })
         self._machine.addBasePlate(newBp)
         self._machine.saveToXml()
@@ -496,6 +537,16 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
         self._vector.x = bp.getVectorFirstCmp()['X']
         self._vector.y = bp.getVectorFirstCmp()['Y']
         self._vector.z = bp.getVectorFirstCmp()['Z']
+
+    def disableModification(self):
+        GenericBasePlateFrame.disableModification(self)
+        self._vector.disable()
+        self._misc.disable()
+
+    def enableModification(self):
+        GenericBasePlateFrame.enableModification(self)
+        self._vector.enable()
+        self._misc.enable()
 
 
 class BasePlateFrame(tk.Frame):
@@ -692,7 +743,172 @@ class CompositeFeederFrame(tk.Frame):
 class StripFeederFrame(tk.Frame):
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+
         self._controller = controller
+        self._feeder = feederData
+        self.__mother = fenetre
+        self.__machine = machine
+        self.__logger = logger
+
+
+        identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
+        basePlateFrame = tk.Frame(self,relief ='sunken', borderwidth = 3, padx=10, pady=10)
+        self._basePlateDataFrame = tk.Frame(basePlateFrame)
+        parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
+        btnFram = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
+        testFrame = tk.LabelFrame(self, text="Pick", labelanchor='n', padx=10, pady=10)
+
+        identificationFrame.grid(row=0, column=0, columnspan=2, sticky='ew')
+        basePlateFrame.grid(row=1, column=0, columnspan=2,sticky='s')
+        #self._basePlateDataFrame.grid(row=2, column=0,columnspan=2)
+        parametersFrame.grid(row=2, column=0, columnspan=2)
+        btnFram.grid(row=3, column=0, sticky='ew')
+        testFrame.grid(row=3, column=1, sticky='ew')
+
+        self._basePlateName = tk.Label(basePlateFrame, text='str')
+        self.__basePlateList = ['Local']
+        self.__strBasePlate = tk.StringVar(basePlateFrame)
+        self.__strBasePlate.trace('w', self.__changeBasePlateTrace)
+        self._basePlateOm = ttk.OptionMenu(basePlateFrame, self.__strBasePlate, *self.__basePlateList)
+        self.updateBasePlateListOm()
+
+        if feederData.basePlateId == 0 or feederData.basePlateId not in [bp.id for bp in machine.basePlateList]:
+            self.__strBasePlate.set(self.__basePlateList[0])
+        else:
+            self.__strBasePlate.set(f'{feederData.basePlateId}')
+
+
+
+        self._basePlateOm.grid(row=0, column=0)
+        self._basePlateName.grid(row=0, column=1)
+        self._basePlateDataFrame.grid(row=1, column=0, columnspan=2)
+
+        self.id = CompleteEntry(identificationFrame, trashFunc, varType='int')
+        self.id.var = feederData.id
+        self.id['width'] = 10
+        self.type = CompleteEntry(identificationFrame, trashFunc, varType='str')
+        self.type.var = feederData.type
+        self.type['state'] = 'disable'
+        self.type['width'] = 20
+        self.name = CompleteEntry(identificationFrame, trashFunc, varType='str')
+        self.name.var = feederData.name
+        self.name['width'] = 50
+
+        tk.Label(identificationFrame, text="Id").grid(row=0, column=0)
+        self.id.grid(row=1, column=0)
+        tk.Label(identificationFrame, text="Type").grid(row=0, column=1)
+        self.type.grid(row=1, column=1)
+        tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
+        self.name.grid(row=1, column=2)
+
+        self.componentPerStrip = CompleteEntry(parametersFrame, trashFunc, varType='int')
+        self.componentPerStrip.var = feederData.componentPerStrip
+        self.cmpStep = CompleteEntry(parametersFrame, trashFunc, varType='float')
+        self.cmpStep.var = 4.0
+        self.nextCmp = CompleteEntry(parametersFrame, trashFunc, varType='int')
+        self.nextCmp.var = feederData.nextComponent
+        self.idStripBp = CompleteEntry(parametersFrame, trashFunc, varType='int')
+        self.idStripBp.var = feederData.stripIdInBasePlate
+
+        tk.Label(parametersFrame, text="Cmp/strip").grid(row=0, column=0)
+        self.componentPerStrip.grid(row=1, column=0)
+        tk.Label(parametersFrame, text="Cmp step").grid(row=0, column=1)
+        self.cmpStep.grid(row=1, column=1)
+        tk.Label(parametersFrame, text="Next cmp").grid(row=0, column=2)
+        self.nextCmp.grid(row=1, column=2)
+        tk.Label(parametersFrame, text="Id strip in base plate").grid(row=0, column=3)
+        self.idStripBp.grid(row=1, column=3)
+
+        ttk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
+        ttk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
+
+        self.pickId = CompleteEntry(testFrame, trashFunc, varType='int')
+        self.pickId.var = 0
+
+        tk.Label(testFrame, text="Cmp").grid(row=0, column=0)
+        self.pickId.grid(row=0, column=1)
+        ttk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=2, padx=10)
+
+        #self.displayBasePlate(self._feeder.basePlateId)
+
+    def __changeBasePlateTrace(self, *args):
+        """
+        Called when string of option menu change
+        :param args:
+        :return:
+        """
+        self.displayBasePlate(0 if self.__strBasePlate.get() == 'Local' else int(self.__strBasePlate.get()))
+
+    def __save(self):
+        newFeeder = mch.StripFeeder({'id': self.id.var, 'name': self.name.var,
+                                     'componentPerStrip': self.componentPerStrip.var,'stripIdInBasePlate':self.idStripBp.var,
+                                     'cmpStep': self.cmpStep.var, 'nextComponent': self.nextCmp.var,
+                                     'basePlateId': int(self.__strBasePlate.get()) if self.__strBasePlate.get() != 'Local' else 0,
+                                    'localBasePlate': self._feeder.localBasePlate}, self.__machine.saveToXml)
+        self._feeder = newFeeder
+        self.__machine.addFeeder(newFeeder)
+        self.__machine.saveToXml()
+        self.__mother.updateFeederListOm()
+
+    def __delete(self):
+        self.__machine.deleteFeeder(self.id.var)
+        self.__machine.saveToXml()
+        self.__mother.updateFeederListOm()
+        self.__mother.displayFeeder(0)
+
+    def __pick(self):
+        self.__mother.pick(self.id.var, self.pickId.var)
+
+    def updateBasePlateListOm(self):
+        """
+        Update the option menu with machine data ( base plate list).
+        :return:
+        """
+        self.__basePlateList = ['Local'] + [str(feeder.id) for feeder in self.__machine.basePlateList]
+        del  self.__basePlateList[self.__basePlateList.index('0')]
+        menu = self._basePlateOm["menu"]
+        menu.delete(0, "end")
+        for basePlateStr in self.__basePlateList:
+            menu.add_command(label=basePlateStr,
+                             command=lambda value=basePlateStr: self.__strBasePlate.set(value))
+
+    def displayBasePlate(self, basePlateId):
+        """
+        Change display base plate.
+        If base plate id == 0 we take local information otherwise we take machine information.
+        """
+        for widget in self._basePlateDataFrame.winfo_children():
+            widget.destroy()
+
+        #self._basePlateDataFrame.grid_forget()
+        bp = self.__machine.getBasePlateById(basePlateId) if basePlateId != 0 else self._feeder.localBasePlate
+
+        if bp:
+            if bp.type == 'BasePlate':
+                 bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
+                                      controller=self._controller, commandFrame=False, logger=self.__logger)
+                 bpFrame.grid(row=0, column=0)
+                 if basePlateId:
+                    bpFrame.disableModification()
+
+            elif bp.type == 'StripFeederBasePlate':
+                bpFrame =StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
+                                          controller=self._controller, commandFrame=False, logger=self.__logger)
+                bpFrame.grid(row=0, column=0)
+                if basePlateId:
+                    bpFrame.disableModification()
+
+            self._basePlateName['text'] = bp.name
+        else:
+            self.__logger.printCout(f'{basePlateId} Base plate not found')
+
+       # self._basePlateDataFrame.grid(row=1, column=0, columnspan=2)
+
+class StripFeederFrameOld(tk.Frame):
+    def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+        self._controller = controller
+        self._feeder = feederData
         identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
         parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
         btnFram = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
@@ -928,9 +1144,9 @@ class FeederFrame(tk.Frame):
                 return
 
         if self._newFeederTypeSel.get() == 'Strip':
-            newFeeder = mch.StripFeeder({'id': self._newFeederId.var}, self.__machineConf.saveToXml)
+            newFeeder = mch.StripFeeder({'id': self._newFeederId.var}, self.__machineConf)
         elif self._newFeederTypeSel.get() == 'Composite':
-            newFeeder = mch.CompositeFeeder({'id': self._newFeederId.var}, self.__machineConf.saveToXml)
+            newFeeder = mch.CompositeFeeder({'id': self._newFeederId.var}, self.__machineConf)
 
         self.__machineConf.addFeeder(newFeeder)
         self.__strFeeder.set(str(newFeeder.id))
@@ -1160,50 +1376,22 @@ class ParamFrame(tk.Frame):
         self._ZLiftEntry.var = self._machineConf.zLift
 
 
-class SerialFrame(tk.LabelFrame):
+class MotorOnOffFrame(tk.LabelFrame):
     def __init__(self, fenetre, controller, **kwargs):
         tk.LabelFrame.__init__(self, fenetre, **kwargs)
         self.controller = controller
 
-        self._listCom = ['0']
-        self._comSel = tk.StringVar(self)
-        self._comSelOM = ttk.OptionMenu(self, self._comSel, *self._listCom)
-        self._comSelOM['width'] = 7
-        self._serialSpeedLab = tk.Label(self, text="Speed")
-        self._comSpeedVar = tk.IntVar(self, 115200)
-        self._comSpeedEntry = CompleteEntry(self, trashFunc(), varType='int')
-        self._comSpeedEntry.var = 115200
+        self._motorOnBtn = ttk.Button(self, text='Motor On', command=self.__motorOn)
+        self._motorOffBtn = ttk.Button(self, text='Motor Off', command=self.__motorOff)
 
-        self._openBtn = ttk.Button(self, text='Motor On', command=self.__openCom)
-        self._closeBtn = ttk.Button(self, text='Motor Off', command=self.__closeCom)
+        self._motorOnBtn.grid(row=3, column=1)
+        self._motorOffBtn.grid(row=4, column=1)
 
-        # self._comSelOM.grid(row=0, column=0)
-        # self._serialSpeedLab.grid(row=1, column=1)
-        # self._comSpeedEntry.grid(row=2, column=1)
-        self._openBtn.grid(row=3, column=1)
-        self._closeBtn.grid(row=4, column=1)
-
-    def __openCom(self):
+    def __motorOn(self):
         self.controller.motorOn()
 
-    def __closeCom(self):
+    def __motorOff(self):
         self.controller.motorOff()
-
-    def __deleteComList(self):
-        self._listCom = []
-        menu = self._comSelOM["menu"]
-        menu.delete(0, "end")
-
-    def listCom(self, *args):
-        self.__deleteComList()
-
-        liste = serial.tools.list_ports.comports()
-        for port in liste:
-            self._listCom.append(port.device)
-        menu = self._comSelOM["menu"]
-        for string in self._listCom:
-            menu.add_command(label=string,
-                             command=lambda value=string: self._comSel.set(value))
 
 
 class CtrlFrame(tk.Frame):
@@ -1223,7 +1411,7 @@ class CtrlFrame(tk.Frame):
         self._frameConfArrow = tk.LabelFrame(self, text="Control configuration", labelanchor='n', padx=10, pady=10)
         self._framePos = tk.LabelFrame(self, text="Position", labelanchor='n', padx=10, pady=10)
         self._frameConsole = tk.LabelFrame(self, text="Console", labelanchor='n', padx=10, pady=10)
-        self.serialFrame = SerialFrame(self, self.controller, text='Misc', labelanchor='n', padx=5, pady=5)
+        self.serialFrame = MotorOnOffFrame(self, self.controller, text='Misc', labelanchor='n', padx=5, pady=5)
 
         self._xp = ttk.Button(self._frameArrow, text='X+', width=4)
         self._xm = ttk.Button(self._frameArrow, text='X-', width=4)
@@ -1317,15 +1505,20 @@ class CtrlFrame(tk.Frame):
         self._stepCEntry.grid(row=4, column=1)
         self._contEna.grid(row=1, column=3, rowspan=4)
 
-        self._posXEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+        self._posXEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15,
+                                        font='Arial 30', state='disable'
                                         , disabledbackground='white')
-        self._posYEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+        self._posYEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15,
+                                        font='Arial 30', state='disable'
                                         , disabledbackground='white')
-        self._posZEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+        self._posZEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15,
+                                        font='Arial 30', state='disable'
                                         , disabledbackground='white')
-        self._posCEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+        self._posCEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15,
+                                        font='Arial 30', state='disable'
                                         , disabledbackground='white')
-        self._presEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15, font='Arial 30', state='disable'
+        self._presEntry = CompleteEntry(frame=self._framePos, traceFunc=trashFunc, varType='double', width=15,
+                                        font='Arial 30', state='disable'
                                         , disabledbackground='white')
         self._posXEntry.var = 0.1
         self._posYEntry.var = 0.1
@@ -1362,7 +1555,7 @@ class CtrlFrame(tk.Frame):
 
         self._textConsole = tk.Text(self._frameConsole, width=30, height=20, wrap=tk.NONE, state="disabled")
         self._commandEntry = CompleteEntry(frame=self._frameConsole, traceFunc=trashFunc, varType='str', width=40)
-        self._commandEntry.var=''
+        self._commandEntry.var = ''
         self._clearB = ttk.Button(self._frameConsole, text='Clear', command=self.__clearConsole, width=10)
         self._sendB = ttk.Button(self._frameConsole, text='Send', command=self.__sendtmp, width=10)
         self._consoleScrollY = tk.Scrollbar(self._frameConsole, command=self._textConsole.yview)
@@ -2402,7 +2595,7 @@ class PnpIHM:
         logger.ihmDirect = self.ctrlWindow
 
         self.paramWindow = ParamFrame(self.mainWindow, self.ctrl.paramCtrl, self.ctrl.machineConfiguration)
-        self.feederWindow = FeederFrame(self.mainWindow, self.ctrl.machineConfiguration, logger, self.ctrl.boardCtrl)
+        self.feederWindow = FeederFrame(self.mainWindow, self.ctrl.machineConfiguration, logger, self.ctrl.boardCtrl, padx=10, pady=10)
         self.basePlateWindow = BasePlateFrame(self.mainWindow, self.ctrl.machineConfiguration, logger,
                                               self.ctrl.boardCtrl)
 
@@ -2460,7 +2653,7 @@ class PnpIHM:
             self.ctrlWindow.pack()
             self._statusLabel.pack()
             self.actualFrame = self.ctrlWindow;
-            self.ctrlWindow.serialFrame.listCom()
+            # self.ctrlWindow.serialFrame.listCom()
             self.ctrlWindow.focus_force()
 
     def initParamMenu(self):
