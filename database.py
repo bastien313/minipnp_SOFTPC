@@ -1,6 +1,7 @@
 from lxml import etree
 import Board as brr
 import xmledit as xe
+from machine import BasePlate
 
 
 class Model:
@@ -182,10 +183,6 @@ def boardSave(board, fileName):
     etree.SubElement(brd, "Xsize").text = "{}".format(board.xSize)
     etree.SubElement(brd, "Ysize").text = "{}".format(board.ySize)
     etree.SubElement(brd, "Zsize").text = "{}".format(board.zSize)
-    etree.SubElement(brd, "r1x").text = "{}".format(board.ref1RealPos['X'])
-    etree.SubElement(brd, "r1y").text = "{}".format(board.ref1RealPos['Y'])
-    etree.SubElement(brd, "r2x").text = "{}".format(board.ref2RealPos['X'])
-    etree.SubElement(brd, "r2y").text = "{}".format(board.ref2RealPos['Y'])
     etree.SubElement(brd, "filtValue").text = board.filter['value']
     etree.SubElement(brd, "filtRef").text = board.filter['ref']
     etree.SubElement(brd, "filtPackage").text = board.filter['package']
@@ -193,6 +190,7 @@ def boardSave(board, fileName):
     etree.SubElement(brd, "filtPlaced").text = board.filter['placed']
     etree.SubElement(brd, "filtEnable").text = board.filter['enable']
 
+    board.localBasePlate.saveInLxml(brd)
 
     cmpList = etree.SubElement(brd, "cmpList")
 
@@ -212,6 +210,7 @@ def boardSave(board, fileName):
         etree.SubElement(cmpEntry, "angle").text = "{}".format(cmp.rot)
         etree.SubElement(cmpEntry, "placed").text = "{}".format(cmp.isPlaced)
         etree.SubElement(cmpEntry, "enable").text = "{}".format(cmp.isEnable)
+
 
     fileOut.write(etree.tostring(root, pretty_print=True))
     fileOut.close()
@@ -237,10 +236,6 @@ def boarLoad(path, logger):
     board.zSize = float(xe.getXmlValue(brd, 'Zsize', 0.0))
     board.ref1 = xe.getXmlValue(brd, 'ref1', 'null')
     board.ref2 = xe.getXmlValue(brd, 'ref2', 'null')
-    board.ref1RealPos['X'] = float(xe.getXmlValue(brd, 'r1x', 0.0))
-    board.ref1RealPos['Y'] = float(xe.getXmlValue(brd, 'r1y', 0.0))
-    board.ref2RealPos['X'] = float(xe.getXmlValue(brd, 'r2x', 0.0))
-    board.ref2RealPos['Y'] = float(xe.getXmlValue(brd, 'r2y', 0.0))
 
     board.filter['value'] = xe.getXmlValue(brd, 'filtValue', '')
     board.filter['value'] = '' if board.filter['value'] is None else board.filter['value']
@@ -254,6 +249,10 @@ def boarLoad(path, logger):
     board.filter['placed'] = '' if board.filter['placed'] is None else board.filter['placed']
     board.filter['enable'] = xe.getXmlValue(brd, 'filtEnable', '')
     board.filter['enable'] = '' if board.filter['enable'] is None else board.filter['enable']
+
+    board.localBasePlate = BasePlate({})
+    if brd.find('basePlate_0'):
+        board.localBasePlate.configureFromXml(brd.find('basePlate_0'))
     cmpList = brd.find('cmpList')
 
     for cmpXml in cmpList:

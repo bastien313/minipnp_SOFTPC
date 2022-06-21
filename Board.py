@@ -40,10 +40,12 @@ class Board:
         self.xSize = 100.0
         self.ySize = 80.0
         self.zSize = 1.6
+        self.localBasePlate = 0
+
         self.ref1 = "Null"
         self.ref2 = "Null"
-        self.ref1RealPos = {'X': 0, 'Y': 0}
-        self.ref2RealPos = {'X': 0, 'Y': 0}
+        #self.ref1RealPos = {'X': 0, 'Y': 0}
+        #self.ref2RealPos = {'X': 0, 'Y': 0}
         self.logger = logger
         self.filter = {'value': '', 'ref': '', 'package': '', 'model': '', 'placed': '', 'enable': ''}
 
@@ -104,7 +106,18 @@ class Board:
         for cmp in self.cmpDic.values():
             cmp.posX += xMin * -1.0
             cmp.posY += yMin * -1.0
+
     def getMachineCmpPos(self, ref):
+        realRef1Pos = self.localBasePlate.getRealRef[0]
+        theoreticalMachineCompPos = {
+            'X': (self.cmpDic[ref].posX - self.cmpDic[self.ref1].posX) + realRef1Pos['X'],
+            'Y': (self.cmpDic[ref].posY - self.cmpDic[self.ref1].posY) + realRef1Pos['Y'],
+            'Z': realRef1Pos['Z']
+        }
+        return self.localBasePlate.getPointCorrected(theoreticalMachineCompPos)
+
+
+    def getMachineCmpPos_old_old(self, ref):
         """
         Return the machine coord position of component.
         :return:

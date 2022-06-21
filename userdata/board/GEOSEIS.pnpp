@@ -6,16 +6,27 @@
     <Xsize>158.0</Xsize>
     <Ysize>85.0</Ysize>
     <Zsize>1.6</Zsize>
-    <r1x>22.3033</r1x>
-    <r1y>45.9987</r1y>
-    <r2x>138.2109</r2x>
-    <r2y>114.4817</r2y>
     <filtValue>560K 1%|0R</filtValue>
     <filtRef></filtRef>
     <filtPackage></filtPackage>
     <filtModel></filtModel>
     <filtPlaced></filtPlaced>
     <filtEnable></filtEnable>
+    <basePlate_0>
+      <name>Noname</name>
+      <type>BasePlate</type>
+      <ref0X>0</ref0X>
+      <ref0Y>0</ref0Y>
+      <ref0Z>0</ref0Z>
+      <ref1X>115.13131899999998</ref1X>
+      <ref1Y>70.05263771038929</ref1Y>
+      <ref1Z>0.0</ref1Z>
+      <vectorX>116.13131899999999</vectorX>
+      <vectorY>68.38208399999999</vectorY>
+      <vectorZ>0</vectorZ>
+      <zRamp>0.0</zRamp>
+      <rotationOffset>0.014446991255105512</rotationOffset>
+    </basePlate_0>
     <cmpList>
       <cmp data-id="0">
         <ref>C2</ref>

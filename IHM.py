@@ -215,6 +215,9 @@ class CompleteEntry(tk.Entry):
         self.config(highlightthickness=1)
         self.config(highlightcolor='SystemButtonFace', highlightbackground='SystemButtonFace')
 
+    def setTraceFunc(self, func):
+        self._traceFunc = func
+
     def _localTrace(self, *args):
         newVarIsValid = False
         if self._varType == 'int':
@@ -239,7 +242,7 @@ class CompleteEntry(tk.Entry):
         else:
             self.config(highlightcolor="red", highlightbackground="red")
 
-        if self._traceFunc:
+        if self._traceFunc and newVarIsValid:
             self._traceFunc()
 
     def _getVar(self):
@@ -264,13 +267,13 @@ class CompleteEntry(tk.Entry):
 
 
 class MultipleEntryFrame(tk.LabelFrame):
-    def __init__(self, fenetre, parametersDict, **kwargs):
+    def __init__(self, fenetre, parametersDict, traceFunc=None, **kwargs):
         tk.LabelFrame.__init__(self, fenetre, **kwargs)
         self.entryDict = {}
 
         idDict = 0
         for key, varType in parametersDict.items():
-            self.entryDict[key] = CompleteEntry(self, trashFunc, varType=varType)
+            self.entryDict[key] = CompleteEntry(self, traceFunc, varType=varType)
             tk.Label(self, text=key).grid(row=idDict, column=0)
             self.entryDict[key].grid(row=idDict, column=1)
             idDict += 1
@@ -292,6 +295,11 @@ class MultipleEntryFrame(tk.LabelFrame):
     def enable(self):
         for entry in self.entryDict.values():
             entry['state'] = 'normal'
+
+    def setTraceFunc(self, func):
+        for entry in self.entryDict.values():
+            entry.setTraceFunc(func)
+
 
 class XYZFrame(MultipleEntryFrame):
     def __init__(self, fenetre, **kwargs):
@@ -330,34 +338,34 @@ class GenericBasePlateFrame(tk.LabelFrame):
         tk.LabelFrame.__init__(self, fenetre, text='BasePlate', labelanchor='n', padx=10, pady=10, width=500,
                                height=300, **kwargs)
         self._controller = controller
-        identificationFrame = tk.Frame(self)
+        self._identificationFrame = tk.Frame(self)
         self._parametersFrame = tk.Frame(self)
         btnFrame = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
 
-        identificationFrame.grid(row=0, column=0)
+        self._identificationFrame.grid(row=0, column=0)
         self._parametersFrame.grid(row=1, column=0)
         if commandFrame:
             btnFrame.grid(row=2, column=0, columnspan=2, sticky='ew')
 
         self._mother = fenetre
-        self._machine = machine
+
         self._logger = logger
-        self.id = CompleteEntry(identificationFrame, trashFunc, varType='int')
+        self.id = CompleteEntry(self._identificationFrame, trashFunc, varType='int')
         self.id.var = bpData.id
         self.id['width'] = 10
-        self.type = CompleteEntry(identificationFrame, trashFunc, varType='str')
+        self.type = CompleteEntry(self._identificationFrame, trashFunc, varType='str')
         self.type.var = bpData.type
         self.type['state'] = 'disable'
         self.type['width'] = 20
-        self.name = CompleteEntry(identificationFrame, trashFunc, varType='str')
+        self.name = CompleteEntry(self._identificationFrame, trashFunc, varType='str')
         self.name.var = bpData.name
         self.name['width'] = 50
 
-        tk.Label(identificationFrame, text="Id").grid(row=0, column=0)
+        tk.Label(self._identificationFrame, text="Id").grid(row=0, column=0)
         self.id.grid(row=1, column=0)
-        tk.Label(identificationFrame, text="Type").grid(row=0, column=1)
+        tk.Label(self._identificationFrame, text="Type").grid(row=0, column=1)
         self.type.grid(row=1, column=1)
-        tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
+        tk.Label(self._identificationFrame, text="Name").grid(row=0, column=2)
         self.name.grid(row=1, column=2)
 
         self._ref1Frame = XYZFrame(self._parametersFrame, text="Ref 1", labelanchor='n', padx=5, pady=5)
@@ -475,10 +483,10 @@ class GenericBasePlateFrame(tk.LabelFrame):
         self._ref2Frame.disable()
         self._vectorFrame.disable()
         self._rotAndZFrame.disable()
-        #self._btnRef1GoTo
+        # self._btnRef1GoTo
         self._btnRef1Get['state'] = 'disable'
         self._btnRef1Theor['state'] = 'disable'
-        #self._btnRef2GoTo
+        # self._btnRef2GoTo
         self._btnRef2Get['state'] = 'disable'
         self._btnRef2Calc['state'] = 'disable'
         self._btnRandZCalc['state'] = 'disable'
@@ -490,14 +498,91 @@ class GenericBasePlateFrame(tk.LabelFrame):
         self._ref2Frame.enable()
         self._vectorFrame.enable()
         self._rotAndZFrame.enable()
-        #self._btnRef1GoTo
+        # self._btnRef1GoTo
         self._btnRef1Get['state'] = 'normal'
         self._btnRef1Theor['state'] = 'normal'
-        #self._btnRef2GoTo
+        # self._btnRef2GoTo
         self._btnRef2Get['state'] = 'normal'
         self._btnRef2Calc['state'] = 'normal'
         self._btnRandZCalc['state'] = 'normal'
 
+
+class BoardBasePlateFrame(GenericBasePlateFrame):
+    def __init__(self, fenetre, machine, logger, controller, **kwargs):
+        GenericBasePlateFrame.__init__(self, fenetre, mch.BasePlate({}), machine, logger, controller,
+                                       commandFrame=False, **kwargs)
+
+        self._board = 0
+
+        self._identificationFrame.grid_forget()
+        self._ref1Frame.grid_forget()
+        self._ref2Frame.grid_forget()
+        self._ref1Frame = MultipleEntryFrame(self._parametersFrame,
+                                             {'Ref': 'str', 'X': 'float', 'Y': 'float', 'Z': 'float'},
+                                             text="Ref 1", labelanchor='n', padx=5, pady=5)
+        self._ref2Frame = MultipleEntryFrame(self._parametersFrame,
+                                             {'Ref': 'str', 'X': 'float', 'Y': 'float', 'Z': 'float'},
+                                             text="Ref 2", labelanchor='n', padx=5, pady=5)
+
+        self._vectorCalcBtn = ttk.Button(self._parametersFrame, text='Vect.Calc', command=self._vectorCalc)
+
+        self._ref1Frame.grid(row=0, column=2, columnspan=2, sticky='ns')
+        self._ref2Frame.grid(row=0, column=4, columnspan=2, sticky='ns')
+        self._vectorCalcBtn.grid(row=1, column=0, columnspan=2, sticky='ns')
+
+        self._ref1Frame.setTraceFunc(self._save)
+        self._ref2Frame.setTraceFunc(self._save)
+        self._vectorFrame.setTraceFunc(self._save)
+        self._rotAndZFrame.setTraceFunc(self._save)
+
+    def setBoard(self, board):
+        self._board = board
+        self._updateIHM()
+
+    def _vectorCalc(self):
+        self._vectorFrame['X'] = self._board[self._ref2Frame['Ref']].posX - self._board[self._ref1Frame['Ref']].posX
+        self._vectorFrame['Y'] = self._board[self._ref2Frame['Ref']].posY - self._board[self._ref1Frame['Ref']].posY
+        self._vectorFrame['Z'] = 0
+        self._save()  # Update basplate from IHM
+
+    def _ref2Calc(self):
+        self._board.localBasePlate.computeFromAngle()
+        self._save()  # Update basplate from IHM
+
+    def _updateIHM(self):
+        self._ref1Frame['X'] = self._board.localBasePlate.getRealRef(0)['X']
+        self._ref1Frame['Y'] = self._board.localBasePlate.getRealRef(0)['Y']
+        self._ref1Frame['Z'] = self._board.localBasePlate.getRealRef(0)['Z']
+        self._ref2Frame['X'] = self._board.localBasePlate.getRealRef(1)['X']
+        self._ref2Frame['Y'] = self._board.localBasePlate.getRealRef(1)['Y']
+        self._ref2Frame['Z'] = self._board.localBasePlate.getRealRef(1)['Z']
+        self._vectorFrame['X'] = self._board.localBasePlate.getTheorVector()['X']
+        self._vectorFrame['Y'] = self._board.localBasePlate.getTheorVector()['Y']
+        self._vectorFrame['Z'] = self._board.localBasePlate.getTheorVector()['Z']
+        self._rotAndZFrame['Rot(deg)'] = math.degrees(self._board.localBasePlate.getRotationOffset())
+        self._rotAndZFrame['Zramp'] = self._board.localBasePlate.getZramp()
+        self._ref1Frame['Ref'] = self._board.ref1
+        self._ref2Frame['Ref'] = self._board.ref1
+
+    def _RandZCalc(self):
+        self._board.localBasePlate.computeFromRef()
+        self._save()  # Update basplate from IHM
+
+    def _calcTheo(self):
+        self._ref2Frame['X'] = self._ref1Frame['X'] + self._vectorFrame['X']
+        self._ref2Frame['Y'] = self._ref1Frame['Y'] + self._vectorFrame['Y']
+        self._ref2Frame['Z'] = self._ref1Frame['Z'] + self._vectorFrame['Z']
+        self._save()  # Update basplate from IHM
+
+    def _save(self):
+        self._board.localBasePlate.buildBasePlateFromConfDict({
+            'id': self.id.var, 'name': self.name.var,
+            'realRef1': {'X': self._ref1Frame['X'], 'Y': self._ref1Frame['Y'], 'Z': self._ref1Frame['Z']},
+            'realRef2': {'X': self._ref2Frame['X'], 'Y': self._ref2Frame['Y'], 'Z': self._ref2Frame['Z']},
+            'vectorRef': {'X': self._vectorFrame['X'], 'Y': self._vectorFrame['Y'], 'Z': self._vectorFrame['Z']},
+            'rotationOffset': math.radians(self._rotAndZFrame['Rot(deg)']), 'zRamp': self._rotAndZFrame['Zramp']
+        })
+        self._updateIHM()
 
 
 class StripFeederBasePlateFrame(GenericBasePlateFrame):
@@ -750,17 +835,16 @@ class StripFeederFrame(tk.Frame):
         self.__machine = machine
         self.__logger = logger
 
-
         identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
-        basePlateFrame = tk.Frame(self,relief ='sunken', borderwidth = 3, padx=10, pady=10)
+        basePlateFrame = tk.Frame(self, relief='sunken', borderwidth=3, padx=10, pady=10)
         self._basePlateDataFrame = tk.Frame(basePlateFrame)
         parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
         btnFram = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
         testFrame = tk.LabelFrame(self, text="Pick", labelanchor='n', padx=10, pady=10)
 
         identificationFrame.grid(row=0, column=0, columnspan=2, sticky='ew')
-        basePlateFrame.grid(row=1, column=0, columnspan=2,sticky='s')
-        #self._basePlateDataFrame.grid(row=2, column=0,columnspan=2)
+        basePlateFrame.grid(row=1, column=0, columnspan=2, sticky='s')
+        # self._basePlateDataFrame.grid(row=2, column=0,columnspan=2)
         parametersFrame.grid(row=2, column=0, columnspan=2)
         btnFram.grid(row=3, column=0, sticky='ew')
         testFrame.grid(row=3, column=1, sticky='ew')
@@ -776,8 +860,6 @@ class StripFeederFrame(tk.Frame):
             self.__strBasePlate.set(self.__basePlateList[0])
         else:
             self.__strBasePlate.set(f'{feederData.basePlateId}')
-
-
 
         self._basePlateOm.grid(row=0, column=0)
         self._basePlateName.grid(row=0, column=1)
@@ -829,7 +911,7 @@ class StripFeederFrame(tk.Frame):
         self.pickId.grid(row=0, column=1)
         ttk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=2, padx=10)
 
-        #self.displayBasePlate(self._feeder.basePlateId)
+        # self.displayBasePlate(self._feeder.basePlateId)
 
     def __changeBasePlateTrace(self, *args):
         """
@@ -841,10 +923,12 @@ class StripFeederFrame(tk.Frame):
 
     def __save(self):
         newFeeder = mch.StripFeeder({'id': self.id.var, 'name': self.name.var,
-                                     'componentPerStrip': self.componentPerStrip.var,'stripIdInBasePlate':self.idStripBp.var,
+                                     'componentPerStrip': self.componentPerStrip.var,
+                                     'stripIdInBasePlate': self.idStripBp.var,
                                      'cmpStep': self.cmpStep.var, 'nextComponent': self.nextCmp.var,
-                                     'basePlateId': int(self.__strBasePlate.get()) if self.__strBasePlate.get() != 'Local' else 0,
-                                    'localBasePlate': self._feeder.localBasePlate}, self.__machine.saveToXml)
+                                     'basePlateId': int(
+                                         self.__strBasePlate.get()) if self.__strBasePlate.get() != 'Local' else 0,
+                                     'localBasePlate': self._feeder.localBasePlate}, self.__machine.saveToXml)
         self._feeder = newFeeder
         self.__machine.addFeeder(newFeeder)
         self.__machine.saveToXml()
@@ -865,7 +949,7 @@ class StripFeederFrame(tk.Frame):
         :return:
         """
         self.__basePlateList = ['Local'] + [str(feeder.id) for feeder in self.__machine.basePlateList]
-        del  self.__basePlateList[self.__basePlateList.index('0')]
+        del self.__basePlateList[self.__basePlateList.index('0')]
         menu = self._basePlateOm["menu"]
         menu.delete(0, "end")
         for basePlateStr in self.__basePlateList:
@@ -880,20 +964,21 @@ class StripFeederFrame(tk.Frame):
         for widget in self._basePlateDataFrame.winfo_children():
             widget.destroy()
 
-        #self._basePlateDataFrame.grid_forget()
+        # self._basePlateDataFrame.grid_forget()
         bp = self.__machine.getBasePlateById(basePlateId) if basePlateId != 0 else self._feeder.localBasePlate
 
         if bp:
             if bp.type == 'BasePlate':
-                 bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
-                                      controller=self._controller, commandFrame=False, logger=self.__logger)
-                 bpFrame.grid(row=0, column=0)
-                 if basePlateId:
+                bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
+                                                controller=self._controller, commandFrame=False, logger=self.__logger)
+                bpFrame.grid(row=0, column=0)
+                if basePlateId:
                     bpFrame.disableModification()
 
             elif bp.type == 'StripFeederBasePlate':
-                bpFrame =StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
-                                          controller=self._controller, commandFrame=False, logger=self.__logger)
+                bpFrame = StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
+                                                    controller=self._controller, commandFrame=False,
+                                                    logger=self.__logger)
                 bpFrame.grid(row=0, column=0)
                 if basePlateId:
                     bpFrame.disableModification()
@@ -902,7 +987,8 @@ class StripFeederFrame(tk.Frame):
         else:
             self.__logger.printCout(f'{basePlateId} Base plate not found')
 
-       # self._basePlateDataFrame.grid(row=1, column=0, columnspan=2)
+    # self._basePlateDataFrame.grid(row=1, column=0, columnspan=2)
+
 
 class StripFeederFrameOld(tk.Frame):
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
@@ -2102,7 +2188,7 @@ class BoardFrame(tk.Frame):
     Job frame.
     """
 
-    def __init__(self, fenetre, controller, **kwargs):
+    def __init__(self, fenetre, controller, logger, machine, **kwargs):
         tk.Frame.__init__(self, fenetre, **kwargs)
 
         self.controller = controller
@@ -2112,7 +2198,8 @@ class BoardFrame(tk.Frame):
         self._boardFrame = tk.LabelFrame(self, text="Board", labelanchor='n', padx=10, pady=0)
 
         self._paramBoardFrame = tk.LabelFrame(self._boardFrame, text="Parameters", labelanchor='n', padx=10, pady=0)
-        self._referenceFrame = tk.LabelFrame(self._boardFrame, text="References", labelanchor='n', padx=10, pady=0)
+        # self._referenceFrame = tk.LabelFrame(self._boardFrame, text="References", labelanchor='n', padx=10, pady=0)
+        self._referenceFrame = BoardBasePlateFrame(self._boardFrame, machine, logger, controller)
         # self._viewFrame = tk.LabelFrame(self, text="View", labelanchor='n', padx=10, pady=10)
         # self._testFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
         # self._paramFrame = tk.LabelFrame(self, text="Component", labelanchor='n',width=768, height=200, padx=10, pady=10)
@@ -2141,39 +2228,19 @@ class BoardFrame(tk.Frame):
         self._sizeY.grid(row=1, column=2)
         self._sizeZ.grid(row=1, column=3)
 
-        self._ref1 = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
-        self._ref2 = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
-        self._ref1X = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref1Y = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref2X = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref2Y = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='double')
-        self._ref1updt = ttk.Button(self._referenceFrame, command=self.__getPosRef1, text='Get Pos')
-        self._ref2updt = ttk.Button(self._referenceFrame, command=self.__getPosRef2, text='Get Pos')
+        # self._ref1 = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
+        # self._ref2 = CompleteEntry(self._referenceFrame, self.__paramBoardChange, varType='str')
 
-        tk.Label(self._referenceFrame, text="N°1").grid(row=1, column=0)
-        tk.Label(self._referenceFrame, text="N°2").grid(row=2, column=0)
-        tk.Label(self._referenceFrame, text="Ref").grid(row=0, column=1)
-        tk.Label(self._referenceFrame, text="X").grid(row=0, column=2)
-        tk.Label(self._referenceFrame, text="Y").grid(row=0, column=3)
-        self._ref1.grid(row=1, column=1)
-        self._ref1X.grid(row=1, column=2)
-        self._ref1Y.grid(row=1, column=3)
-        self._ref2.grid(row=2, column=1)
-        self._ref2X.grid(row=2, column=2)
-        self._ref2Y.grid(row=2, column=3)
-        self._ref1updt.grid(row=1, column=4)
-        self._ref2updt.grid(row=2, column=4)
+        # tk.Label(self._referenceFrame, text="Ref N°1").grid(row=1, column=0)
+        # tk.Label(self._referenceFrame, text="Ref N°2").grid(row=2, column=0)
+        # self._ref1.grid(row=1, column=1)
+        # self._ref2.grid(row=2, column=1)
 
     def setboardParam(self, board):
+        self._board = board
         self._sizeX.var = board.xSize
         self._sizeY.var = board.ySize
         self._sizeZ.var = board.zSize
-        self._ref1.var = board.ref1
-        self._ref2.var = board.ref2
-        self._ref1X.var = board.ref1RealPos['X']
-        self._ref1Y.var = board.ref1RealPos['Y']
-        self._ref2X.var = board.ref2RealPos['X']
-        self._ref2Y.var = board.ref2RealPos['Y']
 
         """ 
         bizare???
@@ -2192,12 +2259,6 @@ class BoardFrame(tk.Frame):
         self.controller.board.xSize = self._sizeX.var
         self.controller.board.ySize = self._sizeY.var
         self.controller.board.zSize = self._sizeZ.var
-        self.controller.board.ref1 = self._ref1.var
-        self.controller.board.ref2 = self._ref2.var
-        self.controller.board.ref1RealPos['X'] = self._ref1X.var
-        self.controller.board.ref1RealPos['Y'] = self._ref1Y.var
-        self.controller.board.ref2RealPos['X'] = self._ref2X.var
-        self.controller.board.ref2RealPos['Y'] = self._ref2Y.var
 
         self._boardDraw.drawBoard(self.controller.board, self.controller.modList)
 
@@ -2209,6 +2270,7 @@ class BoardFrame(tk.Frame):
         self.rootCmpFrame.setBoard(board)
         self.rootCmpFrame.filterApply()
         self._boardDraw.drawBoard(board, self.controller.modList)
+        self._referenceFrame.setBoard(board)
 
     def cmpHaveChanged(self, ref):
         """
@@ -2595,11 +2657,12 @@ class PnpIHM:
         logger.ihmDirect = self.ctrlWindow
 
         self.paramWindow = ParamFrame(self.mainWindow, self.ctrl.paramCtrl, self.ctrl.machineConfiguration)
-        self.feederWindow = FeederFrame(self.mainWindow, self.ctrl.machineConfiguration, logger, self.ctrl.boardCtrl, padx=10, pady=10)
+        self.feederWindow = FeederFrame(self.mainWindow, self.ctrl.machineConfiguration, logger, self.ctrl.boardCtrl,
+                                        padx=10, pady=10)
         self.basePlateWindow = BasePlateFrame(self.mainWindow, self.ctrl.machineConfiguration, logger,
                                               self.ctrl.boardCtrl)
 
-        self.brdWindow = BoardFrame(self.mainWindow, self.ctrl.boardCtrl)
+        self.brdWindow = BoardFrame(self.mainWindow, self.ctrl.boardCtrl, logger, self.ctrl.machineConfiguration)
         self.ctrl.boardCtrl.ihm = self.brdWindow
 
         self.dtbWindow = DtbFrame(self.mainWindow, self.ctrl.dtbCtrl)

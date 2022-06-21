@@ -64,7 +64,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>1</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>0</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_0>
@@ -92,7 +92,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>48</nextComponent>
         <stripIdInBasePlate>1</stripIdInBasePlate>
       </feeder_1>
@@ -120,7 +120,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>48</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_2>
@@ -148,7 +148,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>6</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_3>
@@ -176,7 +176,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>48</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_4>
@@ -204,7 +204,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>48</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_5>
@@ -232,7 +232,7 @@
           <vectorCmpZ>0.0</vectorCmpZ>
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
-        <componentStep>1</componentStep>
+        <componentStep>1.0</componentStep>
         <nextComponent>49</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_6>
@@ -278,8 +278,8 @@
         <ref0X>0.0</ref0X>
         <ref0Y>0.0</ref0Y>
         <ref0Z>0.0</ref0Z>
-        <ref1X>9.8</ref1X>
-        <ref1Y>10.196077677224707</ref1Y>
+        <ref1X>10.0</ref1X>
+        <ref1Y>10.0</ref1Y>
         <ref1Z>0.0</ref1Z>
         <vectorX>10.0</vectorX>
         <vectorY>10.0</vectorY>

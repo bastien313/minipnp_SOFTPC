@@ -44,34 +44,42 @@ class BasePlate:
     """
     Represent a plate put on machine with an offset(X, Y, Z) and an orientation.
     """
-
     def __init__(self, paramList):
         """
         :param realRef1: position of ref 1 (referance)
         :param realRef2: position of ref 2 (corector)
         :param vectorRef: vector theorical of ref2 - ref1
         """
+        self.buildBasePlateFromConfDict(paramList)
+
+    def configureFromXml(self, xmlRoot):
+        basePlateData = {}
+        for element in xmlRoot:
+            basePlateData[element.tag] = element.text
+        self.buildBasePlateFromConfDict(basePlateData)
+
+    def buildBasePlateFromConfDict(self, confDict):
         self._realRef = [
-            paramList['realRef1'] if 'realRef1' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0},
-            paramList['realRef2'] if 'realRef2' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
+            confDict['realRef1'] if 'realRef1' in confDict else {'X': 0.0, 'Y': 0.0, 'Z': 0.0},
+            confDict['realRef2'] if 'realRef2' in confDict else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
         ]
-        self._vectorRef = paramList['vectorRef'] if 'vectorRef' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
+        self._vectorRef = confDict['vectorRef'] if 'vectorRef' in confDict else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
         self._vectorRef['Z'] = 0.0 if 'Z' not in self._vectorRef else self._vectorRef['Z']
-        self._id = int(paramList['id']) if 'id' in paramList else 0
-        self._name = paramList['name'] if 'name' in paramList else 'Noname'
-        self._zRamp = float(paramList['zRamp']) if 'zRamp' in paramList else 0.0
-        self._rotationOffset = float(paramList['rotationOffset']) if 'rotationOffset' in paramList else 0.0
+        self._id = int(confDict['id']) if 'id' in confDict else 0
+        self._name = confDict['name'] if 'name' in confDict else 'Noname'
+        self._zRamp = float(confDict['zRamp']) if 'zRamp' in confDict else 0.0
+        self._rotationOffset = float(confDict['rotationOffset']) if 'rotationOffset' in confDict else 0.0
         self._type = 'BasePlate'
 
-        self._realRef[0]['X'] = float(paramList['ref0X']) if 'ref0X' in paramList else self._realRef[0]['X']
-        self._realRef[0]['Y'] = float(paramList['ref0Y']) if 'ref0Y' in paramList else self._realRef[0]['Y']
-        self._realRef[0]['Z'] = float(paramList['ref0Z']) if 'ref0Z' in paramList else self._realRef[0]['Z']
-        self._realRef[1]['X'] = float(paramList['ref1X']) if 'ref1X' in paramList else self._realRef[1]['X']
-        self._realRef[1]['Y'] = float(paramList['ref1Y']) if 'ref1Y' in paramList else self._realRef[1]['Y']
-        self._realRef[1]['Z'] = float(paramList['ref1Z']) if 'ref1Z' in paramList else self._realRef[1]['Z']
-        self._vectorRef['X'] = float(paramList['vectorX']) if 'vectorX' in paramList else self._vectorRef['X']
-        self._vectorRef['Y'] = float(paramList['vectorY']) if 'vectorY' in paramList else self._vectorRef['Y']
-        self._vectorRef['Z'] = float(paramList['vectorZ']) if 'vectorZ' in paramList else self._vectorRef['Z']
+        self._realRef[0]['X'] = float(confDict['ref0X']) if 'ref0X' in confDict else self._realRef[0]['X']
+        self._realRef[0]['Y'] = float(confDict['ref0Y']) if 'ref0Y' in confDict else self._realRef[0]['Y']
+        self._realRef[0]['Z'] = float(confDict['ref0Z']) if 'ref0Z' in confDict else self._realRef[0]['Z']
+        self._realRef[1]['X'] = float(confDict['ref1X']) if 'ref1X' in confDict else self._realRef[1]['X']
+        self._realRef[1]['Y'] = float(confDict['ref1Y']) if 'ref1Y' in confDict else self._realRef[1]['Y']
+        self._realRef[1]['Z'] = float(confDict['ref1Z']) if 'ref1Z' in confDict else self._realRef[1]['Z']
+        self._vectorRef['X'] = float(confDict['vectorX']) if 'vectorX' in confDict else self._vectorRef['X']
+        self._vectorRef['Y'] = float(confDict['vectorY']) if 'vectorY' in confDict else self._vectorRef['Y']
+        self._vectorRef['Z'] = float(confDict['vectorZ']) if 'vectorZ' in confDict else self._vectorRef['Z']
 
     def setRealRef(self, position, refId):
         self._realRef[refId] = position
@@ -198,21 +206,32 @@ class BasePlate:
 
 
 class BasePlateForStripFeeder(BasePlate):
-    def __init__(self, paramList):
-        if not 'vectorRef' in paramList:
-            paramList['vectorRef'] = {'X': 73.2, 'Y': 196.0}
-        BasePlate.__init__(self, paramList)
-        self._stripStep = float(paramList['stripStep']) if 'stripStep' in paramList else 10.6
-        self._vectorFirstCmp = paramList['vectorFistCmp'] if 'vectorFistCmp' in paramList else {'X': 6.2295,
+    def __init__(self, confDict):
+        if not 'vectorRef' in confDict:
+            confDict['vectorRef'] = {'X': 73.2, 'Y': 196.0}
+        BasePlate.__init__(self, confDict)
+        self.buildBasePlateFromConfDict(confDict)
+
+
+    def configureFromXml(self, xmlRoot):
+        basePlateData = {}
+        for element in xmlRoot:
+            basePlateData[element.tag] = element.text
+        self._buildBasePlateFromConfDict(basePlateData)
+
+    def buildBasePlateFromConfDict(self, confDict):
+        BasePlate.buildBasePlateFromConfDict(self, confDict)
+        self._stripStep = float(confDict['stripStep']) if 'stripStep' in confDict else 10.6
+        self._vectorFirstCmp = confDict['vectorFistCmp'] if 'vectorFistCmp' in confDict else {'X': 6.2295,
                                                                                                 'Y': 196.16, 'Z': 0.0}
         self._type = 'StripFeederBasePlate'
-
-        self._vectorFirstCmp['X'] = float(paramList['vectorCmpX']) if 'vectorX' in paramList else self._vectorFirstCmp[
+        self._vectorFirstCmp['X'] = float(confDict['vectorCmpX']) if 'vectorX' in confDict else self._vectorFirstCmp[
             'X']
-        self._vectorFirstCmp['Y'] = float(paramList['vectorCmpY']) if 'vectorY' in paramList else self._vectorFirstCmp[
+        self._vectorFirstCmp['Y'] = float(confDict['vectorCmpY']) if 'vectorY' in confDict else self._vectorFirstCmp[
             'Y']
-        self._vectorFirstCmp['Z'] = float(paramList['vectorCmpZ']) if 'vectorZ' in paramList else self._vectorFirstCmp[
+        self._vectorFirstCmp['Z'] = float(confDict['vectorCmpZ']) if 'vectorZ' in confDict else self._vectorFirstCmp[
             'Z']
+
 
     def getTheoricalFirstCmpPosition(self, stripId):
         """
@@ -225,8 +244,6 @@ class BasePlateForStripFeeder(BasePlate):
             'Y': self._realRef[0]['Y'] + self._vectorFirstCmp['Y'],
             'Z': self._realRef[0]['Z'] + self._vectorFirstCmp['Z']
         }
-
-
 
     def saveInLxml(self, rootLxml):
         bpRoot = BasePlate.saveInLxml(self, rootLxml)
@@ -247,6 +264,7 @@ class BasePlateForStripFeeder(BasePlate):
 
     def setVectorFirstCmp(self, vector):
         self._vectorFirstCmp = vector
+
 
 
 class Feeder:
@@ -302,8 +320,8 @@ class Feeder:
 
 
 class CompositeFeeder(Feeder):
-    def __init__(self, paramList, saveMachineFunction):
-        Feeder.__init__(self, paramList, saveMachineFunction)
+    def __init__(self, paramList, machine):
+        Feeder.__init__(self, paramList=paramList, machine=machine)
         self.type = 'compositefeeder'
         self.feederList = paramList['feederList'] if 'feederList' in paramList else []
         self._precedentFeederPickup = 0  # last feeder which user request position.
@@ -354,8 +372,8 @@ class CompositeFeeder(Feeder):
 
 
 class StripFeeder(Feeder):
-    def __init__(self,machine, paramList):
-        Feeder.__init__(self,machine, paramList)
+    def __init__(self, machine, paramList):
+        Feeder.__init__(self, machine=machine, paramList=paramList)
         self.type = 'stripfeeder'
         self.componentPerStrip = int(paramList['componentPerStrip']) if 'componentPerStrip' in paramList else 1
         self.localBasePlate = paramList['localBasePlate'] if 'localBasePlate' in paramList else BasePlateForStripFeeder(
@@ -372,12 +390,8 @@ class StripFeeder(Feeder):
         etree.SubElement(feederRoot, 'nextComponent').text = str(self.nextComponent)
         etree.SubElement(feederRoot, 'stripIdInBasePlate').text = str(self.stripIdInBasePlate)
 
-    def __getCorrectedPosition(self, cmpId):
-        basePlate = self.localBasePlate if self.basePlateId == 0 else
-        firstCmpPosTheor = getTheoricalFirstCmpPosition(self, stripId):
-
-    @deprecated
-    def __getCorrectedPositionLinear(self, cmpId):
+    """
+        def __getCorrectedPositionLinear(self, cmpId):
         xRamp = (self.endPos['X'] - self.pos['X']) / (self.componentPerStrip - 1)
         yRamp = (self.endPos['Y'] - self.pos['Y']) / (self.componentPerStrip - 1)
 
@@ -400,11 +414,18 @@ class StripFeeder(Feeder):
         correctedCmpPos['C'] = math.degrees(angleOffset)
 
         return correctedCmpPos
+    """
 
     def getPositionById(self, cmpId, stripId=0):
-        recalculatePosition = self.__getCorrectedPositionLinear(cmpId)
-        return {'X': recalculatePosition['X'], 'Y': recalculatePosition['Y'], 'Z': self.pos['Z'],
-                'C': recalculatePosition['C']}
+        """
+        Return the réal position of selected component.
+        'C' contain the  rotation correction.
+        """
+        basePlate = self.localBasePlate if self.basePlateId == 0 else self._machine.getBasePlateById(self.basePlateId)
+        firstCmpPosTheor = basePlate.getTheoricalFirstCmpPosition(self.stripIdInBasePlate)
+        firstCmpPosTheor['Y'] -= self.nextComponent * self.componentStep
+        realPoint = basePlate.getPointCorrected(firstCmpPosTheor)
+        realPoint['C'] = basePlate.getRotationOffset()
 
     def getComponentPosition(self):
         """
@@ -434,21 +455,10 @@ class StripFeeder(Feeder):
         self.nextComponent = 0
         self._haveComponent = True
 
-class StripFeederBasePlate(Feeder):
-    def __init__(self, paramList, saveMachineFunction):
-        Feeder.__init__(self, paramList, saveMachineFunction)
-        self.type = 'stripfeederbaseplate'
-        self.componentPerStrip = int(paramList['componentPerStrip']) if 'componentPerStrip' in paramList else 1
-        self.componentStep = float(paramList['componentStep']) if 'componentStep' in paramList else 1
-
-        # Adress of next component to be picked up
-        self.nextComponent = int(paramList['nextComponent']) if 'nextComponent' in paramList else 0
-
-
 
 class ReelFeeder(Feeder):
-    def __init__(self, paramList, saveMachineFunction):
-        Feeder.__init__(self, paramList, saveMachineFunction)
+    def __init__(self, paramList, machine):
+        Feeder.__init__(self, paramList=paramList, machine=machine)
         self.type = 'reelfeeder'
         self.I2Caddr = int(paramList['I2Caddr']) if 'I2Caddr' in paramList else 0xFF
         self.step = float(paramList['step']) if 'step' in paramList else 1.0
@@ -616,18 +626,17 @@ class MachineConf:
         else:
             del feederData['basePlate_0']
 
-
         feederData['id'] = int(idFeeder)
         # create feeder
         if feederData['type'] == 'feeder':
-            self.addFeeder(Feeder(feederData, self))
+            self.addFeeder(Feeder(paramList=feederData, machine=self))
         elif feederData['type'] == 'reelfeeder':
-            self.addFeeder(ReelFeeder(feederData, self))
+            self.addFeeder(ReelFeeder(paramList=feederData, machine=self))
         elif feederData['type'] == 'stripfeeder':
-            self.addFeeder(StripFeeder(feederData, self))
+            self.addFeeder(StripFeeder(paramList=feederData, machine=self))
         elif feederData['type'] == 'compositefeeder':
             feederData['feederList'] = self.makeFilteredFeederList(feederData['feederListStr'])
-            self.addFeeder(CompositeFeeder(feederData, self))
+            self.addFeeder(CompositeFeeder(paramList=feederData, machine=self))
 
     def __basePlateLoadFromXml(self, idBp, bpRoot, addTobasePlateList=True):
         """
