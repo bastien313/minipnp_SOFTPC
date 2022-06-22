@@ -3,7 +3,6 @@ import deprecated
 from lxml import etree
 import xmledit as xe
 import logger as lg
-import Corrector as cr
 
 
 class FeederNotFound(Exception):

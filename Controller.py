@@ -5,6 +5,7 @@ import database as dtb
 import machine as mch
 from deprecated import deprecated
 import job
+import Gamepad as gp
 import misc
 
 
@@ -261,6 +262,22 @@ class BoardController:
         self.__machineConf = machineConf
         self.__littleJob = job.ThreadJobExecutor()
         self.__longJob = job.ThreadJobExecutor()
+
+    def panelizeBoard(self, countX, countY, offsetX, offsetY):
+        self.board.panelize(countX, countY, offsetX, offsetY)
+        self.ihm.bomCreate(self.board)
+
+    def boardRotation(self, rotation):
+        self.board.boardRotation(rotation)
+        self.ihm.bomCreate(self.board)
+
+    def boardVerticalMirror(self):
+        self.board.verticalMirror()
+        self.ihm.bomCreate(self.board)
+
+    def boardHorizontalMirror(self):
+        self.board.horizontalMirror()
+        self.ihm.bomCreate(self.board)
 
     def initIHMcallBack(self):
         self.ihm.jobFrame.setBuildCallBack(self.buildLongJob)
@@ -977,6 +994,11 @@ class PnpConroller:
 
         self.directCtrl.setJobIsRunningCb(self.jobIsRunning)
 
+        self.gamePad = gp.AppGamepad()
+        self.gamePad.setPresCallBack('Connection', lambda:print('Gamepad connected'))
+        self.gamePad.setReleaseCallBack('Connection', lambda:print('Gamepad disconnected'))
+        self.gamePad.start()
+
     def setTopIHM(self, ihm):
         self.ihm = ihm
 
@@ -1001,20 +1023,36 @@ class PnpConroller:
 
     def bindInit(self):
         toto = 'fais caca'
-        """self.ihm.setBind(event='KeyPress', key='Right', calBack=self.directCtrl.xpPress)
-        self.ihm.setBind(event='KeyRelease', key='Right', calBack=self.directCtrl.xRelease)
-        self.ihm.setBind(event='KeyPress', key='Left', calBack=self.directCtrl.xmPress)
-        self.ihm.setBind(event='KeyRelease', key='Left', calBack=self.directCtrl.xRelease)
-        self.ihm.setBind(event='KeyPress', key='Up', calBack=self.directCtrl.ypPress)
-        self.ihm.setBind(event='KeyRelease', key='Up', calBack=self.directCtrl.yRelease)
-        self.ihm.setBind(event='KeyPress', key='Down', calBack=self.directCtrl.ymPress)
-        self.ihm.setBind(event='KeyRelease', key='Down', calBack=self.directCtrl.yRelease)
-        self.ihm.setBind(event='KeyPress', key='Prior', calBack=self.directCtrl.zpPress)  # page Up
-        self.ihm.setBind(event='KeyRelease', key='Prior', calBack=self.directCtrl.zRelease)  # page up
-        self.ihm.setBind(event='KeyPress', key='Next', calBack=self.directCtrl.zmPress)  # page down
-        self.ihm.setBind(event='KeyRelease', key='Next', calBack=self.directCtrl.zRelease)  # page down
-        self.ihm.setBind(event='KeyPress', key='Home', calBack=self.directCtrl.cpPress)  # Debut
-        self.ihm.setBind(event='KeyRelease', key='Home', calBack=self.directCtrl.cRelease)  # Debut
-        self.ihm.setBind(event='KeyPress', key='End', calBack=self.directCtrl.cmPress)  # Fin
-        self.ihm.setBind(event='KeyRelease', key='End', calBack=self.directCtrl.cRelease)  # Fin
-        """
+        self.ihm.setBind(event='<Control-KeyPress-Right>', calBack=self.directCtrl.xpPress)
+        self.ihm.setBind(event='<Control-KeyRelease-Right>', calBack=self.directCtrl.xRelease)
+        self.ihm.setBind(event='<Control-KeyPress-Left>', calBack=self.directCtrl.xmPress)
+        self.ihm.setBind(event='<Control-KeyRelease-Left>', calBack=self.directCtrl.xRelease)
+        self.ihm.setBind(event='<Control-KeyPress-Up>', calBack=self.directCtrl.ypPress)
+        self.ihm.setBind(event='<Control-KeyRelease-Up>', calBack=self.directCtrl.yRelease)
+        self.ihm.setBind(event='<Control-KeyPress-Down>', calBack=self.directCtrl.ymPress)
+        self.ihm.setBind(event='<Control-KeyRelease-Down>', calBack=self.directCtrl.yRelease)
+        self.ihm.setBind(event='<Control-KeyPress-Prior>', calBack=self.directCtrl.zpPress)  # page Up
+        self.ihm.setBind(event='<Control-KeyRelease-Prior>', calBack=self.directCtrl.zRelease)  # page up
+        self.ihm.setBind(event='<Control-KeyPress-Next>', calBack=self.directCtrl.zmPress)  # page down
+        self.ihm.setBind(event='<Control-KeyRelease-Next>', calBack=self.directCtrl.zRelease)  # page down
+        self.ihm.setBind(event='<Control-KeyPress-Home>', calBack=self.directCtrl.cpPress)  # Debut
+        self.ihm.setBind(event='<Control-KeyRelease-Home>', calBack=self.directCtrl.cRelease)  # Debut
+        self.ihm.setBind(event='<Control-KeyPress-End>', calBack=self.directCtrl.cmPress)  # Fin
+        self.ihm.setBind(event='<Control-KeyRelease-End>', calBack=self.directCtrl.cRelease)  # Fin
+
+        self.gamePad.setPresCallBack('DPAD_RIGHT', self.directCtrl.xpPress)
+        self.gamePad.setReleaseCallBack('DPAD_RIGHT', calBack=self.directCtrl.xRelease)
+        self.gamePad.setPresCallBack('DPAD_LEFT', self.directCtrl.xmPress)
+        self.gamePad.setReleaseCallBack('DPAD_LEFT', calBack=self.directCtrl.xRelease)
+        self.gamePad.setPresCallBack('DPAD_UP', self.directCtrl.ypPress)
+        self.gamePad.setReleaseCallBack('DPAD_UP', calBack=self.directCtrl.yRelease)
+        self.gamePad.setPresCallBack('DPAD_DOWN', self.directCtrl.ymPress)
+        self.gamePad.setReleaseCallBack('DPAD_DOWN', calBack=self.directCtrl.yRelease)
+        self.gamePad.setPresCallBack('DPAD_RIGHT', self.directCtrl.xpPress)
+        self.gamePad.setReleaseCallBack('DPAD_RIGHT', calBack=self.directCtrl.xRelease)
+        self.gamePad.setPresCallBack('DPAD_RIGHT', self.directCtrl.xpPress)
+        self.gamePad.setReleaseCallBack('DPAD_RIGHT', calBack=self.directCtrl.xRelease)
+
+
+
+

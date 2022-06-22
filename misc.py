@@ -1,3 +1,5 @@
+import math
+
 class Point4D:
     def __init__(self, x=0, y=0, z=0, c=0):
         self.x = x
@@ -23,3 +25,23 @@ class Point4D:
         :return:
         """
         return {'X': self.x, 'Y': self.y, 'Z': self.z, 'C': self.c}
+
+
+
+def normalizeAngle(angle):
+    """
+    :param angle:in degrees (float)
+    :return: (float) Angle in degrees in [-180, 180]
+    """
+    angle = math.radians(angle)
+
+    while angle > math.pi:
+        angle -= 2.0 * math.pi
+
+    while angle < -math.pi:
+        angle += 2.0 * math.pi
+
+    return math.degrees(angle)
+
+
+print(normalizeAngle(359))

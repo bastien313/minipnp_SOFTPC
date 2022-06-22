@@ -2641,6 +2641,61 @@ class DebugFrame(tk.Frame):
         c.config(scrollregion=c.bbox("all"))
 
 
+class PanelizeFrame(tk.Frame):
+    def __init__(self, fenetre, logger, controller, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+
+        self._controller = controller
+
+        self._countXEntry = CompleteEntry(frame=self, varType='int')
+        self._countYEntry = CompleteEntry(frame=self, varType='int')
+        self._offsetXEntry = CompleteEntry(frame=self, varType='double')
+        self._offsetYEntry = CompleteEntry(frame=self, varType='double')
+        self._paneliseBtn = tk.Button(self, text='Panelize', command=self._localBtnCb)
+
+        tk.Label(self, text='Count').grid(row=0, column=1)
+        tk.Label(self, text='Offset').grid(row=0, column=2)
+        tk.Label(self, text='X').grid(row=1, column=0)
+        tk.Label(self, text='Y').grid(row=2, column=0)
+
+        self._countXEntry.grid(row=1, column=1)
+        self._countYEntry.grid(row=2, column=1)
+        self._offsetXEntry.grid(row=1, column=2)
+        self._offsetYEntry.grid(row=2, column=2)
+        self._paneliseBtn.grid(row=3, column=2)
+
+    def _localBtnCb(self):
+        self._controller.panelizeBoard(countX=self._countXEntry.var, countY=self._countYEntry.var,
+                                       offsetX=self._offsetXEntry.var, offsetY=self._offsetYEntry.var)
+
+
+class BoardTransformFrame(tk.Frame):
+    def __init__(self, fenetre, logger, controller, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+
+        self._controller = controller
+
+        self._rotateEntry = CompleteEntry(frame=self, varType='double')
+        self._applyRotateBtn = tk.Button(self, text='Apply rotation', command=self._rotation)
+        self._applyHMirrorBtn = tk.Button(self, text='Apply horizontal mirror', command=self._horizontalMirror)
+        self._applyVMirrorBtn = tk.Button(self, text='Apply vertical mirror', command=self._verticalMirror)
+
+        tk.Label(self, text='Rotation in deg').grid(row=0, column=0)
+        self._rotateEntry.grid(row=1, column=0)
+        self._applyRotateBtn.grid(row=1, column=1)
+        self._applyHMirrorBtn.grid(row=2, column=1)
+        self._applyVMirrorBtn.grid(row=3, column=1)
+
+    def _rotation(self):
+        self._controller.boardRotation(self._rotateEntry.var)
+
+    def _verticalMirror(self):
+        self._controller.boardVerticalMirror()
+
+    def _horizontalMirror(self):
+        self._controller.boardHorizontalMirror()
+
+
 class PnpIHM:
     """High level class for IHM view
     """
@@ -2669,16 +2724,20 @@ class PnpIHM:
         self.debugWindow = DebugFrame(self.mainWindow)
 
         self.scanWindow = ScanFrame(self.mainWindow, logger)
+        self.panelizeWindow = PanelizeFrame(self.mainWindow, logger, self.ctrl.boardCtrl)
+        self.boardTransformWindow = BoardTransformFrame(self.mainWindow,logger, self.ctrl.boardCtrl)
 
         self.topMenuBar = tk.Menu(self.mainWindow)
         self._menuFile = tk.Menu(self.topMenuBar, tearoff=0)
         self._menuTableTop = tk.Menu(self.topMenuBar, tearoff=0)
+        self._menuTools = tk.Menu(self.topMenuBar, tearoff=0)
 
         self.topMenuBar.add_cascade(label="File ", menu=self._menuFile)
         self.topMenuBar.add_command(label="Board ", command=self.initBoardMenu, state='disabled')
         self.topMenuBar.add_command(label="DataBase", command=self.initDtbMenu)
         self.topMenuBar.add_command(label="Control", command=self.initCtrlMenu)
         self.topMenuBar.add_cascade(label="TableTop", menu=self._menuTableTop)
+        self.topMenuBar.add_cascade(label="Tools", menu=self._menuTools)
         self.topMenuBar.add_command(label="Debug", command=self.initDebugMenu)
         self.mainWindow.config(menu=self.topMenuBar)
 
@@ -2695,6 +2754,9 @@ class PnpIHM:
         self._menuTableTop.add_command(label="Scan ", command=self.initScanMenu)
         self._menuTableTop.add_separator()
         self._menuTableTop.add_command(label="Save ", command=self.ctrl.machineConfiguration.saveToXml)
+
+        self._menuTools.add_command(label="Panelize ", state='disabled', command=self.initPanelizeMenu)
+        self._menuTools.add_command(label="Board transfrom ", state='disabled', command=self.initBoardTransformMenu)
 
         self._statusLabel = tk.Label(self.mainWindow, text='Searching device...', font='Arial 20 bold')
         self.actualFrame = self.paramWindow
@@ -2778,6 +2840,22 @@ class PnpIHM:
             self.actualFrame = self.scanWindow;
             self._statusLabel.pack()
 
+    def initPanelizeMenu(self):
+        if self.actualFrame is not self.panelizeWindow:
+            self.actualFrame.pack_forget()
+            self._statusLabel.pack_forget()
+            self.panelizeWindow.pack()
+            self.actualFrame = self.panelizeWindow;
+            self._statusLabel.pack()
+
+    def initBoardTransformMenu(self):
+        if self.actualFrame is not self.boardTransformWindow:
+            self.actualFrame.pack_forget()
+            self._statusLabel.pack_forget()
+            self.boardTransformWindow.pack()
+            self.actualFrame = self.boardTransformWindow;
+            self._statusLabel.pack()
+
     def importFile(self):
         """
         Crate a new program with a pos file créated by CAO.
@@ -2804,6 +2882,9 @@ class PnpIHM:
         self._menuFile.entryconfigure("Save ", state=state)
         self._menuFile.entryconfigure("Save As ", state=state)
         self.topMenuBar.entryconfigure('Board ', state=state)
+        self._menuTools.entryconfigure('Panelize ', state=state)
+        self._menuTools.entryconfigure('Board transfrom ', state=state)
+        #self.panelizeWindow.setPaneliseCallBack(self.ctrl.boardCtrl.panelizeBoard)
 
     def setStatusLabel(self, text):
         self._statusLabel['text'] = text

@@ -1,22 +1,27 @@
 import math
-
 import database as dtb
-from Corrector import Corrector
 from deprecated import deprecated
+import copy
+import misc
 
 
-class component:
+class Component:
     def __init__(self, cmpConf):
-        self.posX = float(cmpConf['X'])
-        self.posY = float(cmpConf['Y'])
-        self.rot = float(cmpConf['T'])
-        self.ref = cmpConf['REF']
-        self.value = cmpConf['VAL']
-        self.package = cmpConf['MOD']
-        self.model = "Null"
-        self.feeder = "Null"
-        self.isPlaced = 0
-        self.isEnable = 1
+        self.posX = float(cmpConf['posX']) if 'posX' in cmpConf else 0.0
+        self.posY = float(cmpConf['posY']) if 'posY' in cmpConf else 0.0
+        self.rot = float(cmpConf['angle']) if 'angle' in cmpConf else 0.0
+        self.ref = cmpConf['ref'] if 'ref' in cmpConf else 'noname'
+        self.originalRef = cmpConf['originalRef'] if 'originalRef' in cmpConf else cmpConf[
+            'ref'] if 'ref' in cmpConf else 'noname'
+        self.value = cmpConf['value'] if 'value' in cmpConf else ''
+        self.package = cmpConf['package'] if 'package' in cmpConf else ''
+        self.model = cmpConf['model'] if 'model' in cmpConf else ''
+        self.feeder = cmpConf['feeder'] if 'feeder' in cmpConf else ''
+        self.isPlaced = int(cmpConf['placed']) if 'placed' in cmpConf else 0
+        self.isEnable = int(cmpConf['enable']) if 'enable' in cmpConf else 0
+        self.isOriginal = int(cmpConf['original']) if 'original' in cmpConf else 1
+
+        self.rot = misc.normalizeAngle(self.rot)
 
     def __str__(self):
         return "{} = X:{}, Y:{}, T:{}, Val:{}, Mod:{}\n".format(self.ref, self.posX, self.posY, self.rot, self.value,
@@ -44,8 +49,8 @@ class Board:
 
         self.ref1 = "Null"
         self.ref2 = "Null"
-        #self.ref1RealPos = {'X': 0, 'Y': 0}
-        #self.ref2RealPos = {'X': 0, 'Y': 0}
+        # self.ref1RealPos = {'X': 0, 'Y': 0}
+        # self.ref2RealPos = {'X': 0, 'Y': 0}
         self.logger = logger
         self.filter = {'value': '', 'ref': '', 'package': '', 'model': '', 'placed': '', 'enable': ''}
 
@@ -80,11 +85,11 @@ class Board:
                 cmpParam['X'] = paramList[dicConf['X']]
                 cmpParam['Y'] = paramList[dicConf['Y']]
                 cmpParam['T'] = paramList[dicConf['T']]
-                cmpParam['REF'] = paramList[dicConf['REF']].replace('\"', '')
+                cmpParam['originalREF'] = paramList[dicConf['originalREF']].replace('\"', '')
                 cmpParam['VAL'] = paramList[dicConf['VAL']].replace('\"', '')
                 cmpParam['MOD'] = paramList[dicConf['MOD']].replace('\"', '')
 
-                self.cmpDic[cmpParam['REF'].replace('\"', '')] = component(cmpParam)
+                self.cmpDic[cmpParam['originalREF'].replace('\"', '')] = Component(cmpParam)
             else:
                 loop = 0
         self.__importOffset()
@@ -116,131 +121,11 @@ class Board:
         }
         return self.localBasePlate.getPointCorrected(theoreticalMachineCompPos)
 
-
-    def getMachineCmpPos_old_old(self, ref):
-        """
-        Return the machine coord position of component.
-        :return:
-        """
-        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posX, 'Y': self.cmpDic[self.ref1].posY}
-        theoreticalPosRef2 = {'X': self.cmpDic[self.ref2].posX, 'Y': self.cmpDic[self.ref2].posY}
-        realPosRef1 = self.ref1RealPos
-        realPosRef2 = self.ref2RealPos
-
-
-        # Recaled position of ref2 when ref1 = 0,0
-        theoreticalPosRef2Recal = {'X': theoreticalPosRef2['X'] - theoreticalPosRef1['X'],
-                                   'Y': theoreticalPosRef2['Y'] - theoreticalPosRef1['Y']}
-        realPosRef2Recal = {'X': realPosRef2['X'] - realPosRef1['X'],
-                            'Y': realPosRef2['Y'] - realPosRef1['Y']}
-
-        rapx = realPosRef2Recal['X'] / theoreticalPosRef2Recal['X']
-        rapy = realPosRef2Recal['Y'] / theoreticalPosRef2Recal['Y']
-
-        theoreticalAngle = math.atan2(theoreticalPosRef2Recal['Y'], theoreticalPosRef2Recal['X'])
-        realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
-        angleOffset = realAngleLastPoint - theoreticalAngle
-
-        cmpPosTheoretical = {'X': self.cmpDic[ref].posX, 'Y': self.cmpDic[ref].posY}
-        cmpPosTheoreticalRecaled = {'X': cmpPosTheoretical['X'] - theoreticalPosRef1['X'],
-                                    'Y': cmpPosTheoretical['Y'] - theoreticalPosRef1['Y']}
-
-        correctedCmpPos = {'X': cmpPosTheoreticalRecaled['X'] * rapx,
-                           'Y': cmpPosTheoreticalRecaled['Y'] * rapy}
-
-        cmpHypot = math.sqrt(cmpPosTheoreticalRecaled['X'] * cmpPosTheoreticalRecaled['X']
-                             + cmpPosTheoreticalRecaled['Y'] * cmpPosTheoreticalRecaled['Y'])
-
-        theoreticalAngleCmp = math.atan2(cmpPosTheoreticalRecaled['Y'] , cmpPosTheoreticalRecaled['X'])
-        realAngleCmp = theoreticalAngleCmp + angleOffset
-
-
-        # Compute corrected position
-        #correctedCmpPos = {'X': math.cos(realAngleCmp) * cmpHypot, 'Y': math.sin(realAngleCmp) * cmpHypot}
-        #Recal to machine coord
-        correctedCmpPos['X'] += realPosRef1['X']
-        correctedCmpPos['Y'] += realPosRef1['Y']
-        correctedCmpPos['C'] = self.cmpDic[ref].rot + math.degrees(angleOffset)
-        print(correctedCmpPos)
-        return correctedCmpPos
-
-    def getMachineCmpPos_old(self, ref):
-        """
-        Return the machine coord position of component.
-        :return:
-        """
-        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posX, 'Y': self.cmpDic[self.ref1].posY}
-        theoreticalPosRef2 = {'X': self.cmpDic[self.ref2].posX, 'Y': self.cmpDic[self.ref2].posY}
-        realPosRef1 = self.ref1RealPos
-        realPosRef2 = self.ref2RealPos
-
-        # Recaled position of ref2 when ref1 = 0,0
-        theoreticalPosRef2Recal = {'X': theoreticalPosRef2['X'] - theoreticalPosRef1['X'],
-                                   'Y': theoreticalPosRef2['Y'] - theoreticalPosRef1['Y']}
-        realPosRef2Recal = {'X': realPosRef2['X'] - realPosRef1['X'],
-                            'Y': realPosRef2['Y'] - realPosRef1['Y']}
-
-        #theoreticalAngle = math.atan2(theoreticalPosRef2Recal['Y'], theoreticalPosRef2Recal['X'])
-        hypot = math.sqrt(theoreticalPosRef2Recal['X'] * theoreticalPosRef2Recal['X']
-                             + theoreticalPosRef2Recal['Y'] * theoreticalPosRef2Recal['Y'])
-        theoreticalAngle = math.asin(theoreticalPosRef2Recal['Y']/hypot)
-        #realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
-        hypot = math.sqrt(realPosRef2Recal['X'] * realPosRef2Recal['X']
-                             + realPosRef2Recal['Y'] * realPosRef2Recal['Y'])
-        realAngleLastPoint = math.asin(realPosRef2Recal['Y']/hypot)
-        angleOffset = realAngleLastPoint - theoreticalAngle
-
-        cmpPosTheoretical = {'X': self.cmpDic[ref].posX, 'Y': self.cmpDic[ref].posY}
-        cmpPosTheoreticalRecaled = {'X': cmpPosTheoretical['X'] - theoreticalPosRef1['X'],
-                                    'Y': cmpPosTheoretical['Y'] - theoreticalPosRef1['Y']}
-
-        cmpHypot = math.sqrt(cmpPosTheoreticalRecaled['X'] * cmpPosTheoreticalRecaled['X']
-                             + cmpPosTheoreticalRecaled['Y'] * cmpPosTheoreticalRecaled['Y'])
-
-        #theoreticalAngleCmp = math.atan2(cmpPosTheoreticalRecaled['Y'] , cmpPosTheoreticalRecaled['X'])
-        hypot = math.sqrt(cmpPosTheoreticalRecaled['X'] * cmpPosTheoreticalRecaled['X']
-                             + cmpPosTheoreticalRecaled['Y'] * cmpPosTheoreticalRecaled['Y'])
-        theoreticalAngleCmp = math.asin(cmpPosTheoreticalRecaled['Y']/hypot)
-        realAngleCmp = theoreticalAngleCmp + angleOffset
-
-        # Compute corrected position
-        correctedCmpPos = {'X': math.cos(realAngleCmp) * cmpHypot, 'Y': math.sin(realAngleCmp) * cmpHypot}
-        #correctedCmpPos = {}
-        #correctedCmpPos['X'] = math.cos(angleOffset)*cmpPosTheoreticalRecaled['X'] - \
-        #                       math.sin(angleOffset)*cmpPosTheoreticalRecaled['Y']
-        #correctedCmpPos['Y'] = math.sin(angleOffset)*cmpPosTheoreticalRecaled['X'] + \
-        #                       math.cos(angleOffset)*cmpPosTheoreticalRecaled['Y']
-        #Recal to machine coord
-        correctedCmpPos['X'] += realPosRef1['X']
-        correctedCmpPos['Y'] += realPosRef1['Y']
-        correctedCmpPos['C'] = self.cmpDic[ref].rot + math.degrees(angleOffset)
-        print(correctedCmpPos)
-        return correctedCmpPos
-
     def __calcAngle(self):
-        theoreticalPosRef1 = {'X': self.cmpDic[self.ref1].posX, 'Y': self.cmpDic[self.ref1].posY}
-        theoreticalPosRef2 = {'X': self.cmpDic[self.ref2].posX, 'Y': self.cmpDic[self.ref2].posY}
-        realPosRef1 = self.ref1RealPos
-        realPosRef2 = self.ref2RealPos
-
-        # Recaled position of ref2 when ref1 = 0,0
-        theoreticalPosRef2Recal = {'X': theoreticalPosRef2['X'] - theoreticalPosRef1['X'],
-                                   'Y': theoreticalPosRef2['Y'] - theoreticalPosRef1['Y']}
-        realPosRef2Recal = {'X': realPosRef2['X'] - realPosRef1['X'],
-                            'Y': realPosRef2['Y'] - realPosRef1['Y']}
-
-        theoreticalAngle = math.atan2(theoreticalPosRef2Recal['Y'], theoreticalPosRef2Recal['X'])
-        realAngleLastPoint = math.atan2(realPosRef2Recal['Y'], realPosRef2Recal['X'])
-        angleOffset = realAngleLastPoint - theoreticalAngle
-        return angleOffset
-
-    def setRef1(self, ref, pos):
-        self.ref1 = ref
-        self.ref1RealPos = pos
-
-    def setRef2(self, ref, pos):
-        self.ref2 = ref
-        self.ref2RealPos = pos
+        """
+        Return angle correction in degree.
+        """
+        return math.degrees(self.localBasePlate.getRotationOffset())
 
     def save(self):
         dtb.boardSave(self, self.path)
@@ -273,7 +158,65 @@ class Board:
     def values(self):
         return self.cmpDic.values()
 
-    def values(self):
-        return self.cmpDic.values()
+    def horizontalMirror(self):
+        """
+        Apply an horizontal mirror of entire board
+        """
+        for cmp in self.cmpDic.values():
+            cmp.posY = 0.0 - cmp.posY
+            cmp.rot += 180.0
+            cmp.rot = misc.normalizeAngle(cmp.rot)
+        self.__importOffset()
+        self.logger.printCout('Horizontal mirror done.')
+
+    def verticalMirror(self):
+        """
+        Apply an vertical mirror of entire board
+        """
+        for cmp in self.cmpDic.values():
+            cmp.posX = 0.0 - cmp.posX
+            cmp.rot += 180.0
+            cmp.rot = misc.normalizeAngle(cmp.rot)
+        self.__importOffset()
+        self.logger.printCout('Vertical mirror done.')
+
+    def boardRotation(self, angleInDeg):
+        """
+        Apply a rotation of entire board.
+        """
+        angleRad = math.radians(angleInDeg)
+        for cmp in self.cmpDic.values():
+            oldX = cmp.posX
+            oldY = cmp.posY
+            cmp.posX = oldX * math.cos(angleRad) + oldY * math.sin(angleRad)
+            cmp.posY = oldY * math.cos(angleRad) - oldX * math.sin(angleRad)
+            cmp.rot += angleInDeg
+            cmp.rot = misc.normalizeAngle(cmp.rot)
+        self.logger.printCout('Rotation done.')
+
+
+    def panelize(self, countX, countY, offsetX, offsetY):
+        """
+        Modifi component list to take care of needed copy for panelization.
+        """
+        countX = 1 if countX < 1 else countX
+        countY = 1 if countY < 1 else countY
+        cmpOriginalDict = {}
+        for ref, cmp in self.cmpDic.items():
+            if cmp.isOriginal:
+                cmpOriginalDict[ref] = cmp
+
+        self.cmpDic = {}
+        for cmp in cmpOriginalDict.values():
+            for x in range(countX):
+                for y in range(countY):
+                    newCmp = copy.deepcopy(cmp)
+                    newCmp.posX += x * offsetX
+                    newCmp.posY += y * offsetY
+                    newCmp.isOriginal = 1 if x == 0 and y == 0 else 0
+                    ref = f'{newCmp.originalRef}_{x}{y}' if countX > 1 or countY > 1 else newCmp.originalRef
+                    newCmp.ref = ref
+                    self.cmpDic[ref] = newCmp
+        self.logger.printCout('Panelize done.')
 
     angleCorr = property(fget=__calcAngle)

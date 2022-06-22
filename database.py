@@ -201,6 +201,7 @@ def boardSave(board, fileName):
         cmpId += 1
 
         etree.SubElement(cmpEntry, "ref").text = cmp.ref
+        etree.SubElement(cmpEntry, "originalRef").text = cmp.originalRef
         etree.SubElement(cmpEntry, "value").text = cmp.value
         etree.SubElement(cmpEntry, "package").text = cmp.package
         etree.SubElement(cmpEntry, "model").text = cmp.model
@@ -210,7 +211,7 @@ def boardSave(board, fileName):
         etree.SubElement(cmpEntry, "angle").text = "{}".format(cmp.rot)
         etree.SubElement(cmpEntry, "placed").text = "{}".format(cmp.isPlaced)
         etree.SubElement(cmpEntry, "enable").text = "{}".format(cmp.isEnable)
-
+        etree.SubElement(cmpEntry, "original").text = "{}".format(cmp.isOriginal)
 
     fileOut.write(etree.tostring(root, pretty_print=True))
     fileOut.close()
@@ -251,20 +252,22 @@ def boarLoad(path, logger):
     board.filter['enable'] = '' if board.filter['enable'] is None else board.filter['enable']
 
     board.localBasePlate = BasePlate({})
-    if brd.find('basePlate_0'):
+    if brd.find('basePlate_0') is not None:
         board.localBasePlate.configureFromXml(brd.find('basePlate_0'))
     cmpList = brd.find('cmpList')
 
-    for cmpXml in cmpList:
-        cmpDesc = {'REF': xe.getXmlValue(cmpXml, 'ref', 'null'), 'VAL': xe.getXmlValue(cmpXml, 'value', 'null'),
-                   'MOD': xe.getXmlValue(cmpXml, 'package', 'null'), 'X': float(xe.getXmlValue(cmpXml, 'posX', 0.0)),
-                   'Y': float(xe.getXmlValue(cmpXml, 'posY', 0.0)), 'T': float(xe.getXmlValue(cmpXml, 'angle', 0.0))}
+    for cmpRoot in cmpList:
+        cmpDesc = {}
+        for cmpVal in cmpRoot:
+            cmpDesc[cmpVal.tag] = cmpVal.text
 
-        cmp = brr.component(cmpDesc)
-        cmp.model = xe.getXmlValue(cmpXml, 'model', 'null')
-        cmp.feeder = xe.getXmlValue(cmpXml, 'feeder', 'null')
-        cmp.isPlaced = int(xe.getXmlValue(cmpXml, 'placed', 0))
-        cmp.isEnable = int(xe.getXmlValue(cmpXml, 'enable', 0))
+        """
+        for cmpXml in cmpList:
+            cmpDesc = {'REF': xe.getXmlValue(cmpXml, 'ref', 'null'), 'VAL': xe.getXmlValue(cmpXml, 'value', 'null'),
+                       'MOD': xe.getXmlValue(cmpXml, 'package', 'null'), 'X': float(xe.getXmlValue(cmpXml, 'posX', 0.0)),
+                       'Y': float(xe.getXmlValue(cmpXml, 'posY', 0.0)), 'T': float(xe.getXmlValue(cmpXml, 'angle', 0.0))}
+        """
+        cmp = brr.Component(cmpDesc)
 
         board[cmp.ref] = cmp  # Add new component to board
 
