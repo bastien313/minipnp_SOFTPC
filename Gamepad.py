@@ -138,7 +138,7 @@ class AppGamepad(threading.Thread):
         keyList = [key for key in self._callBack]
         self._callBack = {}
         for item in keyList:
-            self._callBack[item] = {'press': lambda: None, 'release': lambda: None, 'combi'}
+            self._callBack[item] = {'combo': {}, 'press': lambda: None, 'release': lambda: None}
         self._callBack['connection'] = {'press': lambda: None, 'release': lambda: None}
         self._oldGlobalState = 0
 
@@ -168,11 +168,24 @@ class AppGamepad(threading.Thread):
         newDicBtnState.update(newButtonState.wButtons.getDictRepr())
 
         for key in self._oldBtnState:
-            if self._oldBtnState[key] < newDicBtnState[key]:
-                self._callBack[key]['press']()
-            elif self._oldBtnState[key] > newDicBtnState[key]:
-                self._callBack[key]['release']()
-            self._oldBtnState[key] = newDicBtnState[key]
+            self._keyEvent(key, newDicBtnState)
+
+    def _keyEvent(self, key, newDicBtnState):
+        if self._oldBtnState[key] < newDicBtnState[key]:
+            for comboKey,comboValue in self._callBack[key]['combo'].items():
+                if newDicBtnState[comboKey] and 'press' in comboValue:
+                    comboValue['press']()
+                    self._oldBtnState[key] = newDicBtnState[key]
+                    return
+            self._callBack[key]['press']()
+        elif self._oldBtnState[key] > newDicBtnState[key]:
+            for comboKey,comboValue in self._callBack[key]['combo'].items():
+                if newDicBtnState[comboKey]and 'release' in comboValue:
+                    comboValue['release']()
+                    self._oldBtnState[key] = newDicBtnState[key]
+                    return
+            self._callBack[key]['release']()
+        self._oldBtnState[key] = newDicBtnState[key]
 
     def setPresCallBack(self, key, callBack):
         self._callBack[key]['press'] = callBack
@@ -180,4 +193,17 @@ class AppGamepad(threading.Thread):
     def setReleaseCallBack(self, key, callBack):
         self._callBack[key]['release'] = callBack
 
-    def
+    def setComboPressCallBack(self, key, comboKey, callBack):
+        if comboKey in self._callBack[key]['combo']:
+            self._callBack[key]['combo'][comboKey]['press'] = callBack
+        else:
+            self._callBack[key]['combo'][comboKey] = {'press': callBack, 'release': lambda:None}
+
+    def setComboReleaseCallBack(self, key, comboKey, callBack):
+        if comboKey in self._callBack[key]['combo']:
+            self._callBack[key]['combo'][comboKey]['release'] = callBack
+        else:
+            self._callBack[key]['combo'][comboKey] = {'press': lambda:None, 'release': callBack}
+
+
+

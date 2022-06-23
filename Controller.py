@@ -6,6 +6,7 @@ import machine as mch
 from deprecated import deprecated
 import job
 import Gamepad as gp
+import Prefrence as pr
 import misc
 
 
@@ -192,6 +193,37 @@ class DirectCtrl:
                 self._driver.stopAxis('C')
                 self._feedRequest['C'] = False
 
+
+    def stepIncrement(self):
+        """
+        Set all step to preprogrmed value [100,10,1,0.1,0.01]
+        """
+        stepAxisDict = self.ihm.getStepAxis()
+        if stepAxisDict['X'] < 0.1:
+            newVal = 0.1
+        elif stepAxisDict['X'] < 1.0:
+            newVal = 1.0
+        elif stepAxisDict['X'] < 10.0:
+            newVal = 10.0
+        else:
+            newVal = 100.0
+        self.ihm.setStepAxis({'X':newVal,'Y':newVal, 'Z':newVal, 'C':newVal})
+
+    def stepDecrement(self):
+        """
+        Set all step to preprogrmed value [100,10,1,0.1,0.01]
+        """
+        stepAxisDict = self.ihm.getStepAxis()
+        if stepAxisDict['X'] > 99:
+            newVal = 10.0
+        elif stepAxisDict['X'] > 9:
+            newVal = 1.0
+        elif stepAxisDict['X'] > 0.9:
+            newVal = 0.1
+        else:
+            newVal = 0.01
+        self.ihm.setStepAxis({'X':newVal,'Y':newVal, 'Z':newVal, 'C':newVal})
+
     def homeAll(self):
         if not self._jobRunningCb():
             self._driver.homeAxis('ALL')
@@ -252,7 +284,7 @@ class DirectCtrl:
 
 
 class BoardController:
-    def __init__(self, driver, logger, modelList, machineConf):
+    def __init__(self, driver, logger, modelList, machineConf, parameters):
         self.ihm = 0
         self.driver = driver
         self.board = 0
@@ -260,6 +292,7 @@ class BoardController:
         self.enableSaveFunc = 0
         self.modList = modelList
         self.__machineConf = machineConf
+        self._parameters = parameters
         self.__littleJob = job.ThreadJobExecutor()
         self.__longJob = job.ThreadJobExecutor()
 
@@ -347,6 +380,7 @@ class BoardController:
             refList = [cmp.ref for cmp in self.ihm.rootCmpFrame.cmpDisplayList]
             print('notref')
         longJob = job.Job(name='Standard Long job')
+        cmpNumber = self._parameters['JOB']['homeCmpCount']
         for cmp in self.board.values():
             if cmp.isEnable and not cmp.isPlaced and cmp.ref in refList:
                 cmpJob = self.__buildPickAndPlaceJob(cmp.ref)
@@ -355,6 +389,10 @@ class BoardController:
                                                        name='Is placed callBack'))
                     cmpJob.jobConfigure()
                     longJob.append(cmpJob)
+                    cmpNumber -=1
+                    if not cmpNumber:
+                        longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
+                        cmpNumber = self._parameters['JOB']['homeCmpCount']
 
         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
         longJob.jobConfigure()
@@ -458,17 +496,7 @@ class BoardController:
 
         model = self.modList[self.modList.findModelWithAlias(self.board[ref].model)]
 
-        cmp = self.board[ref]
         feeder = self.__machineConf.getFeederById(int(self.board[ref].feeder))
-        # feeder = self.__machineConf.feederList[int(self.board[ref].feeder)]
-        # Get position of board origin
-        # boardOrigin = self.driver.readBoardRef()
-
-        # cmpPos = self.board.corr.pointCorrection([cmp.posX, cmp.posY])
-        # cmpPos = misc.Point4D(x=cmpPos[0],
-        #                      y=cmpPos[1],
-        #                      z=self.__machineConf.boardRefPosition['Z'] + model.height,
-        #                      c=cmp.rot + self.board.corr.angleCorr)
         cmpPos = self.board.getMachineCmpPos(ref)
         cmpPos['Z'] = self.__machineConf.boardRefPosition['Z'] + model.height
         cmpJob = job.PickAndPlaceJob(pnpDriver=self.driver, feeder=feeder,
@@ -983,11 +1011,12 @@ class PnpConroller:
     def __init__(self, driver, logger):
         self.driver = driver
         self.ihm = 0
-        self.modList = dtb.ModDatabase('userdata/conf/mod.xml', logger)
-        self.machineConfiguration = mch.MachineConf('userdata/conf/machine.xml', logger)
+        self.preferences = pr.Preferences(logger, 'userdata/conf/conf.cfg')
+        self.modList = dtb.ModDatabase(self.preferences['PATH']['mod'], logger)
+        self.machineConfiguration = mch.MachineConf(self.preferences['PATH']['machine'], logger)
         self.directCtrl = DirectCtrl(self.driver, self.machineConfiguration)
         self.paramCtrl = ParamCtrl(self.driver, self.machineConfiguration)
-        self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration)
+        self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration, self.preferences)
         self.dtbCtrl = DtbController(logger, self.modList)
         self.scanCtrl = ScanController(logger, self.driver, self.machineConfiguration, self.modList)
         self.driver.setStatusPipeCallBack(self.updateStatusOnIHM)
@@ -995,9 +1024,10 @@ class PnpConroller:
         self.directCtrl.setJobIsRunningCb(self.jobIsRunning)
 
         self.gamePad = gp.AppGamepad()
-        self.gamePad.setPresCallBack('Connection', lambda:print('Gamepad connected'))
-        self.gamePad.setReleaseCallBack('Connection', lambda:print('Gamepad disconnected'))
+        self.gamePad.setPresCallBack('connection', lambda:print('Gamepad connected'))
+        self.gamePad.setReleaseCallBack('connection', lambda:print('Gamepad disconnected'))
         self.gamePad.start()
+
 
     def setTopIHM(self, ihm):
         self.ihm = ihm
@@ -1022,37 +1052,50 @@ class PnpConroller:
         return self.boardCtrl.jobIsRunning()
 
     def bindInit(self):
-        toto = 'fais caca'
-        self.ihm.setBind(event='<Control-KeyPress-Right>', calBack=self.directCtrl.xpPress)
-        self.ihm.setBind(event='<Control-KeyRelease-Right>', calBack=self.directCtrl.xRelease)
-        self.ihm.setBind(event='<Control-KeyPress-Left>', calBack=self.directCtrl.xmPress)
-        self.ihm.setBind(event='<Control-KeyRelease-Left>', calBack=self.directCtrl.xRelease)
-        self.ihm.setBind(event='<Control-KeyPress-Up>', calBack=self.directCtrl.ypPress)
-        self.ihm.setBind(event='<Control-KeyRelease-Up>', calBack=self.directCtrl.yRelease)
-        self.ihm.setBind(event='<Control-KeyPress-Down>', calBack=self.directCtrl.ymPress)
-        self.ihm.setBind(event='<Control-KeyRelease-Down>', calBack=self.directCtrl.yRelease)
-        self.ihm.setBind(event='<Control-KeyPress-Prior>', calBack=self.directCtrl.zpPress)  # page Up
-        self.ihm.setBind(event='<Control-KeyRelease-Prior>', calBack=self.directCtrl.zRelease)  # page up
-        self.ihm.setBind(event='<Control-KeyPress-Next>', calBack=self.directCtrl.zmPress)  # page down
-        self.ihm.setBind(event='<Control-KeyRelease-Next>', calBack=self.directCtrl.zRelease)  # page down
-        self.ihm.setBind(event='<Control-KeyPress-Home>', calBack=self.directCtrl.cpPress)  # Debut
-        self.ihm.setBind(event='<Control-KeyRelease-Home>', calBack=self.directCtrl.cRelease)  # Debut
-        self.ihm.setBind(event='<Control-KeyPress-End>', calBack=self.directCtrl.cmPress)  # Fin
-        self.ihm.setBind(event='<Control-KeyRelease-End>', calBack=self.directCtrl.cRelease)  # Fin
+        #toto = 'fais caca'
+        self.ihm.mainWindow.bind('<Control-KeyPress-Right>', self.directCtrl.xpPress)
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Right>', self.directCtrl.xRelease)
+        self.ihm.mainWindow.bind('<Control-KeyPress-Left>', self.directCtrl.xmPress)
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Left>', self.directCtrl.xRelease)
+        self.ihm.mainWindow.bind('<Control-KeyPress-Up>', self.directCtrl.ypPress)
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Up>', self.directCtrl.yRelease)
+        self.ihm.mainWindow.bind('<Control-KeyPress-Down>', self.directCtrl.ymPress)
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Down>', self.directCtrl.yRelease)
+        self.ihm.mainWindow.bind('<Control-KeyPress-Prior>', self.directCtrl.zpPress)  # page Up
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Prior>', self.directCtrl.zRelease)  # page up
+        self.ihm.mainWindow.bind('<Control-KeyPress-Next>', self.directCtrl.zmPress)  # page down
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Next>', self.directCtrl.zRelease)  # page down
+        self.ihm.mainWindow.bind('<Control-KeyPress-Home>', self.directCtrl.cpPress)  # Debut
+        self.ihm.mainWindow.bind('<Control-KeyRelease-Home>', self.directCtrl.cRelease)  # Debut
+        self.ihm.mainWindow.bind('<Control-KeyPress-End>', self.directCtrl.cmPress)  # Fin
+        self.ihm.mainWindow.bind('<Control-KeyRelease-End>', self.directCtrl.cRelease)  # Fin
 
         self.gamePad.setPresCallBack('DPAD_RIGHT', self.directCtrl.xpPress)
-        self.gamePad.setReleaseCallBack('DPAD_RIGHT', calBack=self.directCtrl.xRelease)
+        self.gamePad.setReleaseCallBack('DPAD_RIGHT', self.directCtrl.xRelease)
         self.gamePad.setPresCallBack('DPAD_LEFT', self.directCtrl.xmPress)
-        self.gamePad.setReleaseCallBack('DPAD_LEFT', calBack=self.directCtrl.xRelease)
+        self.gamePad.setReleaseCallBack('DPAD_LEFT', self.directCtrl.xRelease)
         self.gamePad.setPresCallBack('DPAD_UP', self.directCtrl.ypPress)
-        self.gamePad.setReleaseCallBack('DPAD_UP', calBack=self.directCtrl.yRelease)
+        self.gamePad.setReleaseCallBack('DPAD_UP', self.directCtrl.yRelease)
         self.gamePad.setPresCallBack('DPAD_DOWN', self.directCtrl.ymPress)
-        self.gamePad.setReleaseCallBack('DPAD_DOWN', calBack=self.directCtrl.yRelease)
-        self.gamePad.setPresCallBack('DPAD_RIGHT', self.directCtrl.xpPress)
-        self.gamePad.setReleaseCallBack('DPAD_RIGHT', calBack=self.directCtrl.xRelease)
-        self.gamePad.setPresCallBack('DPAD_RIGHT', self.directCtrl.xpPress)
-        self.gamePad.setReleaseCallBack('DPAD_RIGHT', calBack=self.directCtrl.xRelease)
+        self.gamePad.setReleaseCallBack('DPAD_DOWN', self.directCtrl.yRelease)
 
+        self.gamePad.setComboPressCallBack('DPAD_RIGHT', 'B', self.directCtrl.cpPress)
+        self.gamePad.setComboReleaseCallBack('DPAD_RIGHT', 'B', self.directCtrl.cRelease)
+        self.gamePad.setComboPressCallBack('DPAD_LEFT', 'B', self.directCtrl.cmPress)
+        self.gamePad.setComboReleaseCallBack('DPAD_LEFT', 'B', self.directCtrl.cRelease)
+
+        self.gamePad.setComboPressCallBack('DPAD_UP', 'B', self.directCtrl.zpPress)
+        self.gamePad.setComboReleaseCallBack('DPAD_UP', 'B', self.directCtrl.zRelease)
+        self.gamePad.setComboPressCallBack('DPAD_DOWN', 'B', self.directCtrl.zmPress)
+        self.gamePad.setComboReleaseCallBack('DPAD_DOWN', 'B', self.directCtrl.zRelease)
+
+        self.gamePad.setComboPressCallBack('DPAD_UP', 'B', self.directCtrl.zpPress)
+        self.gamePad.setComboReleaseCallBack('DPAD_UP', 'B', self.directCtrl.zRelease)
+        self.gamePad.setComboPressCallBack('DPAD_DOWN', 'B', self.directCtrl.zmPress)
+        self.gamePad.setComboReleaseCallBack('DPAD_DOWN', 'B', self.directCtrl.zRelease)
+
+        self.gamePad.setPresCallBack('RIGHT_SHOULDER', self.directCtrl.stepIncrement)
+        self.gamePad.setReleaseCallBack('LEFT_SHOULDER', self.directCtrl.stepDecrement)
 
 
 

@@ -255,7 +255,7 @@ class MoveTask(SimpleTask):
     Send Move request and wait while machine is moving.
     """
 
-    def __init__(self, pnpDriver, coord, speed, speedMode='P', coordMode='A', name=''):
+    def __init__(self, pnpDriver, coord, speed, speedRot=None, speedMode='P', coordMode='A', name=''):
         """
         :param pnpDriver: driver class for build gcode and send to device.
         :param coord: coord where we go. dict{'X':val,.....}
@@ -266,6 +266,7 @@ class MoveTask(SimpleTask):
         self._driver = pnpDriver
         self._moveCoord = coord
         self._speed = speed
+        self._speedRot = speedRot
         self._speedMode = speedMode
         self._coordMode = coordMode
         self._taskConfigure([self._waitMovementFirst, self._launchMovement, self._waitMovementEnd])
@@ -288,7 +289,7 @@ class MoveTask(SimpleTask):
     def _launchMovement(self):
         # Move request.
         self._status.msg = 'Launch movement'
-        self._driver.moveAxis(moveData=self._moveCoord, speed=self._speed,
+        self._driver.moveAxis(moveData=self._moveCoord, speed=self._speed, speedRot=self._speedRot,
                               speedMode=self._speedMode, mode=self._coordMode)
         return TaskStatus(status=TaskStatusEnum.END)
 
@@ -298,17 +299,22 @@ class FeederGoToTask(MoveTask):
         go to XY position feeder component.
     """
 
-    def __init__(self, feeder, pnpDriver, speed, speedMode='P', coordMode='A', name=''):
+    def __init__(self, feeder, pnpDriver, speed, speedRot=None, speedMode='P', coordMode='A', name=''):
         """
         """
         self._moveCoord = {}
-        super().__init__(pnpDriver, self._moveCoord, speed, speedMode, coordMode, name)
+        super().__init__(pnpDriver, self._moveCoord, speed,speedRot, speedMode, coordMode, name)
         self._feeder = feeder
-        self._taskConfigure([self._getPosition, self._waitMovementFirst, self._launchMovement, self._waitMovementEnd])
+        self._taskConfigure([self._getPosition, self._waitMovementFirst, self._launchMovement,
+                             self._releaseRotation, self._waitMovementFirst, self._launchMovement, self._waitMovementEnd])
 
     def _getPosition(self):
         self._moveCoord = self._feeder.getComponentPosition()
-        self._moveCoord = {'X': self._moveCoord['X'], 'Y': self._moveCoord['Y']}
+        self._moveCoord = {'X': self._moveCoord['X'], 'Y': self._moveCoord['Y'], 'C': -30.0}
+        return TaskStatus(status=TaskStatusEnum.END)
+
+    def _releaseRotation(self):
+        self._moveCoord = {'C': 30.0}
         return TaskStatus(status=TaskStatusEnum.END)
 
 
@@ -508,10 +514,6 @@ class PickAndPlaceJob(Job):
                            name='{} Go to feeder.'.format(ref)),
             WaitFeederWasReadyTask(feeder, name='{} Wait feeder.'.format(ref)),
             FeederVoidErrorTask(feeder, name='{} Feeder error?'.format(ref)),
-            MoveTask(self._driver, {'C': 30.0}, speed=model.moveSpeed, coordMode='R',
-                     name='{} Feeder release +'.format(ref)),
-            MoveTask(self._driver, {'C': -30.0}, speed=model.moveSpeed, coordMode='R',
-                     name='{} Feeder release -'.format(ref)),
             MoveTask(self._driver, {'Z': self._ZpickupPos}, speed=model.pickupSpeed,
                      name='{} Pick Z down.'.format(ref)),
             EvStateTask(self._driver, 1, name='{} Enable vaccum.'.format(ref)),
@@ -520,15 +522,9 @@ class PickAndPlaceJob(Job):
             WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.pickupSpeed, name='{} Pick Z up.'.format(ref)),
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
-            MoveTask(self._driver, {'C': 30.0}, speed=model.moveSpeed, coordMode='R',
-                     name='{} Feeder release +'.format(ref)),
-            MoveTask(self._driver, {'C': -30.0}, speed=model.moveSpeed, coordMode='R',
-                     name='{} Feeder release -'.format(ref)),
             MechanicsCorectorJob(pnpDriver, correctorPos, self._model, zLift),
-            MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y']}, speed=model.moveSpeed,
-                     name='{} Go to component position.'.format(ref)),
-            MoveTask(self._driver, {'C': self._placePos['C']}, speed=model.moveSpeed, coordMode='R',
-                     name='{} Go to component position C.'.format(ref)),
+            MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y'], 'C': self._placePos['C']},
+                     speed=model.moveSpeed, name='{} Go to component position.'.format(ref)),
             MoveTask(self._driver, {'Z': placePos['Z'] + model.height}, speed=model.placeSpeed,
                      name='{} Place Z down.'.format(ref)),
             EvStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
@@ -536,8 +532,6 @@ class PickAndPlaceJob(Job):
             # WaitTask(0.5, name='{}Pump.'.format(ref)),
             WaitTask(model.placeDelay / 1000.0, name='{} Place delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='{} End Z lift.'.format(ref)),
-            MoveTask(self._driver, {'C': self._placePos['C'] * -1.0}, speed=model.moveSpeed, coordMode='R',
-                     name='{} ReplaceC.'.format(ref))
         ]
         self.jobConfigure()
 
@@ -566,9 +560,10 @@ class MechanicsCorectorJob(Job):
                        'Y': (self._correctorPos['Y'] - corectorSize['Y']) + (model.length/2)}
         self._taskList = [
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='Start Z lift.'),
-            MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y']}, speed=model.moveSpeed,
+
+            MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y'], 'C':30.0}, speed=model.moveSpeed,
                      name='Cooector GO TO -'),
-            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight}, speed=model.moveSpeed,
+            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight, 'C':-30.0}, speed=model.moveSpeed,
                      name='Corector Z pos.'),
             MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
                      name='Corector corner HG.'),

@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 from PIL import ImageTk, Image
+
 # from PnpDriver import Feeder
 import serial.tools.list_ports
 import tkinter.filedialog
@@ -1703,16 +1704,16 @@ class CtrlFrame(tk.Frame):
         self._pres.var = (round(value, 4))
 
     def _getStepX(self):
-        return self._stepX.var()
+        return self._stepXEntry.var
 
     def _getStepY(self):
-        return self._stepY.var()
+        return self._stepYEntry.var
 
     def _getStepZ(self):
-        return self._stepZ.var()
+        return self._stepZEntry.var
 
     def _getStepC(self):
-        return self._stepC.var()
+        return self._stepCEntry.var
 
     def _getEvState(self):
         return self._evVar.get()
@@ -1744,9 +1745,27 @@ class CtrlFrame(tk.Frame):
     def __evtCm(self, evt):
         self.controller.cDec()
 
+    def setStepAxis(self, axisConf):
+        for axis, val in axisConf.items():
+            if axis == 'X':
+                self._stepXEntry.var = val
+            if axis == 'Y':
+                self._stepYEntry.var = val
+            if axis == 'Z':
+                self._stepZEntry.var = val
+            if axis == 'C':
+                self._stepCEntry.var = val
+
+    def getStepAxis(self):
+        return {
+            'X': self._stepXEntry.var,
+            'Y': self._stepYEntry.var,
+            'Z': self._stepZEntry.var,
+            'C': self._stepCEntry.var,
+        }
     def getContinueState(self):
-        # return self._contEnaVar.get()
-        return False
+        return self._contEnaVar.get()
+        #return False
 
     posX = property(fset=_setPosX)
     posY = property(fset=_setPosY)
@@ -2651,7 +2670,7 @@ class PanelizeFrame(tk.Frame):
         self._countYEntry = CompleteEntry(frame=self, varType='int')
         self._offsetXEntry = CompleteEntry(frame=self, varType='double')
         self._offsetYEntry = CompleteEntry(frame=self, varType='double')
-        self._paneliseBtn = tk.Button(self, text='Panelize', command=self._localBtnCb)
+        self._paneliseBtn = ttk.Button(self, text='Panelize', command=self._localBtnCb)
 
         tk.Label(self, text='Count').grid(row=0, column=1)
         tk.Label(self, text='Offset').grid(row=0, column=2)
@@ -2676,9 +2695,9 @@ class BoardTransformFrame(tk.Frame):
         self._controller = controller
 
         self._rotateEntry = CompleteEntry(frame=self, varType='double')
-        self._applyRotateBtn = tk.Button(self, text='Apply rotation', command=self._rotation)
-        self._applyHMirrorBtn = tk.Button(self, text='Apply horizontal mirror', command=self._horizontalMirror)
-        self._applyVMirrorBtn = tk.Button(self, text='Apply vertical mirror', command=self._verticalMirror)
+        self._applyRotateBtn = ttk.Button(self, text='Apply rotation', command=self._rotation)
+        self._applyHMirrorBtn = ttk.Button(self, text='Apply horizontal mirror', command=self._horizontalMirror)
+        self._applyVMirrorBtn = ttk.Button(self, text='Apply vertical mirror', command=self._verticalMirror)
 
         tk.Label(self, text='Rotation in deg').grid(row=0, column=0)
         self._rotateEntry.grid(row=1, column=0)
@@ -2696,6 +2715,35 @@ class BoardTransformFrame(tk.Frame):
         self._controller.boardHorizontalMirror()
 
 
+class JobConfigurationFrame(tk.Frame):
+    def __init__(self, fenetre, parameters, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+
+        self._parameters = parameters
+        self._paramFrame = tk.Frame(self)
+        self._btnFrame = tk.Frame(self)
+
+        self._paramFrame.grid(row=0,column=0)
+        self._btnFrame.grid(row=1,column=0)
+
+        self._homeCntNumber = CompleteEntry(frame=self._paramFrame, varType='int', traceFunc=self._homeCntNumberChange)
+        self._homeCntNumber.var = self._parameters['JOB']['homeCmpCount']
+
+        tk.Label(self._paramFrame, text='Component before home' ).grid(row = 0, column = 0)
+        self._homeCntNumber.grid(row = 0, column = 1)
+
+        self._applyRotateBtn = ttk.Button(self._btnFrame, text='Save', command=self._save)
+        self._applyRotateBtn.grid(row=0, column=0)
+
+    def _homeCntNumberChange(self):
+        self._parameters['JOB']['homeCmpCount'] = str(self._homeCntNumber.var)
+
+    def _save(self):
+        self._parameters.save()
+
+
+
+
 class PnpIHM:
     """High level class for IHM view
     """
@@ -2705,7 +2753,7 @@ class PnpIHM:
         self.ctrl.boardCtrl.enableSaveFunc = self.boardIsLoad
 
         self.mainWindow = tk.Tk()  # Instance of main window.
-        self.mainWindow.title('MiniPnp - OXILEC')
+        self.mainWindow.title('MiniPnp - OXILEC V2.0')
         # self.mainWindow.maxsize(width=1500, height=800)
 
         self.ctrlWindow = CtrlFrame(self.mainWindow, self.ctrl.directCtrl)
@@ -2726,11 +2774,13 @@ class PnpIHM:
         self.scanWindow = ScanFrame(self.mainWindow, logger)
         self.panelizeWindow = PanelizeFrame(self.mainWindow, logger, self.ctrl.boardCtrl)
         self.boardTransformWindow = BoardTransformFrame(self.mainWindow,logger, self.ctrl.boardCtrl)
+        self.JobConfigurationWindow = JobConfigurationFrame(self.mainWindow, self.ctrl.preferences)
 
         self.topMenuBar = tk.Menu(self.mainWindow)
         self._menuFile = tk.Menu(self.topMenuBar, tearoff=0)
         self._menuTableTop = tk.Menu(self.topMenuBar, tearoff=0)
         self._menuTools = tk.Menu(self.topMenuBar, tearoff=0)
+        self._menuPreferences = tk.Menu(self.topMenuBar, tearoff=0)
 
         self.topMenuBar.add_cascade(label="File ", menu=self._menuFile)
         self.topMenuBar.add_command(label="Board ", command=self.initBoardMenu, state='disabled')
@@ -2738,6 +2788,7 @@ class PnpIHM:
         self.topMenuBar.add_command(label="Control", command=self.initCtrlMenu)
         self.topMenuBar.add_cascade(label="TableTop", menu=self._menuTableTop)
         self.topMenuBar.add_cascade(label="Tools", menu=self._menuTools)
+        self.topMenuBar.add_cascade(label="Preferences", menu=self._menuPreferences)
         self.topMenuBar.add_command(label="Debug", command=self.initDebugMenu)
         self.mainWindow.config(menu=self.topMenuBar)
 
@@ -2754,6 +2805,8 @@ class PnpIHM:
         self._menuTableTop.add_command(label="Scan ", command=self.initScanMenu)
         self._menuTableTop.add_separator()
         self._menuTableTop.add_command(label="Save ", command=self.ctrl.machineConfiguration.saveToXml)
+
+        self._menuPreferences.add_command(label="Job ", command=self.initJobPreference)
 
         self._menuTools.add_command(label="Panelize ", state='disabled', command=self.initPanelizeMenu)
         self._menuTools.add_command(label="Board transfrom ", state='disabled', command=self.initBoardTransformMenu)
@@ -2854,6 +2907,14 @@ class PnpIHM:
             self._statusLabel.pack_forget()
             self.boardTransformWindow.pack()
             self.actualFrame = self.boardTransformWindow;
+            self._statusLabel.pack()
+
+    def initJobPreference(self):
+        if self.actualFrame is not self.JobConfigurationWindow:
+            self.actualFrame.pack_forget()
+            self._statusLabel.pack_forget()
+            self.JobConfigurationWindow.pack()
+            self.actualFrame = self.JobConfigurationWindow;
             self._statusLabel.pack()
 
     def importFile(self):

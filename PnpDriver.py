@@ -122,6 +122,18 @@ class pnpDriver:
         self._commadUnackited = 0  # Number of bomand is unackited
         self._queue = queue.Queue()
         self.status = {'X': '00', 'Y': '00', 'Z': '00', 'C': '00'}
+        self._jobHaveControl = False
+
+    def jobTakeControl(self):
+        self._jobHaveControl = True
+
+    def jobReleaseControl(self):
+        self._jobHaveControl = False
+
+    def jobHaveControl(self):
+        return self._jobHaveControl
+
+
 
     def isConnected(self):
         return self._serManage.isConnected()
@@ -175,9 +187,11 @@ class pnpDriver:
         self.__sendGcodeLine()
         self.readLine()
 
-    def __setSpeed(self, speed):
-        """Add Speed to gcode if needed 'Fxxxx.x' """
-        self._GcodeLine += "F{} ".format(float(speed))
+    def __setSpeed(self, speed, speedRot=None):
+        """Add Speed to gcode if needed 'FFxxxx.x FCxxxx.x' """
+        self._GcodeLine += "FF{} ".format(float(speed))
+        if speedRot:
+            self._GcodeLine += "FC{} ".format(float(speedRot))
 
     def setAccel(self, accelData):
         """
@@ -355,7 +369,7 @@ class pnpDriver:
         tabOut['C'] = value
         self.moveAxis(moveData=tabOut, mode=mode, speedMode=speedMode)
 
-    def moveAxis(self, moveData, speed=10, mode='A', speedMode='P'):
+    def moveAxis(self, moveData, speed=10, speedRot=None, mode='A', speedMode='P'):
         """ moveData must be an dict.
             Key must be 'X' , 'Y, 'Z' or 'C'.
             Value is displacement
@@ -369,7 +383,7 @@ class pnpDriver:
         else:
             self._GcodeLine += 'G0 '
 
-        self.__setSpeed(speed)
+        self.__setSpeed(speed, speedRot)
 
         for key, value in moveData.items():
             self._GcodeLine += "{}{} ".format(key, float(value))
