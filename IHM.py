@@ -953,6 +953,16 @@ class StripFeederFrame(tk.Frame):
         self.displayBasePlate(0 if self.__strBasePlate.get() == 'Local' else int(self.__strBasePlate.get()))
 
     def __save(self):
+        self._feeder.localBasePlate = mch.BasePlateForStripFeeder({
+            'id': self._bpFrame.id.var, 'name': self._bpFrame.name.var,
+            'realRef1': {'X': self._bpFrame._ref1Frame.x, 'Y': self._bpFrame._ref1Frame.y, 'Z': self._bpFrame._ref1Frame.z},
+            'realRef2': {'X': self._bpFrame._ref2Frame.x, 'Y': self._bpFrame._ref2Frame.y, 'Z': self._bpFrame._ref2Frame.z},
+            'vectorRef': {'X': self._bpFrame._vectorFrame.x, 'Y': self._bpFrame._vectorFrame.y, 'Z': self._bpFrame._vectorFrame.z},
+            'rotationOffset': math.radians(self._bpFrame._rotAndZFrame['Rot(deg)']), 'zRamp': self._bpFrame._rotAndZFrame['Zramp'],
+            'stripStep': self._bpFrame._misc['Strip Step'],
+            'vectorFistCmp': {'X': self._bpFrame._vector.x, 'Y': self._bpFrame._vector.y, 'Z': self._bpFrame._vector.z}
+        })
+
         newFeeder = mch.StripFeeder(paramList={'id': self.id.var, 'name': self.name.var,
                                      'componentPerStrip': self.componentPerStrip.var,
                                      'stripIdInBasePlate': self.idStripBp.var,
@@ -1000,19 +1010,19 @@ class StripFeederFrame(tk.Frame):
 
         if bp:
             if bp.type == 'BasePlate':
-                bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
+                self._bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
                                                 controller=self._controller, commandFrame=False, logger=self.__logger)
-                bpFrame.grid(row=0, column=0)
+                self._bpFrame.grid(row=0, column=0)
                 if basePlateId:
-                    bpFrame.disableModification()
+                    self._bpFrame.disableModification()
 
             elif bp.type == 'StripFeederBasePlate':
-                bpFrame = StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
+                self._bpFrame = StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
                                                     controller=self._controller, commandFrame=False,
                                                     logger=self.__logger)
-                bpFrame.grid(row=0, column=0)
+                self._bpFrame.grid(row=0, column=0)
                 if basePlateId:
-                    bpFrame.disableModification()
+                    self._bpFrame.disableModification()
 
             self._basePlateName['text'] = bp.name
         else:
