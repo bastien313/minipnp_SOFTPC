@@ -159,7 +159,10 @@ class BasePlate:
                     pointRecaled['Y'] * math.sin(self._rotationOffset)),
             'Y': (pointRecaled['X'] * math.sin(self._rotationOffset)) + (
                     pointRecaled['Y'] * math.cos(self._rotationOffset)),
-            'Z': pointRecaled['Z'] * self._zRamp
+            'Z': pointRecaled['Z'] +
+                 self._zRamp *
+                 ((math.hypot(pointRecaled['X'], pointRecaled['Y']))/
+                 (math.hypot(self._vectorRef['X'], self._vectorRef['Y'])))
         }
 
         return {
@@ -330,9 +333,15 @@ class CompositeFeeder(Feeder):
         etree.SubElement(feederRoot, 'feederListStr').text = self.feederListToStr()
         return feederRoot
 
-    def getPositionById(self, cmpId, feederId):
-        if feederId < len(self.feederList):
-            return self.feederList[feederId].getPositionById(cmpId)
+    def getPositionById(self, cmpId):
+        cmpOfFeeder = cmpId
+        for feeder in self.feederList:
+            #feeder = self._machine.getFeederById(feederId)
+            if (cmpOfFeeder - feeder.componentPerStrip) >= 0:
+                cmpOfFeeder -= feeder.componentPerStrip
+            else:
+                return feeder.getPositionById(cmpOfFeeder)
+
         raise FeederNotFound
 
     def getComponentPosition(self):
@@ -415,16 +424,17 @@ class StripFeeder(Feeder):
         return correctedCmpPos
     """
 
-    def getPositionById(self, cmpId, stripId=0):
+    def getPositionById(self, cmpId):
         """
         Return the réal position of selected component.
         'C' contain the  rotation correction.
         """
         basePlate = self.localBasePlate if self.basePlateId == 0 else self._machine.getBasePlateById(self.basePlateId)
         firstCmpPosTheor = basePlate.getTheoricalFirstCmpPosition(self.stripIdInBasePlate)
-        firstCmpPosTheor['Y'] -= self.nextComponent * self.componentStep
+        firstCmpPosTheor['Y'] -= cmpId * self.componentStep
         realPoint = basePlate.getPointCorrected(firstCmpPosTheor)
         realPoint['C'] = basePlate.getRotationOffset()
+        return realPoint
 
     def getComponentPosition(self):
         """

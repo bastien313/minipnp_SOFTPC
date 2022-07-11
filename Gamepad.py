@@ -147,16 +147,21 @@ class AppGamepad(threading.Thread):
             try:
                 deviceDetected = True
                 newGlobalState, newBtnState = self._xi.GetState(0)
-                if newGlobalState != self._oldGlobalState:
-                    self._oldGlobalState = newGlobalState
-                    self._changeManagment(newBtnState)
+
             except:
                 deviceDetected = False
                 donothing = 0
+
+            if deviceDetected:
+                if newGlobalState != self._oldGlobalState:
+                    self._oldGlobalState = newGlobalState
+                    self._changeManagment(newBtnState)
+
             if deviceDetected and not self._deviceDetected:
                 self._callBack['connection']['press']()
             elif not deviceDetected and self._deviceDetected:
                 self._callBack['connection']['release']()
+
 
             self._deviceDetected = deviceDetected
             time.sleep(0.05)
@@ -171,6 +176,7 @@ class AppGamepad(threading.Thread):
             self._keyEvent(key, newDicBtnState)
 
     def _keyEvent(self, key, newDicBtnState):
+
         if self._oldBtnState[key] < newDicBtnState[key]:
             for comboKey,comboValue in self._callBack[key]['combo'].items():
                 if newDicBtnState[comboKey] and 'press' in comboValue:

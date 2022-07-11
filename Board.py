@@ -3,6 +3,7 @@ import database as dtb
 from deprecated import deprecated
 import copy
 import misc
+from machine import BasePlate
 
 
 class Component:
@@ -15,7 +16,7 @@ class Component:
             'ref'] if 'ref' in cmpConf else 'noname'
         self.value = cmpConf['value'] if 'value' in cmpConf else ''
         self.package = cmpConf['package'] if 'package' in cmpConf else ''
-        self.model = cmpConf['model'] if 'model' in cmpConf else ''
+        self.model = cmpConf['model'] if 'model' in cmpConf else 'Null'
         self.feeder = cmpConf['feeder'] if 'feeder' in cmpConf else ''
         self.isPlaced = int(cmpConf['placed']) if 'placed' in cmpConf else 0
         self.isEnable = int(cmpConf['enable']) if 'enable' in cmpConf else 0
@@ -45,7 +46,7 @@ class Board:
         self.xSize = 100.0
         self.ySize = 80.0
         self.zSize = 1.6
-        self.localBasePlate = 0
+        self.localBasePlate = BasePlate({})
 
         self.ref1 = "Null"
         self.ref2 = "Null"
@@ -82,14 +83,15 @@ class Board:
                 paramList = line.split(separator)
                 print(paramList)
                 cmpParam = {}
-                cmpParam['X'] = paramList[dicConf['X']]
-                cmpParam['Y'] = paramList[dicConf['Y']]
-                cmpParam['T'] = paramList[dicConf['T']]
-                cmpParam['originalREF'] = paramList[dicConf['originalREF']].replace('\"', '')
-                cmpParam['VAL'] = paramList[dicConf['VAL']].replace('\"', '')
-                cmpParam['MOD'] = paramList[dicConf['MOD']].replace('\"', '')
+                cmpParam['posX'] = paramList[dicConf['X']]
+                cmpParam['posY'] = paramList[dicConf['Y']]
+                cmpParam['angle'] = paramList[dicConf['T']]
+                cmpParam['originalRef'] = paramList[dicConf['REF']].replace('\"', '')
+                cmpParam['ref'] = cmpParam['originalRef']
+                cmpParam['value'] = paramList[dicConf['VAL']].replace('\"', '')
+                cmpParam['package'] = paramList[dicConf['MOD']].replace('\"', '')
 
-                self.cmpDic[cmpParam['originalREF'].replace('\"', '')] = Component(cmpParam)
+                self.cmpDic[cmpParam['originalRef'].replace('\"', '')] = Component(cmpParam)
             else:
                 loop = 0
         self.__importOffset()
@@ -113,13 +115,16 @@ class Board:
             cmp.posY += yMin * -1.0
 
     def getMachineCmpPos(self, ref):
-        realRef1Pos = self.localBasePlate.getRealRef[0]
+        realRef1Pos = self.localBasePlate.getRealRef(0)
         theoreticalMachineCompPos = {
             'X': (self.cmpDic[ref].posX - self.cmpDic[self.ref1].posX) + realRef1Pos['X'],
             'Y': (self.cmpDic[ref].posY - self.cmpDic[self.ref1].posY) + realRef1Pos['Y'],
-            'Z': realRef1Pos['Z']
+            'Z': realRef1Pos['Z'],
         }
-        return self.localBasePlate.getPointCorrected(theoreticalMachineCompPos)
+        realPos = self.localBasePlate.getPointCorrected(theoreticalMachineCompPos)
+        realPos['C'] =self.cmpDic[ref].rot +  math.degrees(self.localBasePlate.getRotationOffset())
+        realPos['C'] = misc.normalizeAngle(realPos['C'])
+        return realPos
 
     def __calcAngle(self):
         """

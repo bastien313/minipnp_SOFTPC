@@ -1,0 +1,4569 @@
+<root>
+  <board>
+    <name>GEO2</name>
+    <ref1>R57</ref1>
+    <ref2>R54</ref2>
+    <Xsize>150.0</Xsize>
+    <Ysize>80.0</Ysize>
+    <Zsize>1.6</Zsize>
+    <filtValue></filtValue>
+    <filtRef></filtRef>
+    <filtPackage></filtPackage>
+    <filtModel></filtModel>
+    <filtPlaced></filtPlaced>
+    <filtEnable>1</filtEnable>
+    <basePlate_0>
+      <name>Noname</name>
+      <type>BasePlate</type>
+      <ref0X>15.0001</ref0X>
+      <ref0Y>46.1</ref0Y>
+      <ref0Z>-31.2471</ref0Z>
+      <ref1X>131.031319</ref1X>
+      <ref1Y>114.32078399999999</ref1Y>
+      <ref1Z>-31.2471</ref1Z>
+      <vectorX>116.131319</vectorX>
+      <vectorY>68.38208399999999</vectorY>
+      <vectorZ>0.0</vectorZ>
+      <zRamp>0.0</zRamp>
+      <rotationOffset>0.0</rotationOffset>
+    </basePlate_0>
+    <cmpList>
+      <cmp data-id="0">
+        <ref>BT1</ref>
+        <originalRef>BT1</originalRef>
+        <value>CR2032</value>
+        <package>CR2032_HOLDER</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>9.898000000000003</posX>
+        <posY>49.339999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="1">
+        <ref>C1</ref>
+        <originalRef>C1</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>87.49432100000001</posX>
+        <posY>58.466399</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="2">
+        <ref>C2</ref>
+        <originalRef>C2</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>88.256321</posX>
+        <posY>66.59439900000001</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="3">
+        <ref>C3</ref>
+        <originalRef>C3</originalRef>
+        <value>10nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>11</feeder>
+        <posX>71.746321</posX>
+        <posY>66.848399</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="4">
+        <ref>C4</ref>
+        <originalRef>C4</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>71.746321</posX>
+        <posY>59.228399</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="5">
+        <ref>C5</ref>
+        <originalRef>C5</originalRef>
+        <value>18pF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>81.521521</posX>
+        <posY>52.880799</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="6">
+        <ref>C6</ref>
+        <originalRef>C6</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>88.256321</posX>
+        <posY>64.562399</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="7">
+        <ref>C7</ref>
+        <originalRef>C7</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>83.604321</posX>
+        <posY>52.880799</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="8">
+        <ref>C8</ref>
+        <originalRef>C8</originalRef>
+        <value>18pF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>74.917521</posX>
+        <posY>52.880799</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="9">
+        <ref>C9</ref>
+        <originalRef>C9</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>75.302321</posX>
+        <posY>70.40439899999998</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="10">
+        <ref>C10</ref>
+        <originalRef>C10</originalRef>
+        <value>10nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>11</feeder>
+        <posX>47.61</posX>
+        <posY>47.498</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="11">
+        <ref>C11</ref>
+        <originalRef>C11</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>34.536</posX>
+        <posY>60.516</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="12">
+        <ref>C12</ref>
+        <originalRef>C12</originalRef>
+        <value>1uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>47.61</posX>
+        <posY>45.6184</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="13">
+        <ref>C13</ref>
+        <originalRef>C13</originalRef>
+        <value>4.7uF 16V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>37.178000000000004</posX>
+        <posY>57.36599999999999</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="14">
+        <ref>C14</ref>
+        <originalRef>C14</originalRef>
+        <value>12pF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>29.050000000000004</posX>
+        <posY>52.54</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="15">
+        <ref>C15</ref>
+        <originalRef>C15</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>34.892</posX>
+        <posY>57.36599999999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="16">
+        <ref>C16</ref>
+        <originalRef>C16</originalRef>
+        <value>12pF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>29.050000000000004</posX>
+        <posY>49.99999999999999</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="17">
+        <ref>C17</ref>
+        <originalRef>C17</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>38.989000000000004</posX>
+        <posY>42.347</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="18">
+        <ref>C18</ref>
+        <originalRef>C18</originalRef>
+        <value>10nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>11</feeder>
+        <posX>42.766000000000005</posX>
+        <posY>42.38</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="19">
+        <ref>C19</ref>
+        <originalRef>C19</originalRef>
+        <value>10nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>11</feeder>
+        <posX>44.798</posX>
+        <posY>42.38</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="20">
+        <ref>C20</ref>
+        <originalRef>C20</originalRef>
+        <value>1uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>32.0144</posX>
+        <posY>48.0568</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="21">
+        <ref>C21</ref>
+        <originalRef>C21</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>35.748200000000004</posX>
+        <posY>43.1038</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="22">
+        <ref>C22</ref>
+        <originalRef>C22</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>28.186000000000003</posX>
+        <posY>70.67599999999999</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="23">
+        <ref>C23</ref>
+        <originalRef>C23</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>41.394000000000005</posX>
+        <posY>70.67599999999999</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="24">
+        <ref>C24</ref>
+        <originalRef>C24</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>143.46</posX>
+        <posY>0.5899999999999963</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="25">
+        <ref>C25</ref>
+        <originalRef>C25</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>147.35</posX>
+        <posY>10.391999999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="26">
+        <ref>C26</ref>
+        <originalRef>C26</originalRef>
+        <value>2200uF 16V</value>
+        <package>CP_Radial_D12.5mm_P5.00mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>137.46</posX>
+        <posY>17.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="27">
+        <ref>C27</ref>
+        <originalRef>C27</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>153.446</posX>
+        <posY>10.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="28">
+        <ref>C28</ref>
+        <originalRef>C28</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>106.46000000000001</posX>
+        <posY>6.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="29">
+        <ref>C29</ref>
+        <originalRef>C29</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>99.46000000000001</posX>
+        <posY>14.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="30">
+        <ref>C30</ref>
+        <originalRef>C30</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>135.46</posX>
+        <posY>10.589999999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="31">
+        <ref>C31</ref>
+        <originalRef>C31</originalRef>
+        <value>470uF 16V</value>
+        <package>CP_Radial_D8.0mm_P3.50mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>100.95000000000002</posX>
+        <posY>42.309999999999995</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="32">
+        <ref>C32</ref>
+        <originalRef>C32</originalRef>
+        <value>330nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>104.46413100000001</posX>
+        <posY>23.981606999999997</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="33">
+        <ref>C33</ref>
+        <originalRef>C33</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>96.378</posX>
+        <posY>48.8872</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="34">
+        <ref>C34</ref>
+        <originalRef>C34</originalRef>
+        <value>330nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>105.518</posX>
+        <posY>34.36599999999999</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="35">
+        <ref>C35</ref>
+        <originalRef>C35</originalRef>
+        <value>220pF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>101.16633100000001</posX>
+        <posY>60.11570799999999</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="36">
+        <ref>C36</ref>
+        <originalRef>C36</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>83.45</posX>
+        <posY>72.66</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="37">
+        <ref>C37</ref>
+        <originalRef>C37</originalRef>
+        <value>100uF 10V</value>
+        <package>CP_Radial_D8.0mm_P3.50mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>90.2</posX>
+        <posY>76.35999999999999</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="38">
+        <ref>C38</ref>
+        <originalRef>C38</originalRef>
+        <value>330nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>95.10400000000001</posX>
+        <posY>34.36599999999999</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="39">
+        <ref>C39</ref>
+        <originalRef>C39</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>98.368131</posX>
+        <posY>23.981606999999997</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="40">
+        <ref>C40</ref>
+        <originalRef>C40</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>101.41613100000001</posX>
+        <posY>20.679606999999997</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="41">
+        <ref>C41</ref>
+        <originalRef>C41</originalRef>
+        <value>1000uF 10V</value>
+        <package>CP_Radial_D8.0mm_P3.50mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>107.45000000000002</posX>
+        <posY>66.75999999999999</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="42">
+        <ref>C42</ref>
+        <originalRef>C42</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>95.55000000000001</posX>
+        <posY>11.809999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="43">
+        <ref>C43</ref>
+        <originalRef>C43</originalRef>
+        <value>4.7uF 16V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>71.874</posX>
+        <posY>72.708</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="44">
+        <ref>C44</ref>
+        <originalRef>C44</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>57.556020000000004</posX>
+        <posY>52.51499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="45">
+        <ref>C45</ref>
+        <originalRef>C45</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>68.953</posX>
+        <posY>52.895999999999994</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="46">
+        <ref>C46</ref>
+        <originalRef>C46</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>8.763000000000002</posX>
+        <posY>19.804499999999997</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="47">
+        <ref>C47</ref>
+        <originalRef>C47</originalRef>
+        <value>10uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>1.0746810000000053</posX>
+        <posY>13.962916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="48">
+        <ref>C48</ref>
+        <originalRef>C48</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>9.746000000000002</posX>
+        <posY>35.23499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="49">
+        <ref>C49</ref>
+        <originalRef>C49</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>17.780000000000005</posX>
+        <posY>23.677999999999997</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="50">
+        <ref>C50</ref>
+        <originalRef>C50</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>0.0</posX>
+        <posY>26.345</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="51">
+        <ref>C51</ref>
+        <originalRef>C51</originalRef>
+        <value>220nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>3.8100000000000023</posX>
+        <posY>20.312915999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="52">
+        <ref>C52</ref>
+        <originalRef>C52</originalRef>
+        <value>270nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>0.0</posX>
+        <posY>30.187999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="53">
+        <ref>C53</ref>
+        <originalRef>C53</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>4.158000000000001</posX>
+        <posY>35.23499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="54">
+        <ref>C54</ref>
+        <originalRef>C54</originalRef>
+        <value>NM</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>18.095200000000002</posX>
+        <posY>16.916399999999996</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="55">
+        <ref>C55</ref>
+        <originalRef>C55</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>15.138681000000002</posX>
+        <posY>15.867915999999994</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="56">
+        <ref>C56</ref>
+        <originalRef>C56</originalRef>
+        <value>1.5uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>17.780000000000005</posX>
+        <posY>27.487999999999992</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="57">
+        <ref>C57</ref>
+        <originalRef>C57</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>14.318000000000001</posX>
+        <posY>31.204</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="58">
+        <ref>C58</ref>
+        <originalRef>C58</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>20.668000000000003</posX>
+        <posY>13.169999999999995</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="59">
+        <ref>C59</ref>
+        <originalRef>C59</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>34.163000000000004</posX>
+        <posY>19.804499999999997</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="60">
+        <ref>C60</ref>
+        <originalRef>C60</originalRef>
+        <value>10uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>26.474681000000004</posX>
+        <posY>13.962916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="61">
+        <ref>C61</ref>
+        <originalRef>C61</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>35.146</posX>
+        <posY>35.23499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="62">
+        <ref>C62</ref>
+        <originalRef>C62</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>43.179999</posX>
+        <posY>23.677999999999997</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="63">
+        <ref>C63</ref>
+        <originalRef>C63</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>25.399999</posX>
+        <posY>26.345</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="64">
+        <ref>C64</ref>
+        <originalRef>C64</originalRef>
+        <value>220nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>29.209999000000003</posX>
+        <posY>20.312915999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="65">
+        <ref>C65</ref>
+        <originalRef>C65</originalRef>
+        <value>270nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>25.399999</posX>
+        <posY>30.187999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="66">
+        <ref>C66</ref>
+        <originalRef>C66</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>29.558000000000003</posX>
+        <posY>35.23499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="67">
+        <ref>C67</ref>
+        <originalRef>C67</originalRef>
+        <value>NM</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>43.800000000000004</posX>
+        <posY>16.9672</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="68">
+        <ref>C68</ref>
+        <originalRef>C68</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>40.538681000000004</posX>
+        <posY>15.867915999999994</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="69">
+        <ref>C69</ref>
+        <originalRef>C69</originalRef>
+        <value>1.5uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>43.179999</posX>
+        <posY>27.487999999999992</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="70">
+        <ref>C70</ref>
+        <originalRef>C70</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>39.718</posX>
+        <posY>31.204</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="71">
+        <ref>C71</ref>
+        <originalRef>C71</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>46.068000000000005</posX>
+        <posY>13.169999999999995</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="72">
+        <ref>C72</ref>
+        <originalRef>C72</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>59.563</posX>
+        <posY>19.804499999999997</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="73">
+        <ref>C73</ref>
+        <originalRef>C73</originalRef>
+        <value>10uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>51.874680000000005</posX>
+        <posY>13.962916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="74">
+        <ref>C74</ref>
+        <originalRef>C74</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>60.54600000000001</posX>
+        <posY>35.23499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="75">
+        <ref>C75</ref>
+        <originalRef>C75</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>68.58</posX>
+        <posY>23.677999999999997</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="76">
+        <ref>C76</ref>
+        <originalRef>C76</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>50.800000000000004</posX>
+        <posY>26.345</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="77">
+        <ref>C77</ref>
+        <originalRef>C77</originalRef>
+        <value>220nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>54.61</posX>
+        <posY>20.312915999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="78">
+        <ref>C78</ref>
+        <originalRef>C78</originalRef>
+        <value>270nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>50.800000000000004</posX>
+        <posY>30.187999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="79">
+        <ref>C79</ref>
+        <originalRef>C79</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>54.958</posX>
+        <posY>35.23499999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="80">
+        <ref>C80</ref>
+        <originalRef>C80</originalRef>
+        <value>NM</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>69.0984</posX>
+        <posY>16.916399999999996</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="81">
+        <ref>C81</ref>
+        <originalRef>C81</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>65.938681</posX>
+        <posY>15.867915999999994</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="82">
+        <ref>C82</ref>
+        <originalRef>C82</originalRef>
+        <value>1.5uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>68.58</posX>
+        <posY>27.487999999999992</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="83">
+        <ref>C83</ref>
+        <originalRef>C83</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>65.117999</posX>
+        <posY>31.204</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="84">
+        <ref>C84</ref>
+        <originalRef>C84</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>71.468</posX>
+        <posY>13.169999999999995</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="85">
+        <ref>C85</ref>
+        <originalRef>C85</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>84.020681</posX>
+        <posY>20.368916</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="86">
+        <ref>C86</ref>
+        <originalRef>C86</originalRef>
+        <value>2.2uF 6.3V</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>75.89268100000001</posX>
+        <posY>7.384</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="87">
+        <ref>C87</ref>
+        <originalRef>C87</originalRef>
+        <value>0R</value>
+        <package>C_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>16</feeder>
+        <posX>78.432681</posX>
+        <posY>7.384</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="88">
+        <ref>C88</ref>
+        <originalRef>C88</originalRef>
+        <value>270nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>75.166</posX>
+        <posY>30.243999999999993</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="89">
+        <ref>C89</ref>
+        <originalRef>C89</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>84.31</posX>
+        <posY>35.32399999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="90">
+        <ref>C90</ref>
+        <originalRef>C90</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>78.72200000000001</posX>
+        <posY>34.815999999999995</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="91">
+        <ref>C91</ref>
+        <originalRef>C91</originalRef>
+        <value>1.5uF</value>
+        <package>C_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>91.93</posX>
+        <posY>27.449999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="92">
+        <ref>C92</ref>
+        <originalRef>C92</originalRef>
+        <value>0R</value>
+        <package>C_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>16</feeder>
+        <posX>84.782681</posX>
+        <posY>11.986915999999994</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="93">
+        <ref>C93</ref>
+        <originalRef>C93</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>88.882</posX>
+        <posY>31.259999999999998</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="94">
+        <ref>C94</ref>
+        <originalRef>C94</originalRef>
+        <value>100nF</value>
+        <package>C_0805_2012Metric</package>
+        <model>C_0805</model>
+        <feeder>22</feeder>
+        <posX>113.05000000000001</posX>
+        <posY>65.85999999999999</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="95">
+        <ref>C95</ref>
+        <originalRef>C95</originalRef>
+        <value>2.2uF</value>
+        <package>C_0603_1608Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>0.8850000000000051</posX>
+        <posY>12.39</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="96">
+        <ref>C96</ref>
+        <originalRef>C96</originalRef>
+        <value>2.2uF</value>
+        <package>C_0603_1608Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>26.297500000000003</posX>
+        <posY>12.364999999999995</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="97">
+        <ref>C97</ref>
+        <originalRef>C97</originalRef>
+        <value>2.2uF</value>
+        <package>C_0603_1608Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>51.722500000000004</posX>
+        <posY>12.39</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="98">
+        <ref>D1</ref>
+        <originalRef>D1</originalRef>
+        <value>BAT54S</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>31.742000000000004</posX>
+        <posY>40.449999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="99">
+        <ref>D2</ref>
+        <originalRef>D2</originalRef>
+        <value>LED</value>
+        <package>LED_0805</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>26.408</posX>
+        <posY>43.498</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="100">
+        <ref>D3</ref>
+        <originalRef>D3</originalRef>
+        <value>B340B-13-F</value>
+        <package>D_SMB</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>116.4</posX>
+        <posY>64.71000000000001</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="101">
+        <ref>D4</ref>
+        <originalRef>D4</originalRef>
+        <value>B340B-13-F</value>
+        <package>D_SMB</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>124.9</posX>
+        <posY>45.35999999999999</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="102">
+        <ref>D5</ref>
+        <originalRef>D5</originalRef>
+        <value>6.5V TVS</value>
+        <package>D_SMA</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>149.5</posX>
+        <posY>17.86</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="103">
+        <ref>H1</ref>
+        <originalRef>H1</originalRef>
+        <value>CH25-2032LF</value>
+        <package>None</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>39.5</posX>
+        <posY>57.919999999999995</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="104">
+        <ref>H2</ref>
+        <originalRef>H2</originalRef>
+        <value>MountingHole</value>
+        <package>VIS3-6.5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>10.668060000000004</posX>
+        <posY>68.3948</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="105">
+        <ref>H3</ref>
+        <originalRef>H3</originalRef>
+        <value>MountingHole</value>
+        <package>VIS3-6.5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>56.38806</posX>
+        <posY>68.3948</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="106">
+        <ref>H4</ref>
+        <originalRef>H4</originalRef>
+        <value>MountingHole</value>
+        <package>VIS3-6.5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>124.25999999999999</posX>
+        <posY>68.38999999999999</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="107">
+        <ref>H5</ref>
+        <originalRef>H5</originalRef>
+        <value>MountingHole</value>
+        <package>VIS3-6.5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>124.25999999999999</posX>
+        <posY>0.7899999999999991</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="108">
+        <ref>H7</ref>
+        <originalRef>H7</originalRef>
+        <value>MountingHole</value>
+        <package>VIS3-6.5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>10.660000000000004</posX>
+        <posY>0.7899999999999991</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="109">
+        <ref>HS1</ref>
+        <originalRef>HS1</originalRef>
+        <value>7109DG</value>
+        <package>None</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>16.582720000000002</posX>
+        <posY>52.05335999999999</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="110">
+        <ref>J1</ref>
+        <originalRef>J1</originalRef>
+        <value>22-05-7068</value>
+        <package>Molex_KK-6410-06_06x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>27.000000000000004</posX>
+        <posY>0.45999999999999375</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="111">
+        <ref>J2</ref>
+        <originalRef>J2</originalRef>
+        <value>22-05-7068</value>
+        <package>Molex_KK-6410-06_06x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>66.86</posX>
+        <posY>0.5599999999999952</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="112">
+        <ref>J3</ref>
+        <originalRef>J3</originalRef>
+        <value>22-27-2061</value>
+        <package>Molex_KK-6410-06_06x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>151.46</posX>
+        <posY>26.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="113">
+        <ref>J4</ref>
+        <originalRef>J4</originalRef>
+        <value>22-05-7068</value>
+        <package>Molex_KK-6410-06_06x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>103.4</posX>
+        <posY>0.5599999999999952</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="114">
+        <ref>J5</ref>
+        <originalRef>J5</originalRef>
+        <value>22-12-4042</value>
+        <package>Molex_KK-6410-04_04x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>83.444681</posX>
+        <posY>77.663916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="115">
+        <ref>J6</ref>
+        <originalRef>J6</originalRef>
+        <value>22-12-4042</value>
+        <package>Molex_KK-6410-04_04x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>70.60400000000001</posX>
+        <posY>77.53399999999999</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="116">
+        <ref>J7</ref>
+        <originalRef>J7</originalRef>
+        <value>22-27-2061</value>
+        <package>Molex_KK-6410-06_06x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>1.8900000000000006</posX>
+        <posY>78.74000000000001</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="117">
+        <ref>J8</ref>
+        <originalRef>J8</originalRef>
+        <value>2178710-8 </value>
+        <package>8Micro-MaTch</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>52.202681000000005</posX>
+        <posY>76.39391599999999</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="118">
+        <ref>J9</ref>
+        <originalRef>J9</originalRef>
+        <value>22-27-2061</value>
+        <package>Molex_KK-6410-06_06x2.54mm_Straight</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>40.632000000000005</posX>
+        <posY>77.40991600000001</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="119">
+        <ref>J10</ref>
+        <originalRef>J10</originalRef>
+        <value>2178710-8 </value>
+        <package>8Micro-MaTch</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>17.264000000000003</posX>
+        <posY>76.26400000000001</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="120">
+        <ref>J11</ref>
+        <originalRef>J11</originalRef>
+        <value>NM</value>
+        <package>SL-104-X-XX_1x04</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>17.018060000000002</posX>
+        <posY>72.2048</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="121">
+        <ref>J12</ref>
+        <originalRef>J12</originalRef>
+        <value>NM</value>
+        <package>SL-104-X-XX_1x04</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>50.03806</posX>
+        <posY>72.2048</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="122">
+        <ref>J13</ref>
+        <originalRef>J13</originalRef>
+        <value>PT</value>
+        <package>SL-101-X-XX_1x01</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>79.36000000000001</posX>
+        <posY>45.79</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="123">
+        <ref>J14</ref>
+        <originalRef>J14</originalRef>
+        <value>PT</value>
+        <package>SL-101-X-XX_1x01</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>48.88</posX>
+        <posY>0.0</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="124">
+        <ref>J15</ref>
+        <originalRef>J15</originalRef>
+        <value>Conn_01x01_Female</value>
+        <package>SL-101-X-XX_1x01</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>107.30000000000001</posX>
+        <posY>27.93999999999999</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="125">
+        <ref>L1</ref>
+        <originalRef>L1</originalRef>
+        <value>68uH NM</value>
+        <package>L_Vishay_IHLP-6767</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>112.95000000000002</posX>
+        <posY>50.26</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="126">
+        <ref>L2</ref>
+        <originalRef>L2</originalRef>
+        <value>100uH</value>
+        <package>L_Vishay_IHLP-4040</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>113.1</posX>
+        <posY>50.26</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="127">
+        <ref>L3</ref>
+        <originalRef>L3</originalRef>
+        <value>100uH</value>
+        <package>L_Vishay_IHLP-4040</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>104.05000000000001</posX>
+        <posY>75.00999999999999</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="128">
+        <ref>Q1</ref>
+        <originalRef>Q1</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>111.02199999999999</posX>
+        <posY>10.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="129">
+        <ref>Q2</ref>
+        <originalRef>Q2</originalRef>
+        <value>FDD4243</value>
+        <package>TO-252-2</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>146.46</posX>
+        <posY>48.589999999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="130">
+        <ref>Q3</ref>
+        <originalRef>Q3</originalRef>
+        <value>MMBT2907</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>133.46</posX>
+        <posY>53.589999999999996</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="131">
+        <ref>Q4</ref>
+        <originalRef>Q4</originalRef>
+        <value>BSS308_NM</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>116.46000000000001</posX>
+        <posY>10.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="132">
+        <ref>Q5</ref>
+        <originalRef>Q5</originalRef>
+        <value>FDD4243</value>
+        <package>TO-252-2</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>114.27600000000001</posX>
+        <posY>24.339999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="133">
+        <ref>Q6</ref>
+        <originalRef>Q6</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>122.45000000000002</posX>
+        <posY>29.160000000000004</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="134">
+        <ref>Q7</ref>
+        <originalRef>Q7</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>128.773536</posX>
+        <posY>31.02709099999999</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="135">
+        <ref>Q8</ref>
+        <originalRef>Q8</originalRef>
+        <value>FDD4243</value>
+        <package>TO-252-2</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>115.25</posX>
+        <posY>35.46</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="136">
+        <ref>Q9</ref>
+        <originalRef>Q9</originalRef>
+        <value>FDD4243</value>
+        <package>TO-252-2</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>138.933536</posX>
+        <posY>33.567091</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="137">
+        <ref>Q10</ref>
+        <originalRef>Q10</originalRef>
+        <value>NX2301P215</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>113.5</posX>
+        <posY>78.31</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="138">
+        <ref>Q11</ref>
+        <originalRef>Q11</originalRef>
+        <value>FDD4243</value>
+        <package>TO-252-2</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>65.778</posX>
+        <posY>67.374</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="139">
+        <ref>Q12</ref>
+        <originalRef>Q12</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>115.95000000000002</posX>
+        <posY>71.60999999999999</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="140">
+        <ref>Q13</ref>
+        <originalRef>Q13</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>62.476</posX>
+        <posY>57.21399999999999</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="141">
+        <ref>Q14</ref>
+        <originalRef>Q14</originalRef>
+        <value>NX2301P215</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>91.6974</posX>
+        <posY>53.7972</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="142">
+        <ref>Q15</ref>
+        <originalRef>Q15</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>89.767</posX>
+        <posY>47.9044</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="143">
+        <ref>Q16</ref>
+        <originalRef>Q16</originalRef>
+        <value>BSS138</value>
+        <package>SOT-23</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>108.51172</posX>
+        <posY>20.176359999999995</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="144">
+        <ref>R1</ref>
+        <originalRef>R1</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>111.02199999999999</posX>
+        <posY>14.589999999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="145">
+        <ref>R2</ref>
+        <originalRef>R2</originalRef>
+        <value>2K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>19</feeder>
+        <posX>111.02199999999999</posX>
+        <posY>6.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="146">
+        <ref>R3</ref>
+        <originalRef>R3</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>71.746321</posX>
+        <posY>63.03839899999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="147">
+        <ref>R4</ref>
+        <originalRef>R4</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>1.8900000000000006</posX>
+        <posY>62.23</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="148">
+        <ref>R5</ref>
+        <originalRef>R5</originalRef>
+        <value>47K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>12</feeder>
+        <posX>94.1936</posX>
+        <posY>66.7004</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="149">
+        <ref>R6</ref>
+        <originalRef>R6</originalRef>
+        <value>22R</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>80.9244</posX>
+        <posY>72.5984</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="150">
+        <ref>R7</ref>
+        <originalRef>R7</originalRef>
+        <value>22R</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>78.3844</posX>
+        <posY>72.5984</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="151">
+        <ref>R8</ref>
+        <originalRef>R8</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>44.442</posX>
+        <posY>59.49999999999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="152">
+        <ref>R9</ref>
+        <originalRef>R9</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>31.742000000000004</posX>
+        <posY>43.498</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="153">
+        <ref>R10</ref>
+        <originalRef>R10</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>26.408</posX>
+        <posY>41.466</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="154">
+        <ref>R11</ref>
+        <originalRef>R11</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>35.806000000000004</posX>
+        <posY>40.95799999999999</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="155">
+        <ref>R12</ref>
+        <originalRef>R12</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>59.17400000000001</posX>
+        <posY>76.26400000000001</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="156">
+        <ref>R13</ref>
+        <originalRef>R13</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>59.17400000000001</posX>
+        <posY>73.72399999999999</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="157">
+        <ref>R14</ref>
+        <originalRef>R14</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>6.970000000000002</posX>
+        <posY>62.23</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="158">
+        <ref>R15</ref>
+        <originalRef>R15</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>4.43</posX>
+        <posY>62.23</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="159">
+        <ref>R16</ref>
+        <originalRef>R16</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>31.996000000000002</posX>
+        <posY>68.38999999999999</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="160">
+        <ref>R17</ref>
+        <originalRef>R17</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>44.95</posX>
+        <posY>68.136</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="161">
+        <ref>R18</ref>
+        <originalRef>R18</originalRef>
+        <value>270K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>13</feeder>
+        <posX>140.238</posX>
+        <posY>10.645999999999994</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="162">
+        <ref>R19</ref>
+        <originalRef>R19</originalRef>
+        <value>820K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>140.238</posX>
+        <posY>5.82</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="163">
+        <ref>R20</ref>
+        <originalRef>R20</originalRef>
+        <value>560K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>140.238</posX>
+        <posY>0.5899999999999963</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="164">
+        <ref>R21</ref>
+        <originalRef>R21</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>143.46</posX>
+        <posY>10.645999999999994</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="165">
+        <ref>R22</ref>
+        <originalRef>R22</originalRef>
+        <value>130K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>151.16</posX>
+        <posY>0.5899999999999963</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="166">
+        <ref>R23</ref>
+        <originalRef>R23</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>153.46</posX>
+        <posY>47.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="167">
+        <ref>R24</ref>
+        <originalRef>R24</originalRef>
+        <value>1M2 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>151.16</posX>
+        <posY>4.803999999999995</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="168">
+        <ref>R25</ref>
+        <originalRef>R25</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>151.3332</posX>
+        <posY>43.8456</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="169">
+        <ref>R26</ref>
+        <originalRef>R26</originalRef>
+        <value>560K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>151.16</posX>
+        <posY>10.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="170">
+        <ref>R27</ref>
+        <originalRef>R27</originalRef>
+        <value>8R2 1W</value>
+        <package>R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>128.46</posX>
+        <posY>48.589999999999996</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="171">
+        <ref>R28</ref>
+        <originalRef>R28</originalRef>
+        <value>2R7 2W</value>
+        <package>R_Axial_DIN0411_L9.9mm_D3.6mm_P15.24mm_Horizontal</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>128.46</posX>
+        <posY>40.589999999999996</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="172">
+        <ref>R29</ref>
+        <originalRef>R29</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>103.46000000000001</posX>
+        <posY>6.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="173">
+        <ref>R30</ref>
+        <originalRef>R30</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>128.46</posX>
+        <posY>53.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="174">
+        <ref>R31</ref>
+        <originalRef>R31</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>100.46000000000001</posX>
+        <posY>6.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="175">
+        <ref>R32</ref>
+        <originalRef>R32</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>103.46000000000001</posX>
+        <posY>10.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="176">
+        <ref>R33</ref>
+        <originalRef>R33</originalRef>
+        <value>1M NM</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>116.46000000000001</posX>
+        <posY>14.589999999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="177">
+        <ref>R34</ref>
+        <originalRef>R34</originalRef>
+        <value>2K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>19</feeder>
+        <posX>114.46000000000001</posX>
+        <posY>6.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="178">
+        <ref>R35</ref>
+        <originalRef>R35</originalRef>
+        <value>2K NM</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>117.46000000000001</posX>
+        <posY>6.589999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="179">
+        <ref>R36</ref>
+        <originalRef>R36</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>115.27600000000001</posX>
+        <posY>17.339999999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="180">
+        <ref>R37</ref>
+        <originalRef>R37</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>120.09200000000001</posX>
+        <posY>16.843199999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="181">
+        <ref>R38</ref>
+        <originalRef>R38</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>122.45000000000002</posX>
+        <posY>26.209999999999994</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="182">
+        <ref>R39</ref>
+        <originalRef>R39</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>131.821536</posX>
+        <posY>31.02709099999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="183">
+        <ref>R40</ref>
+        <originalRef>R40</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>122.25</posX>
+        <posY>37.160000000000004</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="184">
+        <ref>R41</ref>
+        <originalRef>R41</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>131.821536</posX>
+        <posY>35.091091</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="185">
+        <ref>R42</ref>
+        <originalRef>R42</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>122.25</posX>
+        <posY>33.410000000000004</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="186">
+        <ref>R43</ref>
+        <originalRef>R43</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>128.773536</posX>
+        <posY>36.107091000000004</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="187">
+        <ref>R44</ref>
+        <originalRef>R44</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>91.6974</posX>
+        <posY>50.927</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="188">
+        <ref>R45</ref>
+        <originalRef>R45</originalRef>
+        <value>0.22R</value>
+        <package>R_1206</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>99.172</posX>
+        <posY>48.8872</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="189">
+        <ref>R46</ref>
+        <originalRef>R46</originalRef>
+        <value>200R 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>14</feeder>
+        <posX>101.458</posX>
+        <posY>48.8872</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="190">
+        <ref>R47</ref>
+        <originalRef>R47</originalRef>
+        <value>2K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>19</feeder>
+        <posX>95.0</posX>
+        <posY>55.059999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="191">
+        <ref>R48</ref>
+        <originalRef>R48</originalRef>
+        <value>6K04 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>97.582</posX>
+        <posY>60.1068</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="192">
+        <ref>R49</ref>
+        <originalRef>R49</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>97.55000000000001</posX>
+        <posY>62.309999999999995</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="193">
+        <ref>R50</ref>
+        <originalRef>R50</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>113.5</posX>
+        <posY>75.35999999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="194">
+        <ref>R51</ref>
+        <originalRef>R51</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>67.048</posX>
+        <posY>60.26199999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="195">
+        <ref>R52</ref>
+        <originalRef>R52</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>112.55000000000001</posX>
+        <posY>72.60999999999999</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="196">
+        <ref>R53</ref>
+        <originalRef>R53</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>63.492000000000004</posX>
+        <posY>60.26199999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="197">
+        <ref>R54</ref>
+        <originalRef>R54</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>117.30000000000001</posX>
+        <posY>75.35999999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="198">
+        <ref>R55</ref>
+        <originalRef>R55</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>65.524</posX>
+        <posY>57.21399999999999</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="199">
+        <ref>R56</ref>
+        <originalRef>R56</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>60.444</posX>
+        <posY>46.291999999999994</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="200">
+        <ref>R57</ref>
+        <originalRef>R57</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>1.1686810000000065</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="201">
+        <ref>R58</ref>
+        <originalRef>R58</originalRef>
+        <value>200R 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>14</feeder>
+        <posX>10.693681000000002</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="202">
+        <ref>R59</ref>
+        <originalRef>R59</originalRef>
+        <value>43K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>18</feeder>
+        <posX>1.1686810000000065</posX>
+        <posY>10.787915999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="203">
+        <ref>R60</ref>
+        <originalRef>R60</originalRef>
+        <value>39.2K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>1.1686810000000065</posX>
+        <posY>16.502916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="204">
+        <ref>R61</ref>
+        <originalRef>R61</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>0.0</posX>
+        <posY>22.217915999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="205">
+        <ref>R62</ref>
+        <originalRef>R62</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>3.8100000000000023</posX>
+        <posY>26.378</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="206">
+        <ref>R63</ref>
+        <originalRef>R63</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>3.8100000000000023</posX>
+        <posY>23.487916</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="207">
+        <ref>R64</ref>
+        <originalRef>R64</originalRef>
+        <value>3.4K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>15</feeder>
+        <posX>2.761000000000003</posX>
+        <posY>30.187999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="208">
+        <ref>R65</ref>
+        <originalRef>R65</originalRef>
+        <value>12K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>21</feeder>
+        <posX>8.763000000000002</posX>
+        <posY>23.931999999999995</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="209">
+        <ref>R66</ref>
+        <originalRef>R66</originalRef>
+        <value>30K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>8.763000000000002</posX>
+        <posY>21.772999999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="210">
+        <ref>R67</ref>
+        <originalRef>R67</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>7.714000000000002</posX>
+        <posY>26.378</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="211">
+        <ref>R68</ref>
+        <originalRef>R68</originalRef>
+        <value>2.8K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>20</feeder>
+        <posX>17.780000000000005</posX>
+        <posY>19.867999999999995</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="212">
+        <ref>R69</ref>
+        <originalRef>R69</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>11.270000000000003</posX>
+        <posY>26.378</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="213">
+        <ref>R70</ref>
+        <originalRef>R70</originalRef>
+        <value>470K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>10</feeder>
+        <posX>11.328681000000003</posX>
+        <posY>9.961999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="214">
+        <ref>R71</ref>
+        <originalRef>R71</originalRef>
+        <value>1.3K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>17</feeder>
+        <posX>14.318000000000001</posX>
+        <posY>27.394</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="215">
+        <ref>R72</ref>
+        <originalRef>R72</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>17.780000000000005</posX>
+        <posY>31.297999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="216">
+        <ref>R73</ref>
+        <originalRef>R73</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>14.503681000000004</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="217">
+        <ref>R74</ref>
+        <originalRef>R74</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>17.678681000000005</posX>
+        <posY>12.057915999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="218">
+        <ref>R75</ref>
+        <originalRef>R75</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>13.868681000000002</posX>
+        <posY>9.961999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="219">
+        <ref>R76</ref>
+        <originalRef>R76</originalRef>
+        <value>270K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>13</feeder>
+        <posX>12.598681000000003</posX>
+        <posY>15.867915999999994</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="220">
+        <ref>R77</ref>
+        <originalRef>R77</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>26.568681000000005</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="221">
+        <ref>R78</ref>
+        <originalRef>R78</originalRef>
+        <value>200R 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>14</feeder>
+        <posX>36.093680000000006</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="222">
+        <ref>R79</ref>
+        <originalRef>R79</originalRef>
+        <value>43K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>18</feeder>
+        <posX>26.568681000000005</posX>
+        <posY>10.787915999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="223">
+        <ref>R80</ref>
+        <originalRef>R80</originalRef>
+        <value>39.2K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>26.568681000000005</posX>
+        <posY>16.502916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="224">
+        <ref>R81</ref>
+        <originalRef>R81</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>25.399999</posX>
+        <posY>22.217915999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="225">
+        <ref>R82</ref>
+        <originalRef>R82</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>29.209999000000003</posX>
+        <posY>26.378</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="226">
+        <ref>R83</ref>
+        <originalRef>R83</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>29.209999000000003</posX>
+        <posY>23.487916</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="227">
+        <ref>R84</ref>
+        <originalRef>R84</originalRef>
+        <value>3.4K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>15</feeder>
+        <posX>28.161</posX>
+        <posY>30.187999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="228">
+        <ref>R85</ref>
+        <originalRef>R85</originalRef>
+        <value>12K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>21</feeder>
+        <posX>34.163000000000004</posX>
+        <posY>23.931999999999995</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="229">
+        <ref>R86</ref>
+        <originalRef>R86</originalRef>
+        <value>30K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>34.163000000000004</posX>
+        <posY>21.772999999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="230">
+        <ref>R87</ref>
+        <originalRef>R87</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>33.113999</posX>
+        <posY>26.378</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="231">
+        <ref>R88</ref>
+        <originalRef>R88</originalRef>
+        <value>2.8K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>20</feeder>
+        <posX>43.179999</posX>
+        <posY>19.867999999999995</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="232">
+        <ref>R89</ref>
+        <originalRef>R89</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>36.67</posX>
+        <posY>26.378</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="233">
+        <ref>R90</ref>
+        <originalRef>R90</originalRef>
+        <value>470K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>10</feeder>
+        <posX>36.728681</posX>
+        <posY>9.961999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="234">
+        <ref>R91</ref>
+        <originalRef>R91</originalRef>
+        <value>1.3K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>17</feeder>
+        <posX>39.718</posX>
+        <posY>27.394</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="235">
+        <ref>R92</ref>
+        <originalRef>R92</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>43.179999</posX>
+        <posY>31.297999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="236">
+        <ref>R93</ref>
+        <originalRef>R93</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>22.900000000000006</posX>
+        <posY>7.759999999999998</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="237">
+        <ref>R94</ref>
+        <originalRef>R94</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>43.078681</posX>
+        <posY>12.057915999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="238">
+        <ref>R95</ref>
+        <originalRef>R95</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>39.268681</posX>
+        <posY>9.961999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="239">
+        <ref>R96</ref>
+        <originalRef>R96</originalRef>
+        <value>270K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>13</feeder>
+        <posX>37.99868</posX>
+        <posY>15.867915999999994</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="240">
+        <ref>R97</ref>
+        <originalRef>R97</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>51.968680000000006</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="241">
+        <ref>R98</ref>
+        <originalRef>R98</originalRef>
+        <value>200R 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>14</feeder>
+        <posX>61.493680000000005</posX>
+        <posY>6.9779160000000005</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="242">
+        <ref>R99</ref>
+        <originalRef>R99</originalRef>
+        <value>43K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>18</feeder>
+        <posX>51.968680000000006</posX>
+        <posY>10.787915999999996</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="243">
+        <ref>R100</ref>
+        <originalRef>R100</originalRef>
+        <value>39.2K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>51.968680000000006</posX>
+        <posY>16.502916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="244">
+        <ref>R101</ref>
+        <originalRef>R101</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>50.800000000000004</posX>
+        <posY>22.217915999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="245">
+        <ref>R102</ref>
+        <originalRef>R102</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>54.61</posX>
+        <posY>26.378</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="246">
+        <ref>R103</ref>
+        <originalRef>R103</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>54.61</posX>
+        <posY>23.487916</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="247">
+        <ref>R104</ref>
+        <originalRef>R104</originalRef>
+        <value>3.4K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>15</feeder>
+        <posX>53.560999</posX>
+        <posY>30.187999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="248">
+        <ref>R105</ref>
+        <originalRef>R105</originalRef>
+        <value>12K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>21</feeder>
+        <posX>59.563</posX>
+        <posY>23.931999999999995</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="249">
+        <ref>R106</ref>
+        <originalRef>R106</originalRef>
+        <value>30K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>59.563</posX>
+        <posY>21.772999999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="250">
+        <ref>R107</ref>
+        <originalRef>R107</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>58.514</posX>
+        <posY>26.378</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="251">
+        <ref>R108</ref>
+        <originalRef>R108</originalRef>
+        <value>2.8K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>20</feeder>
+        <posX>68.58</posX>
+        <posY>19.867999999999995</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="252">
+        <ref>R109</ref>
+        <originalRef>R109</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>62.069999</posX>
+        <posY>26.378</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="253">
+        <ref>R110</ref>
+        <originalRef>R110</originalRef>
+        <value>470K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>10</feeder>
+        <posX>62.128681</posX>
+        <posY>9.961999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="254">
+        <ref>R111</ref>
+        <originalRef>R111</originalRef>
+        <value>1.3K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>17</feeder>
+        <posX>65.117999</posX>
+        <posY>27.394</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="255">
+        <ref>R112</ref>
+        <originalRef>R112</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>68.58</posX>
+        <posY>31.297999999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="256">
+        <ref>R113</ref>
+        <originalRef>R113</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>39.6852</posX>
+        <posY>6.984999999999999</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="257">
+        <ref>R114</ref>
+        <originalRef>R114</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>68.47868</posX>
+        <posY>12.057915999999999</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="258">
+        <ref>R115</ref>
+        <originalRef>R115</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>64.668681</posX>
+        <posY>9.961999999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="259">
+        <ref>R116</ref>
+        <originalRef>R116</originalRef>
+        <value>270K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>13</feeder>
+        <posX>63.398681</posX>
+        <posY>15.867915999999994</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="260">
+        <ref>R117</ref>
+        <originalRef>R117</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>78.595</posX>
+        <posY>26.433999999999997</posY>
+        <angle>0.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="261">
+        <ref>R118</ref>
+        <originalRef>R118</originalRef>
+        <value>470K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>10</feeder>
+        <posX>75.89268100000001</posX>
+        <posY>10.970915999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="262">
+        <ref>R119</ref>
+        <originalRef>R119</originalRef>
+        <value>0R</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>16</feeder>
+        <posX>78.432681</posX>
+        <posY>10.970915999999995</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="263">
+        <ref>R120</ref>
+        <originalRef>R120</originalRef>
+        <value>3.4K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>15</feeder>
+        <posX>77.325</posX>
+        <posY>30.243999999999993</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="264">
+        <ref>R121</ref>
+        <originalRef>R121</originalRef>
+        <value>3.09K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>8</feeder>
+        <posX>82.278</posX>
+        <posY>26.433999999999997</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="265">
+        <ref>R122</ref>
+        <originalRef>R122</originalRef>
+        <value>0R</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>16</feeder>
+        <posX>77.53120000000001</posX>
+        <posY>17.068799999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="266">
+        <ref>R123</ref>
+        <originalRef>R123</originalRef>
+        <value>470K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>10</feeder>
+        <posX>75.4992</posX>
+        <posY>17.068799999999996</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="267">
+        <ref>R124</ref>
+        <originalRef>R124</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>85.834</posX>
+        <posY>26.433999999999997</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="268">
+        <ref>R125</ref>
+        <originalRef>R125</originalRef>
+        <value>1.3K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>17</feeder>
+        <posX>88.882</posX>
+        <posY>27.449999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="269">
+        <ref>R126</ref>
+        <originalRef>R126</originalRef>
+        <value>NM</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>84.782681</posX>
+        <posY>9.700916</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="270">
+        <ref>R127</ref>
+        <originalRef>R127</originalRef>
+        <value>1.43K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>9</feeder>
+        <posX>91.93</posX>
+        <posY>31.259999999999998</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="271">
+        <ref>R128</ref>
+        <originalRef>R128</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>48.45</posX>
+        <posY>7.859999999999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="272">
+        <ref>R129</ref>
+        <originalRef>R129</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>65.1614</posX>
+        <posY>6.984999999999999</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="273">
+        <ref>R130</ref>
+        <originalRef>R130</originalRef>
+        <value>120K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>7</feeder>
+        <posX>80.57172</posX>
+        <posY>7.410319999999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="274">
+        <ref>R131</ref>
+        <originalRef>R131</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>105.25036</posX>
+        <posY>20.267799999999994</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="275">
+        <ref>R132</ref>
+        <originalRef>R132</originalRef>
+        <value>1K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>4</feeder>
+        <posX>88.7764</posX>
+        <posY>51.815999999999995</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="276">
+        <ref>R133</ref>
+        <originalRef>R133</originalRef>
+        <value>1M 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>3</feeder>
+        <posX>92.7388</posX>
+        <posY>47.9044</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="277">
+        <ref>R134</ref>
+        <originalRef>R134</originalRef>
+        <value>47K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>12</feeder>
+        <posX>91.65360000000001</posX>
+        <posY>66.7004</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="278">
+        <ref>R135</ref>
+        <originalRef>R135</originalRef>
+        <value>47K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>12</feeder>
+        <posX>91.65360000000001</posX>
+        <posY>63.2968</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="279">
+        <ref>R136</ref>
+        <originalRef>R136</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>85.7608</posX>
+        <posY>52.93359999999999</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="280">
+        <ref>R137</ref>
+        <originalRef>R137</originalRef>
+        <value>47K</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>12</feeder>
+        <posX>88.25</posX>
+        <posY>69.2404</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="281">
+        <ref>R138</ref>
+        <originalRef>R138</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>89.6216</posX>
+        <posY>59.84239999999999</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="282">
+        <ref>R139</ref>
+        <originalRef>R139</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>88.1992</posX>
+        <posY>62.5348</posY>
+        <angle>180.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="283">
+        <ref>R140</ref>
+        <originalRef>R140</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>73.65</posX>
+        <posY>7.659999999999997</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="284">
+        <ref>R141</ref>
+        <originalRef>R141</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>87.65</posX>
+        <posY>7.759999999999998</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="285">
+        <ref>R142</ref>
+        <originalRef>R142</originalRef>
+        <value>2.2M</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>6</feeder>
+        <posX>95.6</posX>
+        <posY>7.959999999999994</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="286">
+        <ref>R143</ref>
+        <originalRef>R143</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>88.2</posX>
+        <posY>13.209999999999994</posY>
+        <angle>-90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="287">
+        <ref>R144</ref>
+        <originalRef>R144</originalRef>
+        <value>10K 1%</value>
+        <package>R_0805_2012Metric</package>
+        <model>R_0805</model>
+        <feeder>5</feeder>
+        <posX>88.2</posX>
+        <posY>16.509999999999998</posY>
+        <angle>90.0</angle>
+        <placed>1</placed>
+        <enable>1</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="288">
+        <ref>R145</ref>
+        <originalRef>R145</originalRef>
+        <value>10R</value>
+        <package>R_0805_2012Metric</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>91.5</posX>
+        <posY>13.159999999999997</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="289">
+        <ref>RV1</ref>
+        <originalRef>RV1</originalRef>
+        <value>1k</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>6.248681000000001</posX>
+        <posY>8.247915999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="290">
+        <ref>RV2</ref>
+        <originalRef>RV2</originalRef>
+        <value>1M</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>18.948681000000004</posX>
+        <posY>8.247915999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="291">
+        <ref>RV3</ref>
+        <originalRef>RV3</originalRef>
+        <value>1k</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>31.648681000000003</posX>
+        <posY>8.247915999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="292">
+        <ref>RV4</ref>
+        <originalRef>RV4</originalRef>
+        <value>1M</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>44.348681</posX>
+        <posY>8.247915999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="293">
+        <ref>RV5</ref>
+        <originalRef>RV5</originalRef>
+        <value>1k</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>57.048681</posX>
+        <posY>8.247915999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="294">
+        <ref>RV6</ref>
+        <originalRef>RV6</originalRef>
+        <value>1M</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>69.748681</posX>
+        <posY>8.247915999999996</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="295">
+        <ref>RV7</ref>
+        <originalRef>RV7</originalRef>
+        <value>10K</value>
+        <package>Potentiometer_Bourns_3214W_Vertical</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>91.548681</posX>
+        <posY>8.253915999999997</posY>
+        <angle>180.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="296">
+        <ref>SW1</ref>
+        <originalRef>SW1</originalRef>
+        <value>FSM4JSMA </value>
+        <package>FSM2JSMA</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>26.150000000000006</posX>
+        <posY>58.21</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="297">
+        <ref>SW2</ref>
+        <originalRef>SW2</originalRef>
+        <value>FSM4JSMA </value>
+        <package>FSM2JSMA</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>51.7</posX>
+        <posY>58.21</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="298">
+        <ref>U1</ref>
+        <originalRef>U1</originalRef>
+        <value>STM32F205RBT6</value>
+        <package>LQFP-64_10x10mm_Pitch0.5mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>79.620321</posX>
+        <posY>62.27639899999999</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="299">
+        <ref>U2</ref>
+        <originalRef>U2</originalRef>
+        <value>STM32F373CCT6</value>
+        <package>LQFP-48_7x7mm_Pitch0.5mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>39.972</posX>
+        <posY>49.746</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="300">
+        <ref>U3</ref>
+        <originalRef>U3</originalRef>
+        <value>IS62WVS2568FBLL</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>26.670060000000003</posX>
+        <posY>66.61679999999998</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="301">
+        <ref>U4</ref>
+        <originalRef>U4</originalRef>
+        <value>IS62WVS2568FBLL</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>39.62406</posX>
+        <posY>66.61679999999998</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="302">
+        <ref>U5</ref>
+        <originalRef>U5</originalRef>
+        <value>ICL7665</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>145.826</posX>
+        <posY>5.82</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="303">
+        <ref>U6</ref>
+        <originalRef>U6</originalRef>
+        <value>LM317_3PinPackage</value>
+        <package>TO-263-2_DISSIP</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>141.46</posX>
+        <posY>62.29</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="304">
+        <ref>U7</ref>
+        <originalRef>U7</originalRef>
+        <value>4013</value>
+        <package>SOIC-14_3.9x8.7mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>133.46</posX>
+        <posY>4.589999999999996</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="305">
+        <ref>U8</ref>
+        <originalRef>U8</originalRef>
+        <value>BU4S584G2</value>
+        <package>SOT-23-5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>103.46000000000001</posX>
+        <posY>14.589999999999996</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="306">
+        <ref>U9</ref>
+        <originalRef>U9</originalRef>
+        <value>MC33275ST-3.3T3G</value>
+        <package>SOT-223-3_TabPin2</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>100.184</posX>
+        <posY>32.333999999999996</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="307">
+        <ref>U10</ref>
+        <originalRef>U10</originalRef>
+        <value>REF1933</value>
+        <package>SOT-23-5</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>101.41613100000001</posX>
+        <posY>23.981606999999997</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="308">
+        <ref>U11</ref>
+        <originalRef>U11</originalRef>
+        <value>MC34063AD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>99.4</posX>
+        <posY>55.160000000000004</posY>
+        <angle>-90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="309">
+        <ref>U12</ref>
+        <originalRef>U12</originalRef>
+        <value>74HC595</value>
+        <package>SOIC-16_3.9x9.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>55.364000000000004</posX>
+        <posY>46.165</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="310">
+        <ref>U13</ref>
+        <originalRef>U13</originalRef>
+        <value>74HC595</value>
+        <package>SOIC-16_3.9x9.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>67.048</posX>
+        <posY>46.291999999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="311">
+        <ref>U14</ref>
+        <originalRef>U14</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>7.518681000000004</posX>
+        <posY>15.867915999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="312">
+        <ref>U15</ref>
+        <originalRef>U15</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>7.841000000000005</posX>
+        <posY>30.823</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="313">
+        <ref>U16</ref>
+        <originalRef>U16</originalRef>
+        <value>TS5A3159ADBVR</value>
+        <package>SOT-23-6</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>13.868681000000002</posX>
+        <posY>22.534999999999997</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="314">
+        <ref>U17</ref>
+        <originalRef>U17</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>32.91868100000001</posX>
+        <posY>15.867915999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="315">
+        <ref>U18</ref>
+        <originalRef>U18</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>33.241</posX>
+        <posY>30.823</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="316">
+        <ref>U19</ref>
+        <originalRef>U19</originalRef>
+        <value>TS5A3159ADBVR</value>
+        <package>SOT-23-6</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>39.268681</posX>
+        <posY>22.534999999999997</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="317">
+        <ref>U20</ref>
+        <originalRef>U20</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>58.318681</posX>
+        <posY>15.867915999999994</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="318">
+        <ref>U21</ref>
+        <originalRef>U21</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>58.641000000000005</posX>
+        <posY>30.823</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="319">
+        <ref>U22</ref>
+        <originalRef>U22</originalRef>
+        <value>TS5A3159ADBVR</value>
+        <package>SOT-23-6</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>64.668681</posX>
+        <posY>22.534999999999997</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="320">
+        <ref>U23</ref>
+        <originalRef>U23</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>82.7636</posX>
+        <posY>15.9512</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="321">
+        <ref>U24</ref>
+        <originalRef>U24</originalRef>
+        <value>OPA2333xxD</value>
+        <package>SOIC-8_3.9x4.9mm_Pitch1.27mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>82.405</posX>
+        <posY>30.878999999999998</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="322">
+        <ref>Y1</ref>
+        <originalRef>Y1</originalRef>
+        <value>12Mhz</value>
+        <package>Crystal_SMD_3225-4pin_3.2x2.5mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>78.219521</posX>
+        <posY>52.880799</posY>
+        <angle>0.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+      <cmp data-id="323">
+        <ref>Y2</ref>
+        <originalRef>Y2</originalRef>
+        <value>32.768KHz</value>
+        <package>Crystal_SMD_3215-2pin_3.2x1.5mm</package>
+        <model>Null</model>
+        <feeder>None</feeder>
+        <posX>32.606</posX>
+        <posY>51.27</posY>
+        <angle>90.0</angle>
+        <placed>0</placed>
+        <enable>0</enable>
+        <original>1</original>
+      </cmp>
+    </cmpList>
+  </board>
+</root>

@@ -531,7 +531,7 @@ class PickAndPlaceJob(Job):
             PumpStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
             # WaitTask(0.5, name='{}Pump.'.format(ref)),
             WaitTask(model.placeDelay / 1000.0, name='{} Place delay.'.format(ref)),
-            MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='{} End Z lift.'.format(ref)),
+            MoveTask(self._driver, {'Z': zLift, 'C':-self._placePos['C']}, speed=model.moveSpeed, name='{} End Z lift.'.format(ref)),
         ]
         self.jobConfigure()
 

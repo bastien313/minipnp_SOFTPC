@@ -112,7 +112,7 @@ class pnpDriver:
         self._relativeMode = 'A'
         # self._bufferLineInputPipe0 = []
         self._speed = 100.0
-        self._GcodeLine = ''
+        #self._GcodeLine = ''
         self.logger = logger
         self.feederList = {}
         self._serManage = SerialManager(self.logger)
@@ -180,18 +180,13 @@ class pnpDriver:
         # if self._relativeMode != mode:
         self._relativeMode = mode
         if self._relativeMode == 'R':
-            self._GcodeLine += 'G91 '
+            line = 'G91 '
         else:
-            self._GcodeLine += 'G90 '
+            line = 'G90 '
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
         self.readLine()
 
-    def __setSpeed(self, speed, speedRot=None):
-        """Add Speed to gcode if needed 'FFxxxx.x FCxxxx.x' """
-        self._GcodeLine += "FF{} ".format(float(speed))
-        if speedRot:
-            self._GcodeLine += "FC{} ".format(float(speedRot))
 
     def setAccel(self, accelData):
         """
@@ -201,11 +196,11 @@ class pnpDriver:
                           Value is accelValue
         :return:
         """
-        self._GcodeLine += 'M201 '
+        line = 'M201 '
         for key, value in accelData.items():
-            self._GcodeLine += "{}{} ".format(key, float(value))
+            line += "{}{} ".format(key, float(value))
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
         self.readLine()
 
     def setStepConf(self, stepData):
@@ -216,11 +211,11 @@ class pnpDriver:
                           Value is stepValue
         :return:
         """
-        self._GcodeLine += 'M92 '
+        line = 'M92 '
         for key, value in stepData.items():
-            self._GcodeLine += "{}{} ".format(key, float(value))
+            line += "{}{} ".format(key, float(value))
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
         self.readLine()
 
     def setMaxSpeed(self, speedData):
@@ -231,11 +226,11 @@ class pnpDriver:
                           Value is maxSpeed
         :return:
         """
-        self._GcodeLine += 'M203 '
+        line = 'M203 '
         for key, value in speedData.items():
-            self._GcodeLine += "{}{} ".format(key, float(value))
+            line += "{}{} ".format(key, float(value))
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
         self.readLine()
 
     def isBusy(self):
@@ -245,8 +240,7 @@ class pnpDriver:
         """
         if not self.isConnected():
             return 1
-        self._GcodeLine = 'R400'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R400')
         line = self.readLine()
         return 1 if line != '0' else 0
 
@@ -255,18 +249,16 @@ class pnpDriver:
         Send stop Request
         :return:
         """
-        self._GcodeLine = 'S99'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S99')
 
     def makeScan(self):
-        self._GcodeLine = 'R500'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R500')
         response = self.readLine()
         return int(response)
 
     def makeScanLine(self, axis, speed, lengt, nbMesure):
-        self._GcodeLine = 'R501 A{} N{} L{} F{}'.format(axis, nbMesure, lengt, speed)
-        self.__sendGcodeLine()
+        line = 'R501 A{} N{} L{} F{}'.format(axis, nbMesure, lengt, speed)
+        self.__sendGcodeLine(line)
         nb = int(self.readLine(timeOut=20))
         arrayOut = []
         for mes in range(nb):
@@ -276,8 +268,7 @@ class pnpDriver:
         return arrayOut
 
     def getPresure(self):
-        self._GcodeLine = 'R600'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R600')
         response = self.readLine()
         return float(response)
 
@@ -300,53 +291,12 @@ class pnpDriver:
             'Z': machine.axisConfArray['Z'].accel,
             'C': machine.axisConfArray['C'].accel})
 
-    @deprecated
-    def setScanRef(self, scanData):
-        """
-        set scan position refrence of hardware.
-        :param scanData: dict wich contain maxSpeed for axis
-                          Key must be 'X' , 'Y, 'Z'.readHardwarePos
-        :return:
-        """
-        self._GcodeLine += 'M330 '
-        for key, value in scanData.items():
-            self._GcodeLine += "{}{} ".format(key, float(value))
-        self.__sendGcodeLine()
-        self.readLine()
-
-    @deprecated
-    def setBoardRef(self, boardData):
-        """
-        set board position refrence of hardware.
-        :param boardData: dict wich contain maxSpeed for axis
-                          Key must be 'X' , 'Y, 'Z'.
-                          Value is maxSpeed
-        :return:
-        """
-        self._GcodeLine += 'M331 '
-        for key, value in boardData.items():
-            self._GcodeLine += "{}{} ".format(key, float(value))
-        self.__sendGcodeLine()
-        self.readLine()
-
-    @deprecated
-    def setHeadZ(self, zPos):
-        """
-        set head Z position refrence of hardware.
-        :param zPos: Z position of head
-        :return:
-        """
-        self._GcodeLine += "M332 Z{}".format(zPos)
-        self.__sendGcodeLine()
-        self.readLine()
-
     def saveFlashConf(self):
         """
         Save setting of hardware in FLASH
         :return:
         """
-        self._GcodeLine = 'M500'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('M500')
         self.readLine()
 
     def moveX(self, value, mode='A', speedMode='P'):
@@ -378,17 +328,24 @@ class pnpDriver:
 
         self.__setCoordMode(mode)
 
-        if speedMode == 'P':
-            self._GcodeLine += 'G1 '
-        else:
-            self._GcodeLine += 'G0 '
+        if self._relativeMode == 'A' and 'C' in moveData:
+            moveData['C'] = moveData['C'] + float(self.status['C'])
 
-        self.__setSpeed(speed, speedRot)
+
+        if speedMode == 'P':
+            line= 'G1 '
+        else:
+            line= 'G0 '
+
+        line+= "FF{} ".format(float(speed))
+        if speedRot:
+            line+= "FR{} ".format(float(speedRot))
+
 
         for key, value in moveData.items():
-            self._GcodeLine += "{}{} ".format(key, float(value))
+            line += "{}{} ".format(key, float(value))
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
 
         # return self.readLine(20)
 
@@ -399,73 +356,66 @@ class pnpDriver:
         :return:
         """
         axis = axis.upper()
-        self._GcodeLine = 'S99 '
+        line = 'S99 '
         if axis != 'ALL':
             if axis.find('X') >= 0:
-                self._GcodeLine += 'X '
+                line += 'X '
             if axis.find('Y') >= 0:
-                self._GcodeLine += 'Y '
+                line += 'Y '
             if axis.find('Z') >= 0:
-                self._GcodeLine += 'Z '
+                line += 'Z '
             if axis.find('C') >= 0:
-                self._GcodeLine += 'C'
-        self.__sendGcodeLine()
+                line += 'C'
+        self.__sendGcodeLine(line)
 
     def motorEnable(self):
         """
         Enable driver motor.
         :return:
         """
-        self._GcodeLine = 'S11'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S11')
 
     def motorDisable(self):
         """
         Enable driver motor.
         :return:
         """
-        self._GcodeLine = 'S00'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S00')
 
     def watchDogEnable(self):
         """
         Enable Watchdog mode, if enable the program must feed the watchdog formotor move.
         :return:
         """
-        self._GcodeLine = 'S21'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S21')
 
     def watchDogDisable(self):
         """
         Disable Watchdog mode.
         :return:
         """
-        self._GcodeLine = 'S20'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S20')
 
     def watchDogFeed(self):
         """
         Disable Watchdog mode.
         :return:
         """
-        self._GcodeLine = 'S22'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S22')
 
     def statusModeEnable(self):
         """
         Enable status mode, machine will send status data over pipe 1 at 400ms.
         :return:
         """
-        self._GcodeLine = 'S31'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S31')
 
     def statusModeDisable(self):
         """
         Disable status mode.
         :return:
         """
-        self._GcodeLine = 'S30'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('S30')
 
     def homeAxis(self, axis):
         """
@@ -473,18 +423,18 @@ class pnpDriver:
         :param axis must contain 'ALL' or 'X' or 'Y' or 'Z' or 'C' or composition of axis ex('XYC'):
         :return:
         """
-        self._GcodeLine += 'G28 '
+        line = 'G28 '
         if axis != 'ALL':
             if axis.find('X') >= 0:
-                self._GcodeLine += 'X '
+                line += 'X '
             if axis.find('Y') >= 0:
-                self._GcodeLine += 'Y '
+                line += 'Y '
             if axis.find('Z') >= 0:
-                self._GcodeLine += 'Z '
+                line += 'Z '
             if axis.find('C') >= 0:
-                self._GcodeLine += 'C'
+                line += 'C'
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
 
     def ctrlPump(self, state):
         self.__ctrlDigitalOuput(0, state)
@@ -504,11 +454,11 @@ class pnpDriver:
         """
 
         if state:
-            self._GcodeLine += 'M64 {}'.format(line)
+            line = 'M64 {}'.format(line)
         else:
-            self._GcodeLine += 'M65 {}'.format(line)
+            line = 'M65 {}'.format(line)
 
-        self.__sendGcodeLine()
+        self.__sendGcodeLine(line)
 
     @deprecated
     def readConf(self):
@@ -532,8 +482,7 @@ class pnpDriver:
         :return dict like this {'X':2.4, 'Y':1.2, 'Z':-5.5, 'C':250.4}
         """
         dicOut = {}
-        self._GcodeLine = 'R201'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R201')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -543,8 +492,7 @@ class pnpDriver:
         :return dict like this {'X':2.4, 'Y':1.2, 'Z':-5.5, 'C':250.4}
         """
         dicOut = {}
-        self._GcodeLine = 'R92'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R92')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -554,8 +502,7 @@ class pnpDriver:
         :return dict like this {'X':2.4, 'Y':1.2, 'Z':-5.5, 'C':250.4}
         """
         dicOut = {}
-        self._GcodeLine = 'R203'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R203')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -566,8 +513,7 @@ class pnpDriver:
         :return dict like this {'X':2.4, 'Y':1.2, 'Z':-5.5}
         """
         dicOut = {}
-        self._GcodeLine = 'R330'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R330')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -578,8 +524,7 @@ class pnpDriver:
         :return dict like this {'X':2.4, 'Y':1.2, 'Z':-5.5}
         """
         dicOut = {}
-        self._GcodeLine = 'R331'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R331')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -590,8 +535,7 @@ class pnpDriver:
         :return dict like this {'Z':-5.5}
         """
         dicOut = {}
-        self._GcodeLine = 'R332'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R332')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -601,8 +545,7 @@ class pnpDriver:
         :return dict like this {'X':2.4, 'Y':1.2, 'Z':-5.5, 'C';32.5}
         """
         dicOut = {}
-        self._GcodeLine = 'R114'
-        self.__sendGcodeLine()
+        self.__sendGcodeLine('R114')
         dicOut = self.coordParse(self.readLine())
         return dicOut
 
@@ -613,8 +556,7 @@ class pnpDriver:
         :return array of adress available:
         """
 
-        self._GcodeLine = "FA "
-        self.__sendGcodeLine()
+        self.__sendGcodeLine("FA ")
         adrOut = self.readLine().split(' ')
         return adrOut
 
@@ -694,8 +636,8 @@ class pnpDriver:
 
     def feederMakeStep(self, addr):
         if addr in self.feederList:
-            self._GcodeLine = 'FM {}'.format(addr)
-            self.__sendGcodeLine()
+            line = 'FM {}'.format(addr)
+            self.__sendGcodeLine(line)
             self.readLine()
         else:
             self.logger.printCout("feederFlashSave() Error: address {} doesn't exist".format(addr))
@@ -755,24 +697,24 @@ class pnpDriver:
 
         self._commadUnackited -= 1
         cmdLine = self.__getLine()
-        print('time = {}'.format(time.time() - start))
+        #print('time = {}'.format(time.time() - start))
         return cmdLine
 
-    def __sendGcodeLine(self):
+    def __sendGcodeLine(self,line):
         """
         Send self._GcodeLine over sertial port and clear GcodeLine.
         :return:
         """
 
         if self.isConnected():
-            if self._GcodeLine != 'R400':
-                self.logger.printDirectConsole('TX: ' + self._GcodeLine)
-                self.logger.printCout('TX: ' + self._GcodeLine)
+            if line != 'R400':
+                self.logger.printDirectConsole('TX: ' + line)
+                self.logger.printCout('TX: ' + line)
 
             self._commadUnackited += 1
-            self._serManage.sendLine(self._GcodeLine)
+            self._serManage.sendLine(line)
 
-            self._GcodeLine = ''
+            #self._GcodeLine = ''
 
 
     def externalGcodeLine(self, cmd):
