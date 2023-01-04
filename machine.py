@@ -503,7 +503,7 @@ class MachineConf:
         self.basePlateList = []
         self.logger = logger
 
-        self.__loadFromXml()
+        self.__loadFromXml(self.pathFile)
 
     def __str__(self):
         strOut = 'Machine: ScanX = {}, ScanY = {}, scanZ = {}, zhead = {}'.format(self.scanPosition['X'],
@@ -687,41 +687,51 @@ class MachineConf:
         # Create object
         self.axisConfArray[axis] = MotorConf(axis, feederData['step'], feederData['speed'], feederData['accel'])
 
-    def __loadFromXml(self):
+
+    def loadFromXml(self, pathFile):
+        try:
+            self.__loadFromXml(pathFile)
+            self.pathFile = pathFile
+        except:
+            self.logger.printCout(f"Loading machine conf '{pathFile}' error!")
+            self.__loadFromXml(self.pathFile)
+
+
+    def __loadFromXml(self, pathFile):
         """
         Load data from xml file pointed by self.pathFile
         :return:
         """
         # reset feederList
         self.feederList = []
-        try:
-            root = etree.parse(self.pathFile).getroot()
-        except:
-            self.logger.printCout("Error file don't exist: Make new model file")
-            self.saveToXml()
-            # self.__makeNewFile()
-        else:
-            self.logger.printCout("Load machine configuration")
-            machineRoot = root.find('machine')
-            self.zHead = float(xe.getXmlValue(machineRoot, 'zHead', 0.0))
-            self.zLift = float(xe.getXmlValue(machineRoot, 'zLift', 10.0))
-            self.scanPosition = xe.getPosFromXml(machineRoot.find('scan_position'))
-            self.boardRefPosition = xe.getPosFromXml(machineRoot.find('boardRef_position'))
-            self.trashPosition = xe.getPosFromXml(machineRoot.find('trash_position'))
+        #try:
+        root = etree.parse(pathFile).getroot()
+        #except:
+        #    self.logger.printCout("Error file don't exist: Make new model file")
+        #    self.saveToXml()
+        # self.__makeNewFile()
+        #else:
+        self.logger.printCout(f"Load machine configuration '{pathFile}'")
+        machineRoot = root.find('machine')
+        self.zHead = float(xe.getXmlValue(machineRoot, 'zHead', 0.0))
+        self.zLift = float(xe.getXmlValue(machineRoot, 'zLift', 10.0))
+        self.scanPosition = xe.getPosFromXml(machineRoot.find('scan_position'))
+        self.boardRefPosition = xe.getPosFromXml(machineRoot.find('boardRef_position'))
+        self.trashPosition = xe.getPosFromXml(machineRoot.find('trash_position'))
 
-            axisRoot = machineRoot.find('axis')
-            for axis in axisRoot:
-                self.__axisLoadFromXml(axis.tag, axisRoot.find(axis.tag))
+        axisRoot = machineRoot.find('axis')
+        for axis in axisRoot:
+            self.__axisLoadFromXml(axis.tag, axisRoot.find(axis.tag))
 
-            basePlateRoot = machineRoot.find('basePlate')
-            if len(basePlateRoot):
-                for basePlate in basePlateRoot:
-                    self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
+        basePlateRoot = machineRoot.find('basePlate')
+        if len(basePlateRoot):
+            for basePlate in basePlateRoot:
+                self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
 
 
-            feederRoot = machineRoot.find('feeder')
-            for feeder in feederRoot:
-                self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
+        feederRoot = machineRoot.find('feeder')
+        for feeder in feederRoot:
+            self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
 
 
     def __makeNewFile(self):

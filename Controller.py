@@ -337,12 +337,23 @@ class BoardController:
 
         self.logger.printCout(self.board.__str__())
 
+    def changeAndLoadMachineConf(self, pathFile):
+        #Modify path of machine conf only if there is no error
+        self.__machineConf.loadFromXml(pathFile)
+        self.board.tableTopPath = self.__machineConf.pathFile
+
+        if self.driver.isConnected():
+            self.driver.sendMachineConf(self.__machineConf)
+
     def importFromXml(self, path):
         self.board = dtb.boarLoad(path, self.logger)
         self.ihm.setboardParam(self.board)
         self.ihm.bomCreate(self.board)
         self.enableSaveFunc('normal')
         self.initIHMcallBack()
+
+        if len(self.board.tableTopPath):
+            self.changeAndLoadMachineConf(self.board.tableTopPath)
 
         self.logger.printCout(self.board.__str__())
 
@@ -656,8 +667,8 @@ class ScanController:
 
     def testCorrector(self):
         model = self.modList[self.modList.findModelWithAlias('C_0402')]
-        corrJob = job.MechanicsCorectorJob(pnpDriver=self.driver, correctorPos=self.__machineConf.scanPosition,
-                                           model=model, zLift=self.__machineConf.zLift)
+        corrJob = job.MechanicsCorrectorJob(pnpDriver=self.driver, correctorPos=self.__machineConf.scanPosition,
+                                            model=model, zLift=self.__machineConf.zLift)
 
         corrJob.jobConfigure()
         if self.__littleJob.isRunning():
@@ -1026,9 +1037,11 @@ class PnpConroller:
         self.directCtrl.setJobIsRunningCb(self.jobIsRunning)
 
         self.gamePad = gp.AppGamepad()
-        self.gamePad.setPresCallBack('connection', lambda:print('Gamepad connected'))
-        self.gamePad.setReleaseCallBack('connection', lambda:print('Gamepad disconnected'))
+        self.gamePad.setPresCallBack('connection', lambda: logger.printCout('Gamepad connected'))
+        self.gamePad.setReleaseCallBack('connection', lambda: logger.printCout('Gamepad disconnected'))
         self.gamePad.start()
+
+
 
 
     def setTopIHM(self, ihm):

@@ -2,6 +2,7 @@
   <model>
     <R_0805>
       <name>R_0805</name>
+      <correctorMode>Mechanical</correctorMode>
       <width>2.0</width>
       <length>1.2</length>
       <height>0.2</height>
@@ -11,12 +12,14 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>4.1</pressureTarget>
       <alias>
         <A0>R_0805</A0>
       </alias>
     </R_0805>
     <C_0805>
       <name>C_0805</name>
+      <correctorMode>None</correctorMode>
       <width>2.0</width>
       <length>1.2</length>
       <height>0.5</height>
@@ -26,12 +29,14 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>C_0805</A0>
       </alias>
     </C_0805>
     <SOT-23>
       <name>SOT-23</name>
+      <correctorMode>None</correctorMode>
       <width>2.9</width>
       <length>1.3</length>
       <height>1.0</height>
@@ -41,12 +46,14 @@
       <pickupDelay>0.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
       <moveSpeed>100.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>SOT-23</A0>
       </alias>
     </SOT-23>
     <SMB>
       <name>SMB</name>
+      <correctorMode>None</correctorMode>
       <width>0.0</width>
       <length>0.0</length>
       <height>0.0</height>
@@ -56,12 +63,14 @@
       <pickupDelay>0.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
       <moveSpeed>100.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>D_SMB</A0>
       </alias>
     </SMB>
     <SOIC-8>
       <name>SOIC-8</name>
+      <correctorMode>None</correctorMode>
       <width>6.0</width>
       <length>3.95</length>
       <height>2.5</height>
@@ -71,12 +80,14 @@
       <pickupDelay>0.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
       <moveSpeed>100.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>SOIC-8_3.9x4.9mm_Pitch1.27mm</A0>
       </alias>
     </SOIC-8>
     <SOT-23-5>
       <name>SOT-23-5</name>
+      <correctorMode>None</correctorMode>
       <width>0.0</width>
       <length>0.0</length>
       <height>0.0</height>
@@ -86,12 +97,14 @@
       <pickupDelay>0.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
       <moveSpeed>100.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>SOT-23-5</A0>
       </alias>
     </SOT-23-5>
     <C_1206>
       <name>C_1206</name>
+      <correctorMode>None</correctorMode>
       <width>0.0</width>
       <length>0.0</length>
       <height>0.0</height>
@@ -101,12 +114,14 @@
       <pickupDelay>0.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
       <moveSpeed>100.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>C_1206</A0>
       </alias>
     </C_1206>
     <R_1206>
       <name>R_1206</name>
+      <correctorMode>None</correctorMode>
       <width>3.2</width>
       <length>1.6</length>
       <height>0.55</height>
@@ -116,12 +131,14 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>R_1206</A0>
       </alias>
     </R_1206>
     <Null>
       <name>Null</name>
+      <correctorMode>None</correctorMode>
       <width>1.0</width>
       <length>1.0</length>
       <height>1.0</height>
@@ -131,10 +148,12 @@
       <pickupDelay>10.0</pickupDelay>
       <placeDelay>0.0</placeDelay>
       <moveSpeed>10.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias/>
     </Null>
     <C_0402>
       <name>C_0402</name>
+      <correctorMode>None</correctorMode>
       <width>1.0</width>
       <length>0.5</length>
       <height>0.5</height>
@@ -144,12 +163,14 @@
       <pickupDelay>400.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>33.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>C_0402</A0>
       </alias>
     </C_0402>
     <R_0402>
       <name>R_0402</name>
+      <correctorMode>None</correctorMode>
       <width>1.0</width>
       <length>0.5</length>
       <height>0.2</height>
@@ -159,12 +180,14 @@
       <pickupDelay>200.0</pickupDelay>
       <placeDelay>200.0</placeDelay>
       <moveSpeed>33.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>R_0402</A0>
       </alias>
     </R_0402>
     <C_0603>
       <name>C_0603</name>
+      <correctorMode>None</correctorMode>
       <width>1.6</width>
       <length>0.8</length>
       <height>0.8</height>
@@ -174,12 +197,14 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>C_0603</A0>
       </alias>
     </C_0603>
     <R_0603>
       <name>R_0603</name>
+      <correctorMode>None</correctorMode>
       <width>1.5</width>
       <length>0.8</length>
       <height>0.4</height>
@@ -189,12 +214,14 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>R_0603</A0>
       </alias>
     </R_0603>
     <F_0603>
       <name>F_0603</name>
+      <correctorMode>None</correctorMode>
       <width>1.6</width>
       <length>0.8</length>
       <height>0.8</height>
@@ -204,12 +231,14 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>F_0603</A0>
       </alias>
     </F_0603>
     <LED_0603>
       <name>LED_0603</name>
+      <correctorMode>None</correctorMode>
       <width>1.6</width>
       <length>0.8</length>
       <height>0.4</height>
@@ -219,6 +248,7 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>6.8</pressureTarget>
       <alias>
         <A0>LED_0603</A0>
       </alias>

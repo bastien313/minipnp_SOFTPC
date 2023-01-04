@@ -5,7 +5,23 @@ from machine import BasePlate
 
 
 class Model:
-    def __init__(self, dicConf):
+    def __init__(self):
+        self.correctorMode = None
+        self.pressureTarget = None
+        self.moveSpeed = None
+        self.placeDelay = None
+        self.pickupDelay = None
+        self.placeSpeed = None
+        self.pickupSpeed = None
+        self.aliasList = None
+        self.scanHeight = None
+        self.height = None
+        self.length = None
+        self.width = None
+        self.name = ' '
+        self.configureFromDicConf({})
+
+    def configureFromDicConf(self, dicConf):
         self.name = dicConf['NAME'] if 'NAME' in dicConf else ' '
         self.width = dicConf['WIDTH'] if 'WIDTH' in dicConf else 1.0
         self.length = dicConf['LENGTH'] if 'LENGTH' in dicConf else 1.0
@@ -17,6 +33,56 @@ class Model:
         self.pickupDelay = dicConf['PIDEL'] if 'PIDEL' in dicConf else 200.0
         self.placeDelay = dicConf['PLDEL'] if 'PLDEL' in dicConf else 200.0
         self.moveSpeed = dicConf['MVSPE'] if 'MVSPE' in dicConf else 20.0
+        self.pressureTarget = dicConf['PRESSURE_TARGET'] if 'PRESSURE_TARGET' in dicConf else 6.8
+        self.correctorMode = dicConf['CORRECTOR_MODE'] if 'CORRECTOR_MODE' in dicConf else 'None'
+
+    def configureFromXml(self, xmlRoot):
+        dicConf = {}
+        aliasList = []
+        dicConf['NAME'] = xe.getXmlValue(xmlRoot, 'name', 'null')
+        dicConf['CORRECTOR_MODE'] = xe.getXmlValue(xmlRoot, 'correctorMode', 'None')
+        dicConf['WIDTH'] = float(xe.getXmlValue(xmlRoot, 'width', 0.0))
+        dicConf['LENGTH'] = float(xe.getXmlValue(xmlRoot, 'length', 0.0))
+        dicConf['HEIGHT'] = float(xe.getXmlValue(xmlRoot, 'height', 0.0))
+        dicConf['SCAN_HEIGHT'] = float(xe.getXmlValue(xmlRoot, 'scanHeight', 0.0))
+        dicConf['PISPE'] = float(xe.getXmlValue(xmlRoot, 'pickupSpeed', 100.0))
+        dicConf['PLSPE'] = float(xe.getXmlValue(xmlRoot, 'placeSpeed', 100.0))
+        dicConf['PIDEL'] = float(xe.getXmlValue(xmlRoot, 'pickupDelay', 0.0))
+        dicConf['PLDEL'] = float(xe.getXmlValue(xmlRoot, 'placeDelay', 0.0))
+        dicConf['MVSPE'] = float(xe.getXmlValue(xmlRoot, 'moveSpeed', 100.0))
+        dicConf['PRESSURE_TARGET'] = float(xe.getXmlValue(xmlRoot, 'pressureTarget', 6.8))
+
+        aliasListXML = xmlRoot.find('alias')
+        for alias in aliasListXML:
+            aliasList.append(alias.text)
+        dicConf['ALIAS'] = aliasList
+
+        self.configureFromDicConf(dicConf)
+
+    def saveIntoXml(self, rootMod):
+        """
+        Save model into xml file:
+        :param rootMod: root of XMl where we need to write.
+        """
+        rootMod = etree.SubElement(rootMod, self.name)
+        etree.SubElement(rootMod, "name").text = self.name
+        etree.SubElement(rootMod, "correctorMode").text = self.correctorMode
+        etree.SubElement(rootMod, "width").text = str(self.width)
+        etree.SubElement(rootMod, "length").text = str(self.length)
+        etree.SubElement(rootMod, "height").text = str(self.height)
+        etree.SubElement(rootMod, "scanHeight").text = str(self.scanHeight)
+        etree.SubElement(rootMod, "pickupSpeed").text = str(self.pickupSpeed)
+        etree.SubElement(rootMod, "placeSpeed").text = str(self.placeSpeed)
+        etree.SubElement(rootMod, "pickupDelay").text = str(self.pickupDelay)
+        etree.SubElement(rootMod, "placeDelay").text = str(self.placeDelay)
+        etree.SubElement(rootMod, "moveSpeed").text = str(self.moveSpeed)
+        etree.SubElement(rootMod, "pressureTarget").text = str(self.pressureTarget)
+
+        rootList = etree.SubElement(rootMod, "alias")
+        modelId = 0
+        for alias in self.aliasList:
+            etree.SubElement(rootList, 'A{}'.format(modelId)).text = alias
+            modelId += 1
 
     def aliasRemove(self, aliasStr):
         try:
@@ -56,46 +122,6 @@ class ModDatabase:
                 return mod.name
         return 'Null'
 
-    def __loadModel(self, cmlDesc):
-        dicConf = {}
-        aliasList = []
-        dicConf['NAME'] = xe.getXmlValue(cmlDesc, 'name', 'null')
-        dicConf['WIDTH'] = float(xe.getXmlValue(cmlDesc, 'width', 0.0))
-        dicConf['LENGTH'] = float(xe.getXmlValue(cmlDesc, 'length', 0.0))
-        dicConf['HEIGHT'] = float(xe.getXmlValue(cmlDesc, 'height', 0.0))
-        dicConf['SCAN_HEIGHT'] = float(xe.getXmlValue(cmlDesc, 'scanHeight', 0.0))
-        dicConf['PISPE'] = float(xe.getXmlValue(cmlDesc, 'pickupSpeed', 100.0))
-        dicConf['PLSPE'] = float(xe.getXmlValue(cmlDesc, 'placeSpeed', 100.0))
-        dicConf['PIDEL'] = float(xe.getXmlValue(cmlDesc, 'pickupDelay', 0.0))
-        dicConf['PLDEL'] = float(xe.getXmlValue(cmlDesc, 'placeDelay', 0.0))
-        dicConf['MVSPE'] = float(xe.getXmlValue(cmlDesc, 'moveSpeed', 100.0))
-
-        aliasListXML = cmlDesc.find('alias')
-        for alias in aliasListXML:
-            aliasList.append(alias.text)
-        dicConf['ALIAS'] = aliasList
-
-        self.dicMod[dicConf['NAME']] = Model(dicConf)
-
-    def __saveModel(self, model, rootMod):
-        rootMod = etree.SubElement(rootMod, model.name)
-        etree.SubElement(rootMod, "name").text = model.name
-        etree.SubElement(rootMod, "width").text = str(model.width)
-        etree.SubElement(rootMod, "length").text = str(model.length)
-        etree.SubElement(rootMod, "height").text = str(model.height)
-        etree.SubElement(rootMod, "scanHeight").text = str(model.scanHeight)
-        etree.SubElement(rootMod, "pickupSpeed").text = str(model.pickupSpeed)
-        etree.SubElement(rootMod, "placeSpeed").text = str(model.placeSpeed)
-        etree.SubElement(rootMod, "pickupDelay").text = str(model.pickupDelay)
-        etree.SubElement(rootMod, "placeDelay").text = str(model.placeDelay)
-        etree.SubElement(rootMod, "moveSpeed").text = str(model.moveSpeed)
-
-        rootList = etree.SubElement(rootMod, "alias")
-        modelId = 0
-        for alias in model.aliasList:
-            etree.SubElement(rootList, 'A{}'.format(modelId)).text = alias
-            modelId += 1
-
     def __loadFromFile(self):
         """
         Load data from xml file pointed by self.pathFile
@@ -110,7 +136,10 @@ class ModDatabase:
             modList = root.find('model')
             # try:
             for mod in modList:
-                self.__loadModel(mod)
+                newModel = Model()
+                newModel.configureFromXml(mod)
+                self.dicMod[newModel.name] = newModel
+                # self.__loadModel(mod)
             # except:
             #   self.logger.printCout("Error file error: Make new model file")
             #  self.__makeNewFile()
@@ -121,7 +150,7 @@ class ModDatabase:
         modRoot = etree.SubElement(root, 'model')
 
         for mod in self.dicMod.values():
-            self.__saveModel(mod, modRoot)
+            mod.saveIntoXml(modRoot)
 
         with open(self.pathFile, 'wb') as fileOut:
             fileOut.write(etree.tostring(root, pretty_print=True))
@@ -178,6 +207,7 @@ def boardSave(board, fileName):
     brd = etree.SubElement(root, "board")
 
     etree.SubElement(brd, "name").text = board.name
+    etree.SubElement(brd, "tableTopPath").text = board.tableTopPath
     etree.SubElement(brd, "ref1").text = board.ref1
     etree.SubElement(brd, "ref2").text = board.ref2
     etree.SubElement(brd, "Xsize").text = "{}".format(board.xSize)
@@ -237,6 +267,7 @@ def boarLoad(path, logger):
     board.zSize = float(xe.getXmlValue(brd, 'Zsize', 0.0))
     board.ref1 = xe.getXmlValue(brd, 'ref1', 'null')
     board.ref2 = xe.getXmlValue(brd, 'ref2', 'null')
+    board.tableTopPath = xe.getXmlValue(brd, 'tableTopPath', '')
 
     board.filter['value'] = xe.getXmlValue(brd, 'filtValue', '')
     board.filter['value'] = '' if board.filter['value'] is None else board.filter['value']

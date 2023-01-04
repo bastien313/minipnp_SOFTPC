@@ -64,14 +64,15 @@ class SerialManager(threading.Thread):
     def __searchAndConnectDevice(self):
         listCom = serial.tools.list_ports.comports()
         for port in listCom:
-            if 'MPNP' in port.serial_number:
-                self._serialAccess.baudrate = 115200
-                self._serialAccess.timeout = 0
-                try:
-                    self._serialAccess.port = port.device  # this action call .open()
-                    self._serialAccess.open()
-                except:
-                    self._serialAccess.close()
+            if port.serial_number is not None:
+                if 'MPNP' in port.serial_number:
+                    self._serialAccess.baudrate = 115200
+                    self._serialAccess.timeout = 0
+                    try:
+                        self._serialAccess.port = port.device  # this action call .open()
+                        self._serialAccess.open()
+                    except:
+                        self._serialAccess.close()
 
     def __emission(self):
         while not self._emissionBufferQueue.empty():

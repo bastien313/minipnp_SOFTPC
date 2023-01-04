@@ -1,6 +1,7 @@
 <root>
   <board>
     <name>SOCLE_OREUS</name>
+    <tableTopPath>userdata\conf\machinett.xml</tableTopPath>
     <ref1>C1</ref1>
     <ref2>C86</ref2>
     <Xsize>100.0</Xsize>

@@ -11,7 +11,7 @@ import tkinter.filedialog
 from tkscrolledframe import ScrolledFrame
 import math
 import machine as mch
-
+import os
 
 def trashFunc(*args):
     doNothing = 1
@@ -324,7 +324,6 @@ class MultipleEntryFrame(tk.LabelFrame):
     z = property(fget=_getz, fset=_setz)
 
 
-
 class XYZFrame(MultipleEntryFrame):
     def __init__(self, fenetre, **kwargs):
         parametersDict = {
@@ -576,7 +575,6 @@ class BoardBasePlateFrame(GenericBasePlateFrame):
         self._board.localBasePlate.computeFromAngle()
         self._updateIHM()
 
-
     def _updateIHM(self):
         self._ref1Frame['X'] = self._board.localBasePlate.getRealRef(0)['X']
         self._ref1Frame['Y'] = self._board.localBasePlate.getRealRef(0)['Y']
@@ -596,14 +594,12 @@ class BoardBasePlateFrame(GenericBasePlateFrame):
         self._board.localBasePlate.computeFromRef()
         self._updateIHM()
 
-
     def _calcTheo(self):
         self._ref2Frame['X'] = self._ref1Frame['X'] + self._vectorFrame['X']
         self._ref2Frame['Y'] = self._ref1Frame['Y'] + self._vectorFrame['Y']
         self._ref2Frame['Z'] = self._ref1Frame['Z'] + self._vectorFrame['Z']
         self._save()
-          # Update basplate from IHM
-
+        # Update basplate from IHM
 
     def _save(self):
         self._board.localBasePlate.buildBasePlateFromConfDict({
@@ -954,24 +950,27 @@ class StripFeederFrame(tk.Frame):
 
     def __save(self):
 
-
         newFeeder = mch.StripFeeder(paramList={'id': self.id.var, 'name': self.name.var,
-                                     'componentPerStrip': self.componentPerStrip.var,
-                                     'stripIdInBasePlate': self.idStripBp.var,
-                                     'componentStep': self.cmpStep.var, 'nextComponent': self.nextCmp.var,
-                                     'basePlateId': int(
-                                         self.__strBasePlate.get()) if self.__strBasePlate.get() != 'Local' else 0,
-                                     'localBasePlate': self._feeder.localBasePlate}, machine=self.__machine)
+                                               'componentPerStrip': self.componentPerStrip.var,
+                                               'stripIdInBasePlate': self.idStripBp.var,
+                                               'componentStep': self.cmpStep.var, 'nextComponent': self.nextCmp.var,
+                                               'basePlateId': int(
+                                                   self.__strBasePlate.get()) if self.__strBasePlate.get() != 'Local' else 0,
+                                               'localBasePlate': self._feeder.localBasePlate}, machine=self.__machine)
         newFeeder.localBasePlate = mch.BasePlateForStripFeeder({
             'id': self._bpFrame.id.var, 'name': self._bpFrame.name.var,
-            'realRef1': {'X': self._bpFrame._ref1Frame.x, 'Y': self._bpFrame._ref1Frame.y, 'Z': self._bpFrame._ref1Frame.z},
-            'realRef2': {'X': self._bpFrame._ref2Frame.x, 'Y': self._bpFrame._ref2Frame.y, 'Z': self._bpFrame._ref2Frame.z},
-            'vectorRef': {'X': self._bpFrame._vectorFrame.x, 'Y': self._bpFrame._vectorFrame.y, 'Z': self._bpFrame._vectorFrame.z},
-            'rotationOffset': math.radians(self._bpFrame._rotAndZFrame['Rot(deg)']), 'zRamp': self._bpFrame._rotAndZFrame['Zramp'],
+            'realRef1': {'X': self._bpFrame._ref1Frame.x, 'Y': self._bpFrame._ref1Frame.y,
+                         'Z': self._bpFrame._ref1Frame.z},
+            'realRef2': {'X': self._bpFrame._ref2Frame.x, 'Y': self._bpFrame._ref2Frame.y,
+                         'Z': self._bpFrame._ref2Frame.z},
+            'vectorRef': {'X': self._bpFrame._vectorFrame.x, 'Y': self._bpFrame._vectorFrame.y,
+                          'Z': self._bpFrame._vectorFrame.z},
+            'rotationOffset': math.radians(self._bpFrame._rotAndZFrame['Rot(deg)']),
+            'zRamp': self._bpFrame._rotAndZFrame['Zramp'],
             'stripStep': self._bpFrame._misc['Strip Step'],
             'vectorFistCmp': {'X': self._bpFrame._vector.x, 'Y': self._bpFrame._vector.y, 'Z': self._bpFrame._vector.z}
         })
-        
+
         self._feeder = newFeeder
         self.__machine.addFeeder(newFeeder)
         self.__machine.saveToXml()
@@ -986,14 +985,13 @@ class StripFeederFrame(tk.Frame):
     def __pick(self):
         self.__mother.pick(self.id.var, self.pickId.var)
 
-
     def updateBpListOm(self):
         """
         Warper
         :return:
         """
         self_updateBasePlateListOm()
-        
+
     def updateBasePlateListOm(self):
         """
         Update the option menu with machine data ( base plate list).
@@ -1020,16 +1018,19 @@ class StripFeederFrame(tk.Frame):
 
         if bp:
             if bp.type == 'BasePlate':
-                self._bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
-                                                controller=self._controller, commandFrame=False, logger=self.__logger)
+                self._bpFrame = GenericBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp,
+                                                      machine=self.__machine,
+                                                      controller=self._controller, commandFrame=False,
+                                                      logger=self.__logger)
                 self._bpFrame.grid(row=0, column=0)
                 if basePlateId:
                     self._bpFrame.disableModification()
 
             elif bp.type == 'StripFeederBasePlate':
-                self._bpFrame = StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp, machine=self.__machine,
-                                                    controller=self._controller, commandFrame=False,
-                                                    logger=self.__logger)
+                self._bpFrame = StripFeederBasePlateFrame(fenetre=self._basePlateDataFrame, bpData=bp,
+                                                          machine=self.__machine,
+                                                          controller=self._controller, commandFrame=False,
+                                                          logger=self.__logger)
                 self._bpFrame.grid(row=0, column=0)
                 if basePlateId:
                     self._bpFrame.disableModification()
@@ -1658,11 +1659,12 @@ class CtrlFrame(tk.Frame):
             'Z': self._stepZEntry.var,
             'C': self._stepCEntry.var,
         }
+
     def getContinueState(self):
         return self._contEnaVar.get()
-        #return False
+        # return False
 
-    def setContiniueState(self,state):
+    def setContiniueState(self, state):
         self._contEnaVar.set(state)
 
     posX = property(fset=_setPosX)
@@ -1857,17 +1859,17 @@ class GlobalCmpFrame(tk.LabelFrame):
         self._cmpTreeView.grid(row=0, column=0, sticky='nsew')
         treeScroll.grid(row=0, column=1, sticky='ns')
 
-        self._valueFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._refFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._packageFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._modelFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._placedFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._enableFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
+        self._valueFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._refFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._packageFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._modelFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._placedFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._enableFilter = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
 
-        self._modelEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._feederEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._placedEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
-        self._enableEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str',width=10)
+        self._modelEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._feederEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._placedEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
+        self._enableEdit = CompleteEntry(self._filterFrame, trashFunc, varType='str', width=10)
         self._modelEdit.var = ''
         self._feederEdit.var = ''
         self._placedEdit.var = ''
@@ -2111,19 +2113,19 @@ class BoardFrame(tk.Frame):
         tk.Frame.__init__(self, fenetre, **kwargs)
 
         self.controller = controller
-
+        self._machineConf = machine
         self.rootCmpFrame = GlobalCmpFrame(self, controller)
         self.jobFrame = JobFrame(self)
         self._boardFrame = tk.LabelFrame(self, text="Board", labelanchor='n', padx=10, pady=0)
 
+        self._pathFrame = tk.Frame(self._boardFrame, padx=10, pady=0)
         self._paramBoardFrame = tk.LabelFrame(self._boardFrame, text="Parameters", labelanchor='n', padx=10, pady=0)
-        # self._referenceFrame = tk.LabelFrame(self._boardFrame, text="References", labelanchor='n', padx=10, pady=0)
-        self._referenceFrame = BoardBasePlateFrame(self._boardFrame, machine, logger, controller)
-        # self._viewFrame = tk.LabelFrame(self, text="View", labelanchor='n', padx=10, pady=10)
-        # self._testFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
-        # self._paramFrame = tk.LabelFrame(self, text="Component", labelanchor='n',width=768, height=200, padx=10, pady=10)
-
+        self._referenceFrame = BoardBasePlateFrame(self._boardFrame, self._machineConf, logger, controller)
         self._boardDraw = BoarDrawing(self._boardFrame)
+
+        self._tableTopPath = CompleteEntry(self._pathFrame, varType='str', width=75)
+        self._tableTopPath.var = ''
+        self._pathBtn = ttk.Button(self._pathFrame, text='...', width=10, command=self._changeTableTopPath)
 
         self._sizeX = CompleteEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
         self._sizeY = CompleteEntry(self._paramBoardFrame, self.__paramBoardChange, varType='double')
@@ -2133,9 +2135,15 @@ class BoardFrame(tk.Frame):
         self.jobFrame.grid(row=0, column=1)
         self.rootCmpFrame.grid(row=1, column=1, rowspan=2, sticky='ns')
 
-        self._paramBoardFrame.grid(row=0, column=0)
-        self._boardDraw.grid(row=1, column=0)
-        self._referenceFrame.grid(row=2, column=0)
+
+        self._pathFrame.grid(row=0, column=0)
+        self._paramBoardFrame.grid(row=1, column=0)
+        self._boardDraw.grid(row=2, column=0)
+        self._referenceFrame.grid(row=3, column=0)
+
+        tk.Label(self._pathFrame, text='TableTop path: ').grid(row=0, column=0)
+        self._tableTopPath.grid(row=0, column=1)
+        self._pathBtn.grid(row=0, column=2)
 
         tk.Label(self._paramBoardFrame, text="Size").grid(row=1, column=0)
         tk.Label(self._paramBoardFrame, text="Offset").grid(row=2, column=0)
@@ -2155,11 +2163,18 @@ class BoardFrame(tk.Frame):
         # self._ref1.grid(row=1, column=1)
         # self._ref2.grid(row=2, column=1)
 
+    def _changeTableTopPath(self):
+        path = tkinter.filedialog.askopenfilename(title="Open Machine file", filetypes=[('XML files', '.xml')])
+        self.controller.changeAndLoadMachineConf(os.path.relpath(path))
+        self._tableTopPath.var = self.controller.board.tableTopPath
+
+
     def setboardParam(self, board):
         self._board = board
         self._sizeX.var = board.xSize
         self._sizeY.var = board.ySize
         self._sizeZ.var = board.zSize
+        self._tableTopPath.var = board.tableTopPath
 
         """ 
         bizare???
@@ -2200,7 +2215,6 @@ class BoardFrame(tk.Frame):
         self.rootCmpFrame.componentHaveChanged(ref)
 
 
-
 class DtbFrame(tk.Frame):
     """Frame used for debug."""
 
@@ -2238,6 +2252,12 @@ class DtbFrame(tk.Frame):
         self._sY = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
         self._sZ = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
         self._scanHentry = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._pressureTargetEntry = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
+        self._correctorList = ['None', 'Mechanical', 'Optical']
+        self._strCorrector = tk.StringVar()
+        self._strCorrector.set(self._correctorList[0])
+        self._correctorModeOm = ttk.OptionMenu(frameInfo, self._strCorrector, *self._correctorList,
+                                               command=self.__dataChange)
 
         self._pickupSpeed = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
         self._placeSpeed = CompleteEntry(frame=frameInfo, traceFunc=self.__dataChange, varType='double')
@@ -2258,6 +2278,8 @@ class DtbFrame(tk.Frame):
         tk.Label(frameInfo, text="size Y").grid(row=1, column=0)
         tk.Label(frameInfo, text="size Z").grid(row=2, column=0)
         tk.Label(frameInfo, text="Scan height").grid(row=3, column=0)
+        tk.Label(frameInfo, text="Pressure target").grid(row=4, column=0)
+        tk.Label(frameInfo, text="Corrector mode").grid(row=5, column=0)
         tk.Label(frameInfo, text="Pickup speed(mm/min)").grid(row=0, column=2)
         tk.Label(frameInfo, text="Pickup delay(ms)").grid(row=1, column=2)
         tk.Label(frameInfo, text="Place speed(mm/min)").grid(row=2, column=2)
@@ -2268,6 +2290,8 @@ class DtbFrame(tk.Frame):
         self._sY.grid(row=1, column=1)
         self._sZ.grid(row=2, column=1)
         self._scanHentry.grid(row=3, column=1)
+        self._pressureTargetEntry.grid(row=4, column=1)
+        self._correctorModeOm.grid(row=5, column=1)
         self._pickupSpeed.grid(row=0, column=3)
         self._pickupDelay.grid(row=1, column=3)
         self._placeSpeed.grid(row=2, column=3)
@@ -2322,6 +2346,7 @@ class DtbFrame(tk.Frame):
         self._pickupDelay['state'] = 'normal'
         self._placeDelay['state'] = 'normal'
         self._moveSpeed['state'] = 'normal'
+        self._pressureTargetEntry['state'] = 'normal'
 
     def __entryDisable(self):
         self._sX['state'] = 'disable'
@@ -2333,6 +2358,7 @@ class DtbFrame(tk.Frame):
         self._pickupDelay['state'] = 'disable'
         self._placeDelay['state'] = 'disable'
         self._moveSpeed['state'] = 'disable'
+        self._pressureTargetEntry['state'] = 'disable'
 
     def __dataChange(self, *args):
         """
@@ -2351,6 +2377,8 @@ class DtbFrame(tk.Frame):
         self.controller.modList[self._strModel.get()].pickupDelay = self._pickupDelay.var
         self.controller.modList[self._strModel.get()].placeDelay = self._placeDelay.var
         self.controller.modList[self._strModel.get()].moveSpeed = self._moveSpeed.var
+        self.controller.modList[self._strModel.get()].pressureTarget = self._pressureTargetEntry.var
+        self.controller.modList[self._strModel.get()].correctorMode = self._strCorrector.get()
 
     def __userAddModelReturn(self, dataIn):
         """
@@ -2398,6 +2426,7 @@ class DtbFrame(tk.Frame):
         self._pickupDelay.var = model.pickupDelay
         self._placeDelay.var = model.placeDelay
         self._moveSpeed.var = model.moveSpeed
+        self._pressureTargetEntry.var = model.pressureTarget
 
         self.deleteAliaslList()
         for alias in model.aliasList:
@@ -2406,6 +2435,8 @@ class DtbFrame(tk.Frame):
             self._strAlias.set(model.aliasList[-1])
         else:
             self._strAlias.set('')
+
+        self._strCorrector.set(model.correctorMode)
 
     def __updateFromController(self):
         """
@@ -2604,14 +2635,14 @@ class JobConfigurationFrame(tk.Frame):
         self._paramFrame = tk.Frame(self)
         self._btnFrame = tk.Frame(self)
 
-        self._paramFrame.grid(row=0,column=0)
-        self._btnFrame.grid(row=1,column=0)
+        self._paramFrame.grid(row=0, column=0)
+        self._btnFrame.grid(row=1, column=0)
 
         self._homeCntNumber = CompleteEntry(frame=self._paramFrame, varType='int', traceFunc=self._homeCntNumberChange)
         self._homeCntNumber.var = self._parameters['JOB']['homeCmpCount']
 
-        tk.Label(self._paramFrame, text='Component before home' ).grid(row = 0, column = 0)
-        self._homeCntNumber.grid(row = 0, column = 1)
+        tk.Label(self._paramFrame, text='Component before home').grid(row=0, column=0)
+        self._homeCntNumber.grid(row=0, column=1)
 
         self._applyRotateBtn = ttk.Button(self._btnFrame, text='Save', command=self._save)
         self._applyRotateBtn.grid(row=0, column=0)
@@ -2623,8 +2654,6 @@ class JobConfigurationFrame(tk.Frame):
         self._parameters.saveConf()
 
 
-
-
 class PnpIHM:
     """High level class for IHM view
     """
@@ -2634,7 +2663,7 @@ class PnpIHM:
         self.ctrl.boardCtrl.enableSaveFunc = self.boardIsLoad
 
         self.mainWindow = tk.Tk()  # Instance of main window.
-        self.mainWindow.title('MiniPnp - OXILEC V2.0')
+        self.mainWindow.title('MiniPnp - OXILEC V2.1')
         # self.mainWindow.maxsize(width=1500, height=800)
 
         self.ctrlWindow = CtrlFrame(self.mainWindow, self.ctrl.directCtrl)
@@ -2654,7 +2683,7 @@ class PnpIHM:
 
         self.scanWindow = ScanFrame(self.mainWindow, logger)
         self.panelizeWindow = PanelizeFrame(self.mainWindow, logger, self.ctrl.boardCtrl)
-        self.boardTransformWindow = BoardTransformFrame(self.mainWindow,logger, self.ctrl.boardCtrl)
+        self.boardTransformWindow = BoardTransformFrame(self.mainWindow, logger, self.ctrl.boardCtrl)
         self.JobConfigurationWindow = JobConfigurationFrame(self.mainWindow, self.ctrl.preferences)
 
         self.topMenuBar = tk.Menu(self.mainWindow)
@@ -2717,6 +2746,7 @@ class PnpIHM:
 
     def initParamMenu(self):
         if self.actualFrame is not self.paramWindow:
+            self.paramWindow.update()
             self.actualFrame.pack_forget()
             self._statusLabel.pack_forget()
             self.paramWindow.pack()
@@ -2826,7 +2856,7 @@ class PnpIHM:
         self.topMenuBar.entryconfigure('Board ', state=state)
         self._menuTools.entryconfigure('Panelize ', state=state)
         self._menuTools.entryconfigure('Board transfrom ', state=state)
-        #self.panelizeWindow.setPaneliseCallBack(self.ctrl.boardCtrl.panelizeBoard)
+        # self.panelizeWindow.setPaneliseCallBack(self.ctrl.boardCtrl.panelizeBoard)
 
     def setStatusLabel(self, text1, text2=''):
         self._statusLabel['text'] = text1 + '\n' + text2

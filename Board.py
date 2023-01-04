@@ -43,6 +43,7 @@ class Board:
         self.cmpDic = {}
         self.name = name
         self.path = "userdata/board/" + self.name + ".pnpp"
+        self.tableTopPath = ''
         self.xSize = 100.0
         self.ySize = 80.0
         self.zSize = 1.6

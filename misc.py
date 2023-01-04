@@ -42,6 +42,3 @@ def normalizeAngle(angle):
         angle += 2.0 * math.pi
 
     return math.degrees(angle)
-
-
-print(normalizeAngle(359))
