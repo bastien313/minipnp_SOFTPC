@@ -917,7 +917,7 @@ class StripFeederFrame(tk.Frame):
         self.componentPerStrip = CompleteEntry(parametersFrame, trashFunc, varType='int')
         self.componentPerStrip.var = feederData.componentPerStrip
         self.cmpStep = CompleteEntry(parametersFrame, trashFunc, varType='float')
-        self.cmpStep.var = 4.0
+        self.cmpStep.var = feederData.componentStep
         self.nextCmp = CompleteEntry(parametersFrame, trashFunc, varType='int')
         self.nextCmp.var = feederData.nextComponent
         self.idStripBp = CompleteEntry(parametersFrame, trashFunc, varType='int')
@@ -953,15 +953,7 @@ class StripFeederFrame(tk.Frame):
         self.displayBasePlate(0 if self.__strBasePlate.get() == 'Local' else int(self.__strBasePlate.get()))
 
     def __save(self):
-        self._feeder.localBasePlate = mch.BasePlateForStripFeeder({
-            'id': self._bpFrame.id.var, 'name': self._bpFrame.name.var,
-            'realRef1': {'X': self._bpFrame._ref1Frame.x, 'Y': self._bpFrame._ref1Frame.y, 'Z': self._bpFrame._ref1Frame.z},
-            'realRef2': {'X': self._bpFrame._ref2Frame.x, 'Y': self._bpFrame._ref2Frame.y, 'Z': self._bpFrame._ref2Frame.z},
-            'vectorRef': {'X': self._bpFrame._vectorFrame.x, 'Y': self._bpFrame._vectorFrame.y, 'Z': self._bpFrame._vectorFrame.z},
-            'rotationOffset': math.radians(self._bpFrame._rotAndZFrame['Rot(deg)']), 'zRamp': self._bpFrame._rotAndZFrame['Zramp'],
-            'stripStep': self._bpFrame._misc['Strip Step'],
-            'vectorFistCmp': {'X': self._bpFrame._vector.x, 'Y': self._bpFrame._vector.y, 'Z': self._bpFrame._vector.z}
-        })
+
 
         newFeeder = mch.StripFeeder(paramList={'id': self.id.var, 'name': self.name.var,
                                      'componentPerStrip': self.componentPerStrip.var,
@@ -970,6 +962,16 @@ class StripFeederFrame(tk.Frame):
                                      'basePlateId': int(
                                          self.__strBasePlate.get()) if self.__strBasePlate.get() != 'Local' else 0,
                                      'localBasePlate': self._feeder.localBasePlate}, machine=self.__machine)
+        newFeeder.localBasePlate = mch.BasePlateForStripFeeder({
+            'id': self._bpFrame.id.var, 'name': self._bpFrame.name.var,
+            'realRef1': {'X': self._bpFrame._ref1Frame.x, 'Y': self._bpFrame._ref1Frame.y, 'Z': self._bpFrame._ref1Frame.z},
+            'realRef2': {'X': self._bpFrame._ref2Frame.x, 'Y': self._bpFrame._ref2Frame.y, 'Z': self._bpFrame._ref2Frame.z},
+            'vectorRef': {'X': self._bpFrame._vectorFrame.x, 'Y': self._bpFrame._vectorFrame.y, 'Z': self._bpFrame._vectorFrame.z},
+            'rotationOffset': math.radians(self._bpFrame._rotAndZFrame['Rot(deg)']), 'zRamp': self._bpFrame._rotAndZFrame['Zramp'],
+            'stripStep': self._bpFrame._misc['Strip Step'],
+            'vectorFistCmp': {'X': self._bpFrame._vector.x, 'Y': self._bpFrame._vector.y, 'Z': self._bpFrame._vector.z}
+        })
+        
         self._feeder = newFeeder
         self.__machine.addFeeder(newFeeder)
         self.__machine.saveToXml()
@@ -984,6 +986,14 @@ class StripFeederFrame(tk.Frame):
     def __pick(self):
         self.__mother.pick(self.id.var, self.pickId.var)
 
+
+    def updateBpListOm(self):
+        """
+        Warper
+        :return:
+        """
+        self_updateBasePlateListOm()
+        
     def updateBasePlateListOm(self):
         """
         Update the option menu with machine data ( base plate list).

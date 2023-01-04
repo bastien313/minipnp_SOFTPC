@@ -655,7 +655,7 @@ class ScanController:
         self.modList = modelList
 
     def testCorrector(self):
-        model = self.modList[self.modList.findModelWithAlias('R_0805')]
+        model = self.modList[self.modList.findModelWithAlias('C_0402')]
         corrJob = job.MechanicsCorectorJob(pnpDriver=self.driver, correctorPos=self.__machineConf.scanPosition,
                                            model=model, zLift=self.__machineConf.zLift)
 

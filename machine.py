@@ -631,9 +631,9 @@ class MachineConf:
         if 'basePlate_0' in feederData:
             bpObject = self.__basePlateLoadFromXml(idBp=0, bpRoot=feederRoot.find('basePlate_0'),
                                                    addTobasePlateList=False)
-            feederData['basePlate_0'] = bpObject
-        else:
-            del feederData['basePlate_0']
+            feederData['localBasePlate'] = bpObject
+        #else:
+        #    del feederData['basePlate_0']
 
         feederData['id'] = int(idFeeder)
         # create feeder
@@ -713,14 +713,16 @@ class MachineConf:
             for axis in axisRoot:
                 self.__axisLoadFromXml(axis.tag, axisRoot.find(axis.tag))
 
-            feederRoot = machineRoot.find('feeder')
-            for feeder in feederRoot:
-                self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
-
             basePlateRoot = machineRoot.find('basePlate')
             if len(basePlateRoot):
                 for basePlate in basePlateRoot:
                     self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
+
+
+            feederRoot = machineRoot.find('feeder')
+            for feeder in feederRoot:
+                self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
+
 
     def __makeNewFile(self):
         """

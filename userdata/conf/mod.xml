@@ -111,11 +111,11 @@
       <length>1.6</length>
       <height>0.55</height>
       <scanHeight>0.3</scanHeight>
-      <pickupSpeed>100.0</pickupSpeed>
-      <placeSpeed>100.0</placeSpeed>
-      <pickupDelay>0.0</pickupDelay>
-      <placeDelay>0.0</placeDelay>
-      <moveSpeed>100.0</moveSpeed>
+      <pickupSpeed>30.0</pickupSpeed>
+      <placeSpeed>40.0</placeSpeed>
+      <pickupDelay>300.0</pickupDelay>
+      <placeDelay>400.0</placeDelay>
+      <moveSpeed>40.0</moveSpeed>
       <alias>
         <A0>R_1206</A0>
       </alias>

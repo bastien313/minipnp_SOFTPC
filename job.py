@@ -220,7 +220,6 @@ class FeederVoidErrorTask(SimpleTask):
         self._taskConfigure([self._errorCheck])
 
     def _errorCheck(self):
-        print('ffed')
         if not self._feeder.haveComponent():
             self._status.status = TaskStatusEnum.ERROR
             self._status.msg = '{} Feeder void'.format(self._feeder.id)
@@ -303,10 +302,11 @@ class FeederGoToTask(MoveTask):
         """
         """
         self._moveCoord = {}
-        super().__init__(pnpDriver, self._moveCoord, speed,speedRot, speedMode, coordMode, name)
+        super().__init__(pnpDriver, self._moveCoord, speed, speedRot, speedMode, coordMode, name)
         self._feeder = feeder
         self._taskConfigure([self._getPosition, self._waitMovementFirst, self._launchMovement,
-                             self._releaseRotation, self._waitMovementFirst, self._launchMovement, self._waitMovementEnd])
+                             self._releaseRotation, self._waitMovementFirst, self._launchMovement,
+                             self._waitMovementEnd])
 
     def _getPosition(self):
         self._moveCoord = self._feeder.getComponentPosition()
@@ -388,6 +388,7 @@ class WaitTask(SimpleTask):
         else:
             return TaskStatus(status=TaskStatusEnum.RUN)
 
+
 class WaitPresureTask(SimpleTask):
     """
     Wait until presure reach presure target.
@@ -413,9 +414,10 @@ class WaitPresureTask(SimpleTask):
 
     def _waitPresure(self):
         presure = self._driver.getPresure()
-        if(presure >= self._presureTarget):
+        print(presure)
+        if (presure >= self._presureTarget):
             return TaskStatus(status=TaskStatusEnum.END)
-        else
+        else:
             if (time.time() - self._timeCount) > self._timeOutS:
                 self._status.status = TaskStatusEnum.ERROR
                 self._status.msg = 'Presure error {} on {} feeder'.format(presure, self._feederId)
@@ -553,13 +555,14 @@ class PickAndPlaceJob(Job):
                      name='{} Pick Z down.'.format(ref)),
             EvStateTask(self._driver, 1, name='{} Enable vaccum.'.format(ref)),
             PumpStateTask(self._driver, 1, name='{} Enable vaccum.'.format(ref)),
-            WaitTask(0.5, name='{}Pump.'.format(ref)),
-            WaitPresureTask(self._driver,model.pickupDelay / 1000.0, 5, feeder.id,name='{} Wait presure pickup'.format(ref)),
-            #WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
+           #WaitTask(0.5, name='{}Pump.'.format(ref)),
+            WaitPresureTask(self._driver, 5.0, 6.3, feeder.id,
+                            name='{} Wait presure pickup'.format(ref)),
+            # WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.pickupSpeed, name='{} Pick Z up.'.format(ref)),
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
-            MechanicsCorectorJob(pnpDriver, correctorPos, self._model, zLift),
-            WaitPresureTask(self._driver, 1.0, 5, feeder.id,
+            #MechanicsCorectorJob(pnpDriver, correctorPos, self._model, zLift),
+            WaitPresureTask(self._driver, 5.0, 6.3, feeder.id,
                             name='{} Verify Presure'.format(ref)),
             MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y'], 'C': self._placePos['C']},
                      speed=model.moveSpeed, name='{} Go to component position.'.format(ref)),
@@ -569,7 +572,8 @@ class PickAndPlaceJob(Job):
             PumpStateTask(self._driver, 0, name='{} Disable vaccum.'.format(ref)),
             # WaitTask(0.5, name='{}Pump.'.format(ref)),
             WaitTask(model.placeDelay / 1000.0, name='{} Place delay.'.format(ref)),
-            MoveTask(self._driver, {'Z': zLift, 'C':-self._placePos['C']}, speed=model.moveSpeed, name='{} End Z lift.'.format(ref)),
+            MoveTask(self._driver, {'Z': zLift, 'C': -self._placePos['C']}, speed=model.moveSpeed,
+                     name='{} End Z lift.'.format(ref)),
         ]
         self.jobConfigure()
 
@@ -591,17 +595,19 @@ class MechanicsCorectorJob(Job):
         self._driver = pnpDriver
         self._correctorPos = correctorPos
         self._model = model
-        corectorSize = {'X': 3.475, 'Y': 3.475}
-        cornerHGPos = {'X': (self._correctorPos['X'] - corectorSize['X']) + (model.width/2),
-                       'Y': (self._correctorPos['Y'] + corectorSize['Y']) - (model.length/2)}
-        cornerBDPos = {'X': (self._correctorPos['X'] + corectorSize['X']) - (model.width/2),
-                       'Y': (self._correctorPos['Y'] - corectorSize['Y']) + (model.length/2)}
+        corectorSize = {'X': 3.5, 'Y': 3.5}
+        cornerHGPos = {'X': (self._correctorPos['X'] - corectorSize['X']) + (model.width / 2),
+                       'Y': (self._correctorPos['Y'] + corectorSize['Y']) - (model.length / 2)}
+        cornerBDPos = {'X': (self._correctorPos['X'] + corectorSize['X']) - (model.width / 2),
+                       'Y': (self._correctorPos['Y'] - corectorSize['Y']) + (model.length / 2)}
         self._taskList = [
             MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='Start Z lift.'),
 
-            MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y'], 'C':30.0}, speed=model.moveSpeed,
+            MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y'], 'C': 30.0},
+                     speed=model.moveSpeed,
                      name='Cooector GO TO -'),
-            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight, 'C':-30.0}, speed=model.moveSpeed,
+            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight, 'C': -30.0},
+                     speed=model.moveSpeed,
                      name='Corector Z pos.'),
             MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
                      name='Corector corner HG.'),
@@ -670,7 +676,7 @@ class ThreadJobExecutor(threading.Thread):
                     self._errorFunc(self._job.status)
                 elif jobStatus.status == TaskStatusEnum.END:
                     self._stopSignal = True
-            #time.sleep(0.02)
+            # time.sleep(0.02)
         # self._driver.stopMachine()
         self._endFunc(self._job.status)
 
