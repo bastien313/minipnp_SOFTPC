@@ -362,12 +362,14 @@ class GenericBasePlateFrame(tk.LabelFrame):
                                height=300, **kwargs)
         self._controller = controller
         self._machine = machine
+        self._basePlate = bpData
         self._identificationFrame = tk.Frame(self)
         self._parametersFrame = tk.Frame(self)
         btnFrame = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
 
         self._identificationFrame.grid(row=0, column=0)
         self._parametersFrame.grid(row=1, column=0)
+        self._isLocalFeeder = not commandFrame
         if commandFrame:
             btnFrame.grid(row=2, column=0, columnspan=2, sticky='ew')
 
@@ -375,14 +377,14 @@ class GenericBasePlateFrame(tk.LabelFrame):
 
         self._logger = logger
         self.id = CompleteEntry(self._identificationFrame, trashFunc, varType='int')
-        self.id.var = bpData.id
+        self.id.var = self._basePlate.id
         self.id['width'] = 10
         self.type = CompleteEntry(self._identificationFrame, trashFunc, varType='str')
-        self.type.var = bpData.type
+        self.type.var = self._basePlate.type
         self.type['state'] = 'disable'
         self.type['width'] = 20
         self.name = CompleteEntry(self._identificationFrame, trashFunc, varType='str')
-        self.name.var = bpData.name
+        self.name.var = self._basePlate.name
         self.name['width'] = 50
 
         tk.Label(self._identificationFrame, text="Id").grid(row=0, column=0)
@@ -397,7 +399,7 @@ class GenericBasePlateFrame(tk.LabelFrame):
         self._vectorFrame = XYZFrame(self._parametersFrame, text="Vector Ref", labelanchor='n', padx=5, pady=5)
         self._rotAndZFrame = MultipleEntryFrame(self._parametersFrame, {'Rot(deg)': 'float', 'Zramp': 'float'},
                                                 text="Corrector", labelanchor='n', padx=5, pady=5)
-        GenericBasePlateFrame._updateIHMFromBasePlate(self, bpData)
+        GenericBasePlateFrame._updateIHMFromBasePlate(self)
 
         self._btnRef1GoTo = ttk.Button(self._parametersFrame, text='Go to', command=self._goToRef1)
         self._btnRef1Get = ttk.Button(self._parametersFrame, text='Get Pos.', command=self._getPosRef1)
@@ -422,31 +424,30 @@ class GenericBasePlateFrame(tk.LabelFrame):
         ttk.Button(btnFrame, command=self._save, text='Save').grid(row=0, column=0, padx=10)
         ttk.Button(btnFrame, command=self._delete, text='Delete').grid(row=0, column=1, padx=10)
 
-    def _updateIHMFromBasePlate(self, bp):
+    def _updateIHMFromBasePlate(self):
         """
-        Update ihm with base plate objects.
+        Update ihm with own base plate objects.
         """
-        self._ref1Frame.x = bp.getRealRef(0)['X']
-        self._ref1Frame.y = bp.getRealRef(0)['Y']
-        self._ref1Frame.z = bp.getRealRef(0)['Z']
-        self._ref2Frame.x = bp.getRealRef(1)['X']
-        self._ref2Frame.y = bp.getRealRef(1)['Y']
-        self._ref2Frame.z = bp.getRealRef(1)['Z']
-        self._vectorFrame.x = bp.getTheorVector()['X']
-        self._vectorFrame.y = bp.getTheorVector()['Y']
-        self._vectorFrame.z = bp.getTheorVector()['Z']
-        self._rotAndZFrame['Rot(deg)'] = math.degrees(bp.getRotationOffset())
-        self._rotAndZFrame['Zramp'] = bp.getZramp()
+        self._ref1Frame.x = self._basePlate.getRealRef(0)['X']
+        self._ref1Frame.y = self._basePlate.getRealRef(0)['Y']
+        self._ref1Frame.z = self._basePlate.getRealRef(0)['Z']
+        self._ref2Frame.x = self._basePlate.getRealRef(1)['X']
+        self._ref2Frame.y = self._basePlate.getRealRef(1)['Y']
+        self._ref2Frame.z = self._basePlate.getRealRef(1)['Z']
+        self._vectorFrame.x = self._basePlate.getTheorVector()['X']
+        self._vectorFrame.y = self._basePlate.getTheorVector()['Y']
+        self._vectorFrame.z = self._basePlate.getTheorVector()['Z']
+        self._rotAndZFrame['Rot(deg)'] = math.degrees(self._basePlate.getRotationOffset())
+        self._rotAndZFrame['Zramp'] = self._basePlate.getZramp()
 
     def _save(self):
-        newBp = mch.BasePlate({
+        self._basePlate.buildBasePlateFromConfDict({
             'id': self.id.var, 'name': self.name.var,
             'realRef1': {'X': self._ref1Frame.x, 'Y': self._ref1Frame.y, 'Z': self._ref1Frame.z},
             'realRef2': {'X': self._ref2Frame.x, 'Y': self._ref2Frame.y, 'Z': self._ref2Frame.z},
             'vectorRef': {'X': self._vectorFrame.x, 'Y': self._vectorFrame.y, 'Z': self._vectorFrame.z},
             'rotationOffset': math.radians(self._rotAndZFrame['Rot(deg)']), 'zRamp': self._rotAndZFrame['Zramp']
         })
-        self._machine.addBasePlate(newBp)
         self._machine.saveToXml()
         self._mother.updateBpListOm()
 
@@ -486,15 +487,14 @@ class GenericBasePlateFrame(tk.LabelFrame):
 
     def _ref2Calc(self):
 
-        basePlate = self._machine.getBasePlateById(self.id.var)
-        basePlate.computeFromAngle()
-        self._updateIHMFromBasePlate(basePlate)
+        self._save()
+        self._basePlate.computeFromAngle()
+        self._updateIHMFromBasePlate()
 
     def _RandZCalc(self):
-
-        basePlate = self._machine.getBasePlateById(self.id.var)
-        basePlate.computeFromRef()
-        self._updateIHMFromBasePlate(basePlate)
+        self._save()
+        self._basePlate.computeFromRef()
+        self._updateIHMFromBasePlate()
 
     def _calcTheo(self):
         self._ref2Frame.x = self._ref1Frame.x + self._vectorFrame.x
@@ -627,10 +627,10 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
         self._vector.grid(row=0, column=0, sticky='ew')
         self._misc.grid(row=1, column=0)
 
-        self._updateIHMFromBasePlate(bpData)
+        self._updateIHMFromBasePlate()
 
-    def _save(self):
-        newBp = mch.BasePlateForStripFeeder({
+    def _save(self, isLocalFeeder = False):
+        self._basePlate.buildBasePlateFromConfDict({
             'id': self.id.var, 'name': self.name.var,
             'realRef1': {'X': self._ref1Frame.x, 'Y': self._ref1Frame.y, 'Z': self._ref1Frame.z},
             'realRef2': {'X': self._ref2Frame.x, 'Y': self._ref2Frame.y, 'Z': self._ref2Frame.z},
@@ -639,16 +639,16 @@ class StripFeederBasePlateFrame(GenericBasePlateFrame):
             'stripStep': self._misc['Strip Step'],
             'vectorFistCmp': {'X': self._vector.x, 'Y': self._vector.y, 'Z': self._vector.z}
         })
-        self._machine.addBasePlate(newBp)
         self._machine.saveToXml()
-        self._mother.updateBpListOm()
+        if not self._isLocalFeeder:
+            self._mother.updateBpListOm()
 
-    def _updateIHMFromBasePlate(self, bp):
-        GenericBasePlateFrame._updateIHMFromBasePlate(self, bp)
-        self._misc['Strip Step'] = bp.getStripStep()
-        self._vector.x = bp.getVectorFirstCmp()['X']
-        self._vector.y = bp.getVectorFirstCmp()['Y']
-        self._vector.z = bp.getVectorFirstCmp()['Z']
+    def _updateIHMFromBasePlate(self):
+        GenericBasePlateFrame._updateIHMFromBasePlate(self)
+        self._misc['Strip Step'] = self._basePlate.getStripStep()
+        self._vector.x = self._basePlate.getVectorFirstCmp()['X']
+        self._vector.y = self._basePlate.getVectorFirstCmp()['Y']
+        self._vector.z = self._basePlate.getVectorFirstCmp()['Z']
 
     def disableModification(self):
         GenericBasePlateFrame.disableModification(self)
@@ -985,12 +985,12 @@ class StripFeederFrame(tk.Frame):
     def __pick(self):
         self.__mother.pick(self.id.var, self.pickId.var)
 
-    def updateBpListOm(self):
-        """
-        Warper
-        :return:
-        """
-        self_updateBasePlateListOm()
+    #def updateBpListOm(self):
+    #    """
+    #    Warper
+    #    :return:
+    #    """
+    #    self_updateBasePlateListOm()
 
     def updateBasePlateListOm(self):
         """

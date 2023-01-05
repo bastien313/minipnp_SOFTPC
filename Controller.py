@@ -1,4 +1,5 @@
 # coding: utf-8
+import time
 
 import Board as brd
 import database as dtb
@@ -365,7 +366,19 @@ class BoardController:
 
     def __longjobError(self, status):
         self.logger.printCout('Long job error: ' + self.__longJob.getStateDescription())
-        self.pauseJob()
+        #self.pauseJob() // reactivate when restar work
+        self.stopJob()
+        for loop in range(5):
+            self.driver.ctrlPump(0)
+            self.driver.ctrlEv(0)
+            time.sleep(500)
+            self.driver.ctrlPump(1)
+            self.driver.ctrlEv(1)
+            time.sleep(500)
+        self.driver.ctrlPump(0)
+        self.driver.ctrlEv(0)
+
+
 
     def __endLongJob(self, status):
         self.logger.printCout('Long job End: ' + self.__longJob.getStateDescription())
@@ -373,7 +386,17 @@ class BoardController:
 
     def __littlejobError(self, status):
         self.logger.printCout('Little job error: ' + self.__littleJob.getStateDescription())
-        self.pauseJob()
+        #self.pauseJob() // reactivate when restar work
+        self.stopJob()
+        for loop in range(5):
+            self.driver.ctrlPump(0)
+            self.driver.ctrlEv(0)
+            time.sleep(500)
+            self.driver.ctrlPump(1)
+            self.driver.ctrlEv(1)
+            time.sleep(500)
+        self.driver.ctrlPump(0)
+        self.driver.ctrlEv(0)
 
     def __endLittleJob(self, status):
         self.logger.printCout('Little job End: ' + self.__littleJob.getStateDescription())

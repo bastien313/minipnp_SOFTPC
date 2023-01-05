@@ -12,7 +12,7 @@
       <pickupDelay>300.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>4.1</pressureTarget>
+      <pressureTarget>8.0</pressureTarget>
       <alias>
         <A0>R_0805</A0>
       </alias>
@@ -187,68 +187,68 @@
     </R_0402>
     <C_0603>
       <name>C_0603</name>
-      <correctorMode>None</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>1.6</width>
       <length>0.8</length>
       <height>0.8</height>
       <scanHeight>0.4</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
       <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>6.8</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>C_0603</A0>
       </alias>
     </C_0603>
     <R_0603>
       <name>R_0603</name>
-      <correctorMode>None</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>1.5</width>
       <length>0.8</length>
       <height>0.4</height>
       <scanHeight>0.2</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
       <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>6.8</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>R_0603</A0>
       </alias>
     </R_0603>
     <F_0603>
       <name>F_0603</name>
-      <correctorMode>None</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>1.6</width>
       <length>0.8</length>
       <height>0.8</height>
       <scanHeight>0.4</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
       <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>6.8</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>F_0603</A0>
       </alias>
     </F_0603>
     <LED_0603>
       <name>LED_0603</name>
-      <correctorMode>None</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>1.6</width>
       <length>0.8</length>
       <height>0.4</height>
       <scanHeight>0.2</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
       <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>6.8</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>LED_0603</A0>
       </alias>
