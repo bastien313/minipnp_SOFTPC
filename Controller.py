@@ -1049,7 +1049,7 @@ class PnpConroller:
         self.ihm = 0
         self.preferences = pr.Preferences(logger, 'userdata/conf/conf.cfg')
         self.modList = dtb.ModDatabase(self.preferences['PATH']['mod'], logger)
-        self.machineConfiguration = mch.MachineConf(self.preferences['PATH']['machine'], logger)
+        self.machineConfiguration = mch.MachineConf(self.preferences['PATH']['machine'], logger,self.driver)
         self.directCtrl = DirectCtrl(self.driver, self.machineConfiguration)
         self.paramCtrl = ParamCtrl(self.driver, self.machineConfiguration)
         self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration, self.preferences)

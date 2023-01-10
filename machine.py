@@ -43,6 +43,7 @@ class BasePlate:
     """
     Represent a plate put on machine with an offset(X, Y, Z) and an orientation.
     """
+
     def __init__(self, paramList):
         """
         :param realRef1: position of ref 1 (referance)
@@ -161,8 +162,8 @@ class BasePlate:
                     pointRecaled['Y'] * math.cos(self._rotationOffset)),
             'Z': pointRecaled['Z'] +
                  self._zRamp *
-                 ((math.hypot(pointRecaled['X'], pointRecaled['Y']))/
-                 (math.hypot(self._vectorRef['X'], self._vectorRef['Y'])))
+                 ((math.hypot(pointRecaled['X'], pointRecaled['Y'])) /
+                  (math.hypot(self._vectorRef['X'], self._vectorRef['Y'])))
         }
 
         return {
@@ -214,7 +215,6 @@ class BasePlateForStripFeeder(BasePlate):
         BasePlate.__init__(self, confDict)
         self.buildBasePlateFromConfDict(confDict)
 
-
     def configureFromXml(self, xmlRoot):
         basePlateData = {}
         for element in xmlRoot:
@@ -225,7 +225,7 @@ class BasePlateForStripFeeder(BasePlate):
         BasePlate.buildBasePlateFromConfDict(self, confDict)
         self._stripStep = float(confDict['stripStep']) if 'stripStep' in confDict else 10.6
         self._vectorFirstCmp = confDict['vectorFistCmp'] if 'vectorFistCmp' in confDict else {'X': 6.2295,
-                                                                                                'Y': 196.16, 'Z': 0.0}
+                                                                                              'Y': 196.16, 'Z': 0.0}
         self._type = 'StripFeederBasePlate'
         self._vectorFirstCmp['X'] = float(confDict['vectorCmpX']) if 'vectorX' in confDict else self._vectorFirstCmp[
             'X']
@@ -233,7 +233,6 @@ class BasePlateForStripFeeder(BasePlate):
             'Y']
         self._vectorFirstCmp['Z'] = float(confDict['vectorCmpZ']) if 'vectorZ' in confDict else self._vectorFirstCmp[
             'Z']
-
 
     def getTheoricalFirstCmpPosition(self, stripId):
         """
@@ -266,7 +265,6 @@ class BasePlateForStripFeeder(BasePlate):
 
     def setVectorFirstCmp(self, vector):
         self._vectorFirstCmp = vector
-
 
 
 class Feeder:
@@ -321,6 +319,69 @@ class Feeder:
         return feederRoot
 
 
+class MechanicalFeeder(Feeder):
+    def __init__(self, paramList, machine, driver):
+        Feeder.__init__(self, paramList=paramList, machine=machine)
+        self.type = 'mechanicalfeeder'
+        self._pickupPos = confDict['pickupPos'] if 'pickupPos' in confDict else {'X': 0.0, 'Y': 0.0, 'Z': 0.0, 'C': 0.0}
+        self._nextCmpPos = confDict['nextCmpPos'] if 'nextCmpPos' in confDict else {'X': 0.0, 'Y': 0.0, 'Z': 0.0, 'C': 0.0}
+        if not 'C' in self._pickupPos:
+            self._pickupPos['C'] = 0.0
+        if not 'C' in self._nextCmpPos:
+            self._nextCmpPos['C'] = 0.0
+
+        self._driver = driver
+
+    def saveInLxml(self, rootLxml):
+        feederRoot = Feeder.saveInLxml(self, rootLxml)
+        etree.SubElement(feederRoot, 'mechanicalfeeder').text = self.feederListToStr()
+        etree.SubElement(bpRoot, 'pickupPosX').text = str(self._pickupPos['X'])
+        etree.SubElement(bpRoot, 'pickupPosY').text = str(self._pickupPos['Y'])
+        etree.SubElement(bpRoot, 'pickupPosZ').text = str(self._pickupPos['Z'])
+        etree.SubElement(bpRoot, 'pickupPosC').text = str(self._pickupPos['C'])
+        etree.SubElement(bpRoot, 'nextCmpPosX').text = str(self._nextCmpPos['X'])
+        etree.SubElement(bpRoot, 'nextCmpPosY').text = str(self._nextCmpPos['Y'])
+        etree.SubElement(bpRoot, 'nextCmpPosZ').text = str(self._nextCmpPos['Z'])
+        etree.SubElement(bpRoot, 'nextCmpPosC').text = str(self._nextCmpPos['C'])
+        return feederRoot
+
+    def haveComponent(self):
+        return True
+
+    def getPositionById(self, cmpId):
+        """
+        Return position of selected component.
+        'C' contain the  rotation correction.
+        """
+        return self._pickupPos
+
+    def getComponentPosition(self):
+        """
+        Get the position of the next component to be picked up.
+        :return: position of component {'X': posx, 'Y': posy, 'Z':posz, 'C': theta correction}
+        """
+        return self.getPositionById(0)
+
+    def prepareNextComponent(self):
+        while self._driver.isBusy():
+            pass
+        self._driver.moveAxis(moveData={'Z':self._machine.zLift})
+
+        while self._driver.isBusy():
+            pass
+        self._driver.moveAxis(moveData={'X':self._nextCmpPos['X'], 'Y':self._nextCmpPos['X']})
+
+        while self._driver.isBusy():
+            pass
+        self._driver.moveAxis(moveData={'Z':self._nextCmpPos['Z']})
+
+        while self._driver.isBusy():
+            pass
+        self._driver.moveAxis(moveData={'Z':self._machine.zLift})
+
+        while self._driver.isBusy():
+            pass
+
 class CompositeFeeder(Feeder):
     def __init__(self, paramList, machine):
         Feeder.__init__(self, paramList=paramList, machine=machine)
@@ -336,7 +397,7 @@ class CompositeFeeder(Feeder):
     def getPositionById(self, cmpId):
         cmpOfFeeder = cmpId
         for feeder in self.feederList:
-            #feeder = self._machine.getFeederById(feederId)
+            # feeder = self._machine.getFeederById(feederId)
             if (cmpOfFeeder - feeder.componentPerStrip) >= 0:
                 cmpOfFeeder -= feeder.componentPerStrip
             else:
@@ -488,7 +549,7 @@ class MachineConf:
     ...
     """
 
-    def __init__(self, pathFile, logger):
+    def __init__(self, pathFile, logger,driver):
         self.axisConfArray = {'X': MotorConf('X', 1.0, 1.0, 1.0),
                               'Y': MotorConf('Y', 1.0, 1.0, 1.0),
                               'Z': MotorConf('Z', 1.0, 1.0, 1.0),
@@ -502,6 +563,7 @@ class MachineConf:
         self.feederList = []
         self.basePlateList = []
         self.logger = logger
+        self._driver = driver
 
         self.__loadFromXml(self.pathFile)
 
@@ -632,7 +694,7 @@ class MachineConf:
             bpObject = self.__basePlateLoadFromXml(idBp=0, bpRoot=feederRoot.find('basePlate_0'),
                                                    addTobasePlateList=False)
             feederData['localBasePlate'] = bpObject
-        #else:
+        # else:
         #    del feederData['basePlate_0']
 
         feederData['id'] = int(idFeeder)
@@ -643,6 +705,8 @@ class MachineConf:
             self.addFeeder(ReelFeeder(paramList=feederData, machine=self))
         elif feederData['type'] == 'stripfeeder':
             self.addFeeder(StripFeeder(paramList=feederData, machine=self))
+        elif feederData['type'] == 'mechanicalfeeder':
+            self.addFeeder(MechanicalFeeder(paramList=feederData, machine=self,driver=self._driver ))
         elif feederData['type'] == 'compositefeeder':
             feederData['feederList'] = self.makeFilteredFeederList(feederData['feederListStr'])
             self.addFeeder(CompositeFeeder(paramList=feederData, machine=self))
@@ -687,7 +751,6 @@ class MachineConf:
         # Create object
         self.axisConfArray[axis] = MotorConf(axis, feederData['step'], feederData['speed'], feederData['accel'])
 
-
     def loadFromXml(self, pathFile):
         try:
             self.__loadFromXml(pathFile)
@@ -696,7 +759,6 @@ class MachineConf:
             self.logger.printCout(f"Loading machine conf '{pathFile}' error!")
             self.__loadFromXml(self.pathFile)
 
-
     def __loadFromXml(self, pathFile):
         """
         Load data from xml file pointed by self.pathFile
@@ -704,13 +766,13 @@ class MachineConf:
         """
         # reset feederList
         self.feederList = []
-        #try:
+        # try:
         root = etree.parse(pathFile).getroot()
-        #except:
+        # except:
         #    self.logger.printCout("Error file don't exist: Make new model file")
         #    self.saveToXml()
         # self.__makeNewFile()
-        #else:
+        # else:
         self.logger.printCout(f"Load machine configuration '{pathFile}'")
         machineRoot = root.find('machine')
         self.zHead = float(xe.getXmlValue(machineRoot, 'zHead', 0.0))
@@ -728,11 +790,9 @@ class MachineConf:
             for basePlate in basePlateRoot:
                 self.__basePlateLoadFromXml(basePlate.tag.split('_')[1], basePlateRoot.find(basePlate.tag))
 
-
         feederRoot = machineRoot.find('feeder')
         for feeder in feederRoot:
             self.__feederLoadFromXml(feeder.tag.split('_')[1], feederRoot.find(feeder.tag))
-
 
     def __makeNewFile(self):
         """

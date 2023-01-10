@@ -851,6 +851,80 @@ class CompositeFeederFrame(tk.Frame):
     def __pick(self):
         self.__mother.pick(self.id.var, self.pickId.var)
 
+class MechanicalFeederFrame(tk.Frame):
+    def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
+        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+
+        self._controller = controller
+        self._feeder = feederData
+        self.__mother = fenetre
+        self.__machine = machine
+        self.__logger = logger
+
+        identificationFrame = tk.LabelFrame(self, text="Identification", labelanchor='n', padx=10, pady=10)
+        parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
+        btnFram = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
+        testFrame = tk.LabelFrame(self, text="Pick", labelanchor='n', padx=10, pady=10)
+
+        identificationFrame.grid(row=0, column=0, columnspan=2, sticky='ew')
+        # self._basePlateDataFrame.grid(row=2, column=0,columnspan=2)
+        parametersFrame.grid(row=1, column=0, columnspan=2)
+        btnFram.grid(row=2, column=0, sticky='ew')
+        testFrame.grid(row=2, column=1, sticky='ew')
+
+        self.id = CompleteEntry(identificationFrame, trashFunc, varType='int')
+        self.id.var = feederData.id
+        self.id['width'] = 10
+        self.type = CompleteEntry(identificationFrame, trashFunc, varType='str')
+        self.type.var = feederData.type
+        self.type['state'] = 'disable'
+        self.type['width'] = 20
+        self.name = CompleteEntry(identificationFrame, trashFunc, varType='str')
+        self.name.var = feederData.name
+        self.name['width'] = 50
+
+
+
+        tk.Label(identificationFrame, text="Id").grid(row=0, column=0)
+        self.id.grid(row=1, column=0)
+        tk.Label(identificationFrame, text="Type").grid(row=0, column=1)
+        self.type.grid(row=1, column=1)
+        tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
+        self.name.grid(row=1, column=2)
+
+        self._xyzPickup = XYZFrame(parametersFrame,text='PickUp')
+        self._xyzNextPos = XYZFrame(parametersFrame, text='Lever')
+
+
+        self._xyzPickup.grid(row=0, column=0)
+        self._xyzNextPos.grid(row=0, column=1)
+        ttk.Button(parametersFrame, command=self.__save, text='Get Pos.').grid(row=1, column=0, padx=10)
+        ttk.Button(parametersFrame, command=self.__save, text='Get Pos.').grid(row=1, column=1, padx=10)
+
+        ttk.Button(testFrame, command=self.__pick, text='Pick').grid(row=0, column=0, padx=10)
+
+        ttk.Button(btnFram, command=self.__save, text='Save').grid(row=0, column=0, padx=10)
+        ttk.Button(btnFram, command=self.__delete, text='Delete').grid(row=0, column=1, padx=10)
+
+
+    def __save(self):
+        newFeeder = mch.MechanicalFeeder(paramList={'id': self.id.var, 'name': self.name.var,
+                                                    'pickupPos':{'X':self._xyzPickup.x, 'Y':self._xyzPickup.y,'Z':self._xyzPickup.Z},
+                                                    'nextCmpPos':{'X':self._xyzNextPos.x, 'Y':self._xyzNextPos.y,'Z':self._xyzNextPos.Z}},
+                                         driver=self._controller, machine=self.__machine)
+        self._feeder = newFeeder
+        self.__machine.addFeeder(newFeeder)
+        self.__machine.saveToXml()
+        self.__mother.updateFeederListOm()
+
+    def __delete(self):
+        self.__machine.deleteFeeder(self.id.var)
+        self.__machine.saveToXml()
+        self.__mother.updateFeederListOm()
+        self.__mother.displayFeeder(0)
+
+    def __pick(self):
+        self.__mother.pick(self.id.var, 0)
 
 class StripFeederFrame(tk.Frame):
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
