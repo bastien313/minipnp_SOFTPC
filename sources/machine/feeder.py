@@ -13,6 +13,23 @@ class Feeder:
         self.name = paramList['name'] if 'name' in paramList else 'noname'
         self._haveComponent = True
         self._machine = machine
+        self._errorCounter = int(paramList['errorCounter']) if 'errorCounter' in paramList else 0
+        self._errorScore = int(paramList['errorScore']) if 'errorScore' in paramList else 0
+
+    def setErrorScore(self, score):
+        self._errorScore = score
+
+    def getErrorScore(self):
+        return self._errorScore
+
+    def clearErrorScore(self):
+        self._errorScore = 0
+
+    def setErrorCounter(self, counter):
+        self._errorCounter = counter
+
+    def getErrorCounter(self):
+        return self._errorCounter
 
     def prepareBeforePick(self):
         return
@@ -48,6 +65,9 @@ class Feeder:
         etree.SubElement(feederRoot, 'basePlateId').text = str(self.basePlateId)
         self.localBasePlate.saveInLxml(feederRoot)
         return feederRoot
+
+    errorCounter = property(fset=setErrorCounter, fget=setErrorCounter)
+    errorScore = property(fset=setErrorScore, fget=getErrorScore)
 
 
 class MechanicalFeeder(Feeder):

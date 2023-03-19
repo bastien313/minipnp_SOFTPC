@@ -6,14 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="faa6c788-db86-4cfe-9ea4-818d311b32db" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/controller/Controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/ihm/basePlate.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/basePlate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/ihm/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/feeder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/machine/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sources/machine/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/feeder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/machine/machine.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/machine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machine.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,22 +70,22 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>440</line>
+          <line>446</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>156</line>
+          <line>162</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>347</line>
+          <line>353</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/machine/feeder.py</url>
-          <line>55</line>
+          <line>75</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
