@@ -3,7 +3,7 @@ import time
 
 from sources.database import Board as brd, database as dtb
 from . import Prefrence as pr
-from ..machine import machine as mch
+from sources.machine import machine as mch
 from deprecated import deprecated
 from . import job
 from sources.utils import Gamepad as gp

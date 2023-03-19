@@ -1,6 +1,6 @@
 from tkinter import messagebox
 
-from ..machine import machine as mch
+#from ..machine import machine as mch
 from .basePlate import *
 
 
@@ -117,8 +117,16 @@ class MechanicalFeederFrame(tk.Frame):
         tk.Label(identificationFrame, text="Name").grid(row=0, column=2)
         self.name.grid(row=1, column=2)
 
+
         self._xyzcPickup = XYZCFrame(parametersFrame, text='PickUp')
+        self._xyzcPickup.x = feederData.getComponentPosition()['X']
+        self._xyzcPickup.y = feederData.getComponentPosition()['Y']
+        self._xyzcPickup.z = feederData.getComponentPosition()['Z']
+        self._xyzcPickup.c = feederData.getComponentPosition()['C']
         self._leverLowPos = XYZFrame(parametersFrame, text='Lever')
+        self._leverLowPos.x = feederData.getLeverPos()['X']
+        self._leverLowPos.y = feederData.getLeverPos()['Y']
+        self._leverLowPos.z = feederData.getLeverPos()['Z']
 
         self._xyzcPickup.grid(row=0, column=0)
         self._leverLowPos.grid(row=0, column=1)
@@ -397,7 +405,7 @@ class FeederFrame(tk.Frame):
         self._newFeedWindow.title('Add feeder')
         # newFeedFrame = tk.Frame(newFeedWindow)
 
-        listeOptions = ('Strip', 'Composite')
+        listeOptions = ('Strip', 'Composite', 'Mechanical Reel')
         self._newFeederTypeSel = tk.StringVar()
         self._newFeederTypeSel.set(listeOptions[0])
         self._newFeederId = CompleteEntry(self._newFeedWindow, trashFunc, varType='int')
@@ -432,6 +440,9 @@ class FeederFrame(tk.Frame):
             newFeeder = mch.StripFeeder(paramList={'id': self._newFeederId.var}, machine=self.__machineConf)
         elif self._newFeederTypeSel.get() == 'Composite':
             newFeeder = mch.CompositeFeeder(paramList={'id': self._newFeederId.var}, machine=self.__machineConf)
+        elif self._newFeederTypeSel.get() == 'Mechanical Reel':
+            newFeeder = mch.MechanicalFeeder(paramList={'id': self._newFeederId.var}, machine=self.__machineConf,
+                                             driver=self.controller.driver)
 
         self.__machineConf.addFeeder(newFeeder)
         self.__strFeeder.set(str(newFeeder.id))
@@ -453,6 +464,11 @@ class FeederFrame(tk.Frame):
                     return
                 elif feeder.type == 'compositefeeder':
                     self.__feederFrame = CompositeFeederFrame(self, feeder, self.__machineConf, self.__logger,
+                                                              self.controller)
+                    self.__feederFrame.grid(row=1, column=0, columnspan=3)
+                    return
+                elif feeder.type == 'mechanicalfeeder':
+                    self.__feederFrame = MechanicalFeederFrame(self, feeder, self.__machineConf, self.__logger,
                                                               self.controller)
                     self.__feederFrame.grid(row=1, column=0, columnspan=3)
                     return

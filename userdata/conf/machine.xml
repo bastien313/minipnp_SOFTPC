@@ -464,25 +464,25 @@
         <name>1u</name>
         <type>stripfeeder</type>
         <basePlateId>3</basePlateId>
-        <basePlate_3>
-          <name>Noname</name>
+        <basePlate_0>
+          <name>Local</name>
           <type>StripFeederBasePlate</type>
-          <ref0X>368.3</ref0X>
-          <ref0Y>38.0543</ref0Y>
-          <ref0Z>-26.7</ref0Z>
-          <ref1X>441.8263</ref1X>
-          <ref1Y>234.0543</ref1Y>
-          <ref1Z>-26.7</ref1Z>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
           <vectorX>73.2</vectorX>
           <vectorY>196.0</vectorY>
           <vectorZ>0.0</vectorZ>
           <zRamp>0.0</zRamp>
           <rotationOffset>0.0</rotationOffset>
           <stripStep>10.6</stripStep>
-          <vectorCmpX>6.3</vectorCmpX>
+          <vectorCmpX>6.2295</vectorCmpX>
           <vectorCmpY>196.16</vectorCmpY>
-          <vectorCmpZ>-1.0</vectorCmpZ>
-        </basePlate_3>
+          <vectorCmpZ>0.0</vectorCmpZ>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
         <nextComponent>15</nextComponent>
@@ -492,25 +492,25 @@
         <name>4.7u</name>
         <type>stripfeeder</type>
         <basePlateId>3</basePlateId>
-        <basePlate_3>
-          <name>Noname</name>
+        <basePlate_0>
+          <name>Local</name>
           <type>StripFeederBasePlate</type>
-          <ref0X>368.3</ref0X>
-          <ref0Y>38.0543</ref0Y>
-          <ref0Z>-26.7</ref0Z>
-          <ref1X>441.8263</ref1X>
-          <ref1Y>234.0543</ref1Y>
-          <ref1Z>-26.7</ref1Z>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
           <vectorX>73.2</vectorX>
           <vectorY>196.0</vectorY>
           <vectorZ>0.0</vectorZ>
           <zRamp>0.0</zRamp>
           <rotationOffset>0.0</rotationOffset>
           <stripStep>10.6</stripStep>
-          <vectorCmpX>6.3</vectorCmpX>
+          <vectorCmpX>6.2295</vectorCmpX>
           <vectorCmpY>196.16</vectorCmpY>
-          <vectorCmpZ>-1.0</vectorCmpZ>
-        </basePlate_3>
+          <vectorCmpZ>0.0</vectorCmpZ>
+        </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
         <nextComponent>11</nextComponent>
@@ -677,6 +677,62 @@
         </basePlate_0>
         <feederListStr>2|1</feederListStr>
       </feeder_22>
+      <feeder_23>
+        <name>noname</name>
+        <type>stripfeeder</type>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>StripFeederBasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>73.2</vectorX>
+          <vectorY>196.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+          <stripStep>10.6</stripStep>
+          <vectorCmpX>6.2295</vectorCmpX>
+          <vectorCmpY>196.16</vectorCmpY>
+          <vectorCmpZ>0.0</vectorCmpZ>
+        </basePlate_0>
+        <componentPerStrip>1</componentPerStrip>
+        <componentStep>1.0</componentStep>
+        <nextComponent>0</nextComponent>
+        <stripIdInBasePlate>0</stripIdInBasePlate>
+      </feeder_23>
+      <feeder_24>
+        <name>no</name>
+        <type>mechanicalfeeder</type>
+        <basePlateId>0</basePlateId>
+        <basePlate_0>
+          <name>Local</name>
+          <type>BasePlate</type>
+          <ref0X>0.0</ref0X>
+          <ref0Y>0.0</ref0Y>
+          <ref0Z>0.0</ref0Z>
+          <ref1X>0.0</ref1X>
+          <ref1Y>0.0</ref1Y>
+          <ref1Z>0.0</ref1Z>
+          <vectorX>0.0</vectorX>
+          <vectorY>0.0</vectorY>
+          <vectorZ>0.0</vectorZ>
+          <zRamp>0.0</zRamp>
+          <rotationOffset>0.0</rotationOffset>
+        </basePlate_0>
+        <pickupPosX>1.0</pickupPosX>
+        <pickupPosY>2.0</pickupPosY>
+        <pickupPosZ>3.0</pickupPosZ>
+        <pickupPosC>4.0</pickupPosC>
+        <leverLowPosX>5.0</leverLowPosX>
+        <leverLowPosY>6.0</leverLowPosY>
+        <leverLowPosZ>7.0</leverLowPosZ>
+        <leverLowPosC>0.0</leverLowPosC>
+      </feeder_24>
     </feeder>
     <basePlate>
       <basePlate_0>

@@ -1,6 +1,6 @@
 from .basePlate import *
+from . import FeederNotFound
 from lxml import etree
-from .machine import FeederNotFound
 
 
 class Feeder:
@@ -56,12 +56,33 @@ class MechanicalFeeder(Feeder):
         self.type = 'mechanicalfeeder'
         self._pickupPos = paramList['pickupPos'] if 'pickupPos' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0,
                                                                                    'C': 0.0}
-        self._leverLowPos = paramList['leverLowPos'] if 'nextCmpPos' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0,
-                                                                                        'C': 0.0}
+        self._leverLowPos = paramList['leverLowPos'] if 'leverLowPos' in paramList else {'X': 0.0, 'Y': 0.0, 'Z': 0.0}
         if 'C' not in self._pickupPos:
             self._pickupPos['C'] = 0.0
         if 'C' not in self._leverLowPos:
             self._leverLowPos['C'] = 0.0
+
+        if 'pickupPosX' in paramList:
+            self._pickupPos['X'] = paramList['pickupPosX']
+
+        if 'pickupPosY' in paramList:
+            self._pickupPos['Y'] = paramList['pickupPosY']
+
+        if 'pickupPosZ' in paramList:
+            self._pickupPos['Z'] = paramList['pickupPosZ']
+
+        if 'pickupPosC' in paramList:
+            self._pickupPos['C'] = paramList['pickupPosC']
+
+        if 'leverLowPosX' in paramList:
+            self._leverLowPos['X'] = paramList['leverLowPosX']
+
+        if 'leverLowPosY' in paramList:
+            self._leverLowPos['Y'] = paramList['leverLowPosY']
+
+        if 'leverLowPosZ' in paramList:
+            self._leverLowPos['Z'] = paramList['leverLowPosZ']
+
 
         self._driver = driver
 
@@ -74,7 +95,7 @@ class MechanicalFeeder(Feeder):
         etree.SubElement(feederRoot, 'leverLowPosX').text = str(self._leverLowPos['X'])
         etree.SubElement(feederRoot, 'leverLowPosY').text = str(self._leverLowPos['Y'])
         etree.SubElement(feederRoot, 'leverLowPosZ').text = str(self._leverLowPos['Z'])
-        etree.SubElement(feederRoot, 'leverLowPosC').text = str(self._leverLowPos['C'])
+        #etree.SubElement(feederRoot, 'leverLowPosC').text = str(self._leverLowPos['C'])
         return feederRoot
 
     def haveComponent(self):
@@ -113,6 +134,9 @@ class MechanicalFeeder(Feeder):
 
         while self._driver.isBusy():
             pass
+
+    def getLeverPos(self):
+        return self._leverLowPos
 
 
 class CompositeFeeder(Feeder):
