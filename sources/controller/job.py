@@ -391,7 +391,7 @@ class WaitPresureTask(SimpleTask):
     Raise on status an error if timeout occured.
     """
 
-    def __init__(self, pnpDriver, delayInS, presureTarget, feederId, name=''):
+    def __init__(self, pnpDriver, delayInS, presureTarget, feeder, name=''):
         """
         :param delayInS: Delay of wait time in seconds.
         """
@@ -399,7 +399,7 @@ class WaitPresureTask(SimpleTask):
         self._driver = pnpDriver
         self._presureTarget = presureTarget
         self._timeCount = 0
-        self._feederId = feederId
+        self._feeder = feeder
         self._timeOutS = delayInS
         self._taskConfigure([self._startCounter, self._waitPresure])
 
@@ -415,12 +415,28 @@ class WaitPresureTask(SimpleTask):
             return TaskStatus(status=TaskStatusEnum.END)
         else:
             if (time.time() - self._timeCount) > self._timeOutS:
+                self._feeder.incrementErrorScore()
                 self._status.status = TaskStatusEnum.ERROR
-                self._status.msg = 'Presure error {} on {} feeder'.format(presure, self._feederId)
+                self._status.msg = 'Presure error {} on {} feeder'.format(presure, self._feeder.id)
                 return self._status
             else:
                 return TaskStatus(status=TaskStatusEnum.RUN)
 
+class FeederSuccesNotify(SimpleTask):
+    """
+    Notify feeder when pick was a succes.
+    """
+    def __init__(self, feeder, name=''):
+        """
+        :param delayInS: Delay of wait time in seconds.
+        """
+        super().__init__(name)
+        self._feeder = feeder
+        self._taskConfigure([self._feederNotify])
+
+    def _feederNotify(self):
+        self._feeder.clearErrorScore()
+        return TaskStatus(status=TaskStatusEnum.END)
 
 class HomingTask(SimpleTask):
     """
@@ -559,14 +575,15 @@ class PickAndPlaceJob(Job):
             EvStateTask(self._driver, 1, name='{} Enable vaccum.'.format(ref)),
             PumpStateTask(self._driver, 1, name='{} Enable vaccum.'.format(ref)),
             # WaitTask(0.5, name='{}Pump.'.format(ref)),
-            WaitPresureTask(self._driver, model.pickupDelay / 1000.0, model.pressureTarget, feeder.id,
+            WaitPresureTask(self._driver, model.pickupDelay / 1000.0, model.pressureTarget, feeder,
                             name='{} Wait presure pickup'.format(ref)),
             # WaitTask(model.pickupDelay / 1000.0, name='{} Pick delay.'.format(ref)),
             MoveTask(self._driver, {'Z': zLift}, speed=model.pickupSpeed, name='{} Pick Z up.'.format(ref)),
             FeederNextCmdTask(feeder, name='{} Feeder next request.'.format(ref)),
             correctorTask,
-            WaitPresureTask(self._driver, model.pickupDelay / 1000.0, model.pressureTarget, feeder.id,
+            WaitPresureTask(self._driver, model.pickupDelay / 1000.0, model.pressureTarget, feeder,
                             name='{} Verify Presure'.format(ref)),
+            FeederSuccesNotify(feeder),
             MoveTask(self._driver, {'X': self._placePos['X'], 'Y': self._placePos['Y'], 'C': self._placePos['C']},
                      speed=model.moveSpeed, name='{} Go to component position.'.format(ref)),
             MoveTask(self._driver, {'Z': placePos['Z'] + model.height}, speed=model.placeSpeed,

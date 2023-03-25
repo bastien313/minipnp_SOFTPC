@@ -711,17 +711,22 @@ class JobFrame(tk.Frame):
         self.__buildBtn = ttk.Button(self, image=self.__buildImg)
 
         self.__jobDesc = tk.Label(self, text='')
+        self.__feederErrorList = tk.Label(self, text='', fg='red')
 
         self.__playBtn.grid(row=0, column=0)
         self.__pauseBtn.grid(row=0, column=1, padx=10)
         self.__stopBtn.grid(row=0, column=2)
         self.__buildBtn.grid(row=0, column=3, padx=10)
         self.__jobDesc.grid(row=1, column=0, columnspan=4)
+        self.__feederErrorList.grid(row=2, column=0, columnspan=4)
 
         self.playButtonState(0)
         self.pauseButtonState(0)
         self.buildButtonState(0)
         self.stopButtonState(0)
+
+    def setErrorList(self, strList):
+        self.__feederErrorList['text'] = strList
 
     def setPlayCallBack(self, cb):
         self.__playBtn['command'] = cb
@@ -1147,6 +1152,7 @@ class BoardFrame(tk.Frame):
         :return:
         """
         self.rootCmpFrame.componentHaveChanged(ref)
+
 
 
 class DtbFrame(tk.Frame):

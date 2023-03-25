@@ -1,8 +1,8 @@
 from tkinter import messagebox
 
 from .utils import *
-from machine import machine as mch
 import math
+from machine import basePlate as bpt
 
 
 class GenericBasePlateFrame(tk.LabelFrame):
@@ -184,7 +184,7 @@ class GenericBasePlateFrame(tk.LabelFrame):
 
 class BoardBasePlateFrame(GenericBasePlateFrame):
     def __init__(self, fenetre, machine, logger, controller, **kwargs):
-        GenericBasePlateFrame.__init__(self, fenetre, mch.BasePlate({}), machine, logger, controller,
+        GenericBasePlateFrame.__init__(self, fenetre, bpt.BasePlate({}), machine, logger, controller,
                                        commandFrame=False, **kwargs)
 
         self._board = 0
@@ -396,9 +396,9 @@ class BasePlateFrame(tk.Frame):
 
         newBp = None
         if self._newBpTypeSel.get() == 'Generic':
-            newBp = mch.BasePlate({'id': self._newBpId.var})
+            newBp = bpt.BasePlate({'id': self._newBpId.var})
         elif self._newBpTypeSel.get() == 'Strip base':
-            newBp = mch.BasePlateForStripFeeder({'id': self._newBpId.var})
+            newBp = bpt.BasePlateForStripFeeder({'id': self._newBpId.var})
 
         self.__machineConf.addBasePlate(newBp)
         self.__strBp.set(str(newBp.id))

@@ -19,6 +19,9 @@ class Feeder:
     def setErrorScore(self, score):
         self._errorScore = score
 
+    def incrementErrorScore(self):
+        self._errorScore += 1
+
     def getErrorScore(self):
         return self._errorScore
 
@@ -45,6 +48,15 @@ class Feeder:
 
     def reload(self):
         self._haveComponent = True
+
+    def isInError(self):
+        """
+        Return true if error score is too hight
+        """
+        if self._errorScore > 3:
+            return True
+        else:
+            return False
 
     def getComponentPosition(self):
         """

@@ -152,7 +152,7 @@ class DirectCtrl:
 
     def xRelease(self, *args):
         if not self._jobRunningCb():
-            if self.ihm.getContinueState()and self._feedRequest['X']:
+            if self.ihm.getContinueState() and self._feedRequest['X']:
                 self._driver.stopAxis('X')
                 self._feedRequest['X'] = False
 
@@ -164,7 +164,7 @@ class DirectCtrl:
 
     def yRelease(self, *args):
         if not self._jobRunningCb():
-            if self.ihm.getContinueState()and self._feedRequest['Y']:
+            if self.ihm.getContinueState() and self._feedRequest['Y']:
                 self._driver.stopAxis('Y')
                 self._feedRequest['Y'] = False
 
@@ -188,10 +188,9 @@ class DirectCtrl:
 
     def cRelease(self, *args):
         if not self._jobRunningCb():
-            if self.ihm.getContinueState()and self._feedRequest['C']:
+            if self.ihm.getContinueState() and self._feedRequest['C']:
                 self._driver.stopAxis('C')
                 self._feedRequest['C'] = False
-
 
     def stepIncrement(self):
         """
@@ -206,7 +205,7 @@ class DirectCtrl:
             newVal = 10.0
         else:
             newVal = 100.0
-        self.ihm.setStepAxis({'X':newVal,'Y':newVal, 'Z':newVal, 'C':newVal})
+        self.ihm.setStepAxis({'X': newVal, 'Y': newVal, 'Z': newVal, 'C': newVal})
 
     def stepDecrement(self):
         """
@@ -221,7 +220,7 @@ class DirectCtrl:
             newVal = 0.1
         else:
             newVal = 0.01
-        self.ihm.setStepAxis({'X':newVal,'Y':newVal, 'Z':newVal, 'C':newVal})
+        self.ihm.setStepAxis({'X': newVal, 'Y': newVal, 'Z': newVal, 'C': newVal})
 
     def homeAll(self):
         if not self._jobRunningCb():
@@ -332,12 +331,12 @@ class BoardController:
         self.ihm.setboardParam(self.board)
         self.ihm.bomCreate(self.board)
         self.enableSaveFunc('normal')
-        #self.initIHMcallBack()
+        # self.initIHMcallBack()
 
         self.logger.printCout(self.board.__str__())
 
     def changeAndLoadMachineConf(self, pathFile):
-        #Modify path of machine conf only if there is no error
+        # Modify path of machine conf only if there is no error
         self.__machineConf.loadFromXml(pathFile)
         self.board.tableTopPath = self.__machineConf.pathFile
 
@@ -364,7 +363,7 @@ class BoardController:
 
     def __longjobError(self, status):
         self.logger.printCout('Long job error: ' + self.__longJob.getStateDescription())
-        #self.pauseJob() // reactivate when restar work
+        # self.pauseJob() // reactivate when restar work
         self.stopJob()
         for loop in range(5):
             self.driver.ctrlPump(0)
@@ -376,15 +375,13 @@ class BoardController:
         self.driver.ctrlPump(0)
         self.driver.ctrlEv(0)
 
-
-
     def __endLongJob(self, status):
         self.logger.printCout('Long job End: ' + self.__longJob.getStateDescription())
         self.stopJob()
 
     def __littlejobError(self, status):
         self.logger.printCout('Little job error: ' + self.__littleJob.getStateDescription())
-        #self.pauseJob() // reactivate when restar work
+        # self.pauseJob() // reactivate when restar work
         self.stopJob()
         for loop in range(5):
             self.driver.ctrlPump(0)
@@ -404,6 +401,18 @@ class BoardController:
         self.ihm.jobFrame.jobDescription(str)
         self.logger.printCout('Job: ' + str)
 
+    def _displayFeederError(self):
+        strError = ''
+
+        for feeder in self.__machineConf.feederList:
+            if feeder.isInError():
+                strError += b'{feeder.id}, '
+
+        if len(strError):
+            strError = 'Feeder error: ' + strError
+
+        self.ihm.jobFrame.jobDescription(strError)
+
     def buildLongJob(self, refList=None):
         """p²
         Build long job and unluck button play and stop.
@@ -411,7 +420,6 @@ class BoardController:
         """
         if not refList:
             refList = [cmp.ref for cmp in self.ihm.rootCmpFrame.cmpDisplayList]
-            print('notref')
         longJob = job.Job(name='Standard Long job')
         cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
         for cmp in self.board.values():
@@ -422,20 +430,22 @@ class BoardController:
                                                        name='Is placed callBack'))
                     cmpJob.jobConfigure()
                     longJob.append(cmpJob)
-                    cmpNumber -=1
+                    cmpNumber -= 1
                     if not cmpNumber:
                         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
                         cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
 
         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
         longJob.jobConfigure()
-        #print(longJob)
+        # print(longJob)
+        self.logger.printCout("Build compleete.")
         self.__longJob = job.ThreadJobExecutor(job=longJob, driver=self.driver,
                                                errorFunc=self.__longjobError, endFunc=self.__endLongJob,
                                                notifyFunc=self.__jobNotify)
         self.ihm.jobFrame.playButtonState(1)
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.jobDescription(self.__longJob.getStateDescription())
+        self._displayFeederError()
 
     def stopJob(self):
         self.ihm.rootCmpFrame.enableComponentButton()
@@ -528,16 +538,20 @@ class BoardController:
             self.logger.printCout("Ref {} doesn't have feeder".format(ref))
             return 0
 
+        if self.__machineConf.getFeederById(int(self.board[ref].feeder)).isInError():
+            self.logger.printCout("Ref {}, feeder {} is in error".format(ref, self.board[ref].feeder.id))
+            return 0
+
         model = self.modList[self.modList.findModelWithAlias(self.board[ref].model)]
 
         feeder = self.__machineConf.getFeederById(int(self.board[ref].feeder))
         cmpPos = self.board.getMachineCmpPos(ref)
-        #cmpPos['Z'] = self.__machineConf.boardRefPosition['Z'] + model.height
+        # cmpPos['Z'] = self.__machineConf.boardRefPosition['Z'] + model.height
         cmpJob = job.PickAndPlaceJob(pnpDriver=self.driver, feeder=feeder,
                                      placePos=cmpPos, model=model, zLift=self.__machineConf.zLift,
                                      name='Pick and place {}'.format(ref), correctorPos=self.__machineConf.scanPosition)
         cmpJob.jobConfigure()
-        self.logger.printCout("Build {} succes.".format(ref))
+        # self.logger.printCout("Build {} succes.".format(ref))
         return cmpJob
 
     def pickAndPlaceCmp(self, ref):
@@ -1047,7 +1061,7 @@ class PnpConroller:
         self.ihm = 0
         self.preferences = pr.Preferences(logger, '../userdata/conf/conf.cfg')
         self.modList = dtb.ModDatabase(self.preferences['PATH']['mod'], logger)
-        self.machineConfiguration = mch.MachineConf(self.preferences['PATH']['machine'], logger,self.driver)
+        self.machineConfiguration = mch.MachineConf(self.preferences['PATH']['machine'], logger, self.driver)
         self.directCtrl = DirectCtrl(self.driver, self.machineConfiguration)
         self.paramCtrl = ParamCtrl(self.driver, self.machineConfiguration)
         self.boardCtrl = BoardController(self.driver, logger, self.modList, self.machineConfiguration, self.preferences)
@@ -1061,9 +1075,6 @@ class PnpConroller:
         self.gamePad.setPresCallBack('connection', lambda: logger.printCout('Gamepad connected'))
         self.gamePad.setReleaseCallBack('connection', lambda: logger.printCout('Gamepad disconnected'))
         self.gamePad.start()
-
-
-
 
     def setTopIHM(self, ihm):
         self.ihm = ihm
@@ -1112,9 +1123,8 @@ class PnpConroller:
         else:
             self.ihm.ctrlWindow.setContiniueState(1)
 
-
     def bindInit(self):
-        #toto = 'fais caca'
+        # toto = 'fais caca'
         self.ihm.mainWindow.bind('<Control-KeyPress-Right>', self.directCtrl.xpPress)
         self.ihm.mainWindow.bind('<KeyRelease-Right>', self.directCtrl.xRelease)
         self.ihm.mainWindow.bind('<Control-KeyPress-Left>', self.directCtrl.xmPress)
@@ -1151,10 +1161,7 @@ class PnpConroller:
         self.gamePad.setComboPressCallBack('DPAD_DOWN', 'B', self.directCtrl.zmPress)
         self.gamePad.setComboReleaseCallBack('DPAD_DOWN', 'B', self._downGamePadRelease)
 
-
         self.gamePad.setPresCallBack('RIGHT_SHOULDER', self.directCtrl.stepIncrement)
         self.gamePad.setReleaseCallBack('LEFT_SHOULDER', self.directCtrl.stepDecrement)
 
         self.gamePad.setPresCallBack('X', self.switchDriveMode)
-
-

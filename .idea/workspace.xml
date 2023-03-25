@@ -8,38 +8,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sources/controller/Controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/database/Board.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/database/Board.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/database/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/database/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/controller/job.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/job.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/ihm/IHM.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/IHM.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sources/ihm/basePlate.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/basePlate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sources/ihm/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/feeder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/machine/machine.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/machine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/Carte_Socle_V6-top-pos.csv" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/Carte_Socle_V6-top-pos.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/Carte_Socle_V6-top-pos.csv.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/Carte_Socle_V6-top-pos.csv.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/GEO2.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/GEO2.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/GEOSEIS.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/GEOSEIS.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/GEOSEIS90.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/GEOSEIS90.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/GEOSEIS90.pnpp.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/GEOSEIS90.pnpp.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/N.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/N.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/N.pnpp.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/N.pnpp.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/R48V_V3.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/R48V_V3.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/SOCLE_OREUS.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/SOCLE_OREUS.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/V710B.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/V710B.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/text.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/text.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/boardBkp/GEOSEIS.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/boardBkp/GEOSEIS.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/boardBkp/REF GEO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/boardBkp/REF GEO.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/boardBkp/REF GEO.txt.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/boardBkp/REF GEO.txt.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/boardBkp/geolys-top-pos.csv" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/boardBkp/geolys-top-pos.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/boardBkp/geolys-top-pos.csv.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/boardBkp/geolys-top-pos.csv.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/conf.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/conf.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/machine/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/feeder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/userdata/conf/machine.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machine.xml.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine.xml.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machine8RV.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine8RV.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machine_R48V.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine_R48V.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machinett.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/mod.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/mod.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/confBkp/machine.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/confBkp/machine.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/confBkp/machine.xml.bak" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/confBkp/machine.xml.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/confBkp/mod.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/confBkp/mod.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userdata/conf/machine_geov5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine_geov5.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,17 +61,18 @@
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="minipnp_SOFTPC" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\py32\python.exe" />
+      <option name="SDK_HOME" value="C:\Users\bastien_fix\AppData\Local\Programs\Python\Python310\python.exe" />
+      <option name="SDK_NAME" value="Python 3.10" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sources" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sources/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -128,23 +104,23 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>446</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>162</line>
+          <line>188</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>353</line>
+          <line>329</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/machine/feeder.py</url>
-          <line>75</line>
+          <line>87</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sources/ihm/IHM.py</url>
+          <line>693</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
