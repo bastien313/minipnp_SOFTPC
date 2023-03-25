@@ -1,4 +1,4 @@
-from sources.utils import xmledit as xe
+from utils import xmledit as xe
 from .feeder import *
 from .basePlate import *
 from . import FeederNotFound

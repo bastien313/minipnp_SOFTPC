@@ -1,7 +1,7 @@
 from lxml import etree
 from . import Board as brr
-from ..utils import xmledit as xe
-from ..machine.basePlate import BasePlate
+from utils import xmledit as xe
+from machine.basePlate import BasePlate
 
 
 class Model:

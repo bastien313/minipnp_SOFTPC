@@ -8,28 +8,28 @@
       <height>0.2</height>
       <scanHeight>0.2</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
-      <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <placeSpeed>30.0</placeSpeed>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>8.0</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>R_0805</A0>
       </alias>
     </R_0805>
     <C_0805>
       <name>C_0805</name>
-      <correctorMode>None</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>2.0</width>
       <length>1.2</length>
       <height>0.5</height>
-      <scanHeight>0.1</scanHeight>
+      <scanHeight>0.25</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
-      <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <placeSpeed>30.0</placeSpeed>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>6.8</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>C_0805</A0>
       </alias>
@@ -193,10 +193,10 @@
       <height>0.8</height>
       <scanHeight>0.4</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
-      <placeSpeed>40.0</placeSpeed>
+      <placeSpeed>30.0</placeSpeed>
       <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
-      <moveSpeed>40.0</moveSpeed>
+      <moveSpeed>30.0</moveSpeed>
       <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>C_0603</A0>
@@ -210,10 +210,10 @@
       <height>0.4</height>
       <scanHeight>0.2</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
-      <placeSpeed>40.0</placeSpeed>
+      <placeSpeed>30.0</placeSpeed>
       <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
-      <moveSpeed>40.0</moveSpeed>
+      <moveSpeed>30.0</moveSpeed>
       <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>R_0603</A0>

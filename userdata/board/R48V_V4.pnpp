@@ -16,17 +16,17 @@
     <basePlate_0>
       <name>Noname</name>
       <type>BasePlate</type>
-      <ref0X>25.398</ref0X>
-      <ref0Y>46.1993</ref0Y>
+      <ref0X>25.6</ref0X>
+      <ref0Y>46.1</ref0Y>
       <ref0Z>-32.0</ref0Z>
-      <ref1X>152.2613</ref1X>
-      <ref1Y>271.3</ref1Y>
+      <ref1X>152.0</ref1X>
+      <ref1Y>271.2</ref1Y>
       <ref1Z>-32.0</ref1Z>
       <vectorX>126.86300000000001</vectorX>
       <vectorY>225.278</vectorY>
       <vectorZ>0.0</vectorZ>
       <zRamp>0.0</zRamp>
-      <rotationOffset>-1.331688458172664e-06</rotationOffset>
+      <rotationOffset>0.002054051881642316</rotationOffset>
     </basePlate_0>
     <cmpList>
       <cmp data-id="0">
@@ -2888,10 +2888,10 @@
       <cmp data-id="204">
         <ref>R18-1</ref>
         <originalRef>R18-1</originalRef>
-        <value>100K</value>
+        <value>10K</value>
         <package>R_0603_1608Metric</package>
         <model>R_0603</model>
-        <feeder>11</feeder>
+        <feeder>9</feeder>
         <posX>133.355231</posX>
         <posY>83.30199999999999</posY>
         <angle>-90.0</angle>
@@ -2902,10 +2902,10 @@
       <cmp data-id="205">
         <ref>R18-2</ref>
         <originalRef>R18-2</originalRef>
-        <value>100K</value>
+        <value>10K</value>
         <package>R_0603_1608Metric</package>
         <model>R_0603</model>
-        <feeder>11</feeder>
+        <feeder>9</feeder>
         <posX>133.355231</posX>
         <posY>3.3019999999999925</posY>
         <angle>-90.0</angle>
@@ -2916,10 +2916,10 @@
       <cmp data-id="206">
         <ref>R18-3</ref>
         <originalRef>R18-3</originalRef>
-        <value>100K</value>
+        <value>10K</value>
         <package>R_0603_1608Metric</package>
         <model>R_0603</model>
-        <feeder>11</feeder>
+        <feeder>9</feeder>
         <posX>53.35523099999999</posX>
         <posY>3.3019999999999925</posY>
         <angle>-90.0</angle>
@@ -2930,10 +2930,10 @@
       <cmp data-id="207">
         <ref>R18-4</ref>
         <originalRef>R18-4</originalRef>
-        <value>100K</value>
+        <value>10K</value>
         <package>R_0603_1608Metric</package>
         <model>R_0603</model>
-        <feeder>11</feeder>
+        <feeder>9</feeder>
         <posX>53.35523099999999</posX>
         <posY>83.30199999999999</posY>
         <angle>-90.0</angle>
@@ -2944,10 +2944,10 @@
       <cmp data-id="208">
         <ref>R18-5</ref>
         <originalRef>R18-5</originalRef>
-        <value>100K</value>
+        <value>10K</value>
         <package>R_0603_1608Metric</package>
         <model>R_0603</model>
-        <feeder>11</feeder>
+        <feeder>9</feeder>
         <posX>133.355231</posX>
         <posY>163.30200000000002</posY>
         <angle>-90.0</angle>
@@ -2958,10 +2958,10 @@
       <cmp data-id="209">
         <ref>R18-6</ref>
         <originalRef>R18-6</originalRef>
-        <value>100K</value>
+        <value>10K</value>
         <package>R_0603_1608Metric</package>
         <model>R_0603</model>
-        <feeder>11</feeder>
+        <feeder>9</feeder>
         <posX>53.35523099999999</posX>
         <posY>163.30200000000002</posY>
         <angle>-90.0</angle>

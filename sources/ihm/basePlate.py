@@ -1,7 +1,7 @@
 from tkinter import messagebox
 
 from .utils import *
-from sources.machine import machine as mch
+from machine import machine as mch
 import math
 
 

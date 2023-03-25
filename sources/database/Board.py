@@ -1,9 +1,9 @@
 import math
-import database as dtb
+from . import database as dtb
 from deprecated import deprecated
 import copy
-from ..utils import misc
-from ..machine.basePlate import BasePlate
+from utils import misc
+from machine.basePlate import BasePlate
 
 
 class Component:

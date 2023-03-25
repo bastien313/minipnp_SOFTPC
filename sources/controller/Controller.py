@@ -1,12 +1,12 @@
 # coding: utf-8
 import time
 
-from sources.database import Board as brd, database as dtb
+from database import Board as brd, database as dtb
 from . import Prefrence as pr
-from sources.machine import machine as mch
+from machine import machine as mch
 from deprecated import deprecated
 from . import job
-from sources.utils import Gamepad as gp
+from utils import Gamepad as gp
 
 
 class ParamCtrl:
@@ -369,10 +369,10 @@ class BoardController:
         for loop in range(5):
             self.driver.ctrlPump(0)
             self.driver.ctrlEv(0)
-            time.sleep(500)
+            time.sleep(0.500)
             self.driver.ctrlPump(1)
             self.driver.ctrlEv(1)
-            time.sleep(500)
+            time.sleep(0.500)
         self.driver.ctrlPump(0)
         self.driver.ctrlEv(0)
 
