@@ -6,7 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="faa6c788-db86-4cfe-9ea4-818d311b32db" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/controller/Controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/controller/PnpDriver.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/PnpDriver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/controller/job.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/job.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/ihm/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/feeder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sources/machine/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/feeder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userdata/board/GEOSEIS_V5.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/GEOSEIS_V5.pnpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userdata/conf/conf.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/conf.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userdata/conf/machine_geov5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine_geov5.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,13 +39,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/projetLocal/minipnp/minipnp_SOFTPC&quot;
-  }
-}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\projetlocal\minipnp_SOFTPC\sources" />
@@ -62,8 +63,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\bastien\AppData\Local\Programs\Python\Python311\python.exe" />
-      <option name="SDK_NAME" value="Python 3.11 (pythonGui)" />
+      <option name="SDK_HOME" value="C:\py32\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sources" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -99,17 +99,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>184</line>
+          <line>197</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>321</line>
+          <line>290</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/machine/feeder.py</url>
-          <line>96</line>
+          <line>115</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -117,7 +117,19 @@
           <line>693</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sources/ihm/IHM.py</url>
+          <line>755</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
   </component>
 </project>

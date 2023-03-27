@@ -87,6 +87,7 @@ class CommonFeederFrame(tk.Frame):
         raise 'Feeder save is not implemented!'
 
     def _errorClr(self):
+        self._errScore.var = 0
         self._feeder.clearErrorScore()
         self._save()
 

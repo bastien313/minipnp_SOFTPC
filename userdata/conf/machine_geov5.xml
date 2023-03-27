@@ -3,8 +3,8 @@
     <zHead>1.0</zHead>
     <zLift>-10.0</zLift>
     <scan_position>
-      <X>207.93</X>
-      <Y>131.933</Y>
+      <X>207.726</X>
+      <Y>132.2</Y>
       <Z>-25.93</Z>
     </scan_position>
     <boardRef_position>
@@ -73,8 +73,8 @@
       <feeder_1>
         <name>100nF</name>
         <type>stripfeeder</type>
-        <errorCounter>6</errorCounter>
-        <errorScore>5</errorScore>
+        <errorCounter>2</errorCounter>
+        <errorScore>1</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -97,13 +97,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>20</nextComponent>
+        <nextComponent>0</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_1>
       <feeder_2>
         <name>1M</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>2</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -127,14 +127,14 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>40</nextComponent>
+        <nextComponent>27</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_2>
       <feeder_3>
         <name>1k</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
-        <errorScore>0</errorScore>
+        <errorCounter>13</errorCounter>
+        <errorScore>4</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -157,13 +157,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>32</nextComponent>
+        <nextComponent>44</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_3>
       <feeder_4>
         <name>10k</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>4</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -187,13 +187,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>36</nextComponent>
+        <nextComponent>41</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_4>
       <feeder_5>
         <name>2M2</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>1</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -217,13 +217,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>30</nextComponent>
+        <nextComponent>14</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_5>
       <feeder_6>
         <name>120K</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>10</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -247,7 +247,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>22</nextComponent>
+        <nextComponent>21</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_6>
       <feeder_7>
@@ -277,7 +277,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>40</nextComponent>
+        <nextComponent>8</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_7>
       <feeder_8>
@@ -307,13 +307,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>42</nextComponent>
+        <nextComponent>24</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_8>
       <feeder_9>
         <name>470K</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>4</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -337,13 +337,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>12</nextComponent>
+        <nextComponent>32</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_9>
       <feeder_10>
         <name>0R</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>6</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -367,13 +367,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>10</nextComponent>
+        <nextComponent>34</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_10>
       <feeder_11>
         <name>10n</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>2</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -397,7 +397,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>4</nextComponent>
+        <nextComponent>22</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_11>
       <feeder_12>
@@ -427,7 +427,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>44</nextComponent>
+        <nextComponent>9</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_12>
       <feeder_13>
@@ -457,13 +457,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>45</nextComponent>
+        <nextComponent>9</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_13>
       <feeder_14>
         <name>3k4</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>10</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -471,7 +471,7 @@
           <type>StripFeederBasePlate</type>
           <ref0X>361.4029</ref0X>
           <ref0Y>232.8043</ref0Y>
-          <ref0Z>-26.7</ref0Z>
+          <ref0Z>-26.3</ref0Z>
           <ref1X>361.8022</ref1X>
           <ref1Y>233.7136</ref1Y>
           <ref1Z>-27.8908</ref1Z>
@@ -487,13 +487,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>44</nextComponent>
+        <nextComponent>12</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_14>
       <feeder_15>
         <name>1k3</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>9</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -517,7 +517,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>45</nextComponent>
+        <nextComponent>11</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_15>
       <feeder_16>
@@ -547,7 +547,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>33</nextComponent>
+        <nextComponent>1</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_16>
       <feeder_17>
@@ -577,7 +577,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>33</nextComponent>
+        <nextComponent>1</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_17>
       <feeder_18>
@@ -607,13 +607,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>36</nextComponent>
+        <nextComponent>1</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_18>
       <feeder_19>
         <name>12K</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>4</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -637,13 +637,13 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>33</nextComponent>
+        <nextComponent>1</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_19>
       <feeder_20>
         <name>30K</name>
         <type>stripfeeder</type>
-        <errorCounter>0</errorCounter>
+        <errorCounter>1</errorCounter>
         <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
@@ -667,7 +667,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>33</nextComponent>
+        <nextComponent>0</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_20>
       <feeder_21>
@@ -697,7 +697,7 @@
         </basePlate_0>
         <componentPerStrip>50</componentPerStrip>
         <componentStep>4.0</componentStep>
-        <nextComponent>33</nextComponent>
+        <nextComponent>0</nextComponent>
         <stripIdInBasePlate>0</stripIdInBasePlate>
       </feeder_21>
       <feeder_22>

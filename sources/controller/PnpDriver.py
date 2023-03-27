@@ -138,6 +138,9 @@ class PnpDriver:
     def setStatusPipeCallBack(self, callback):
         self.__statusPipeCallBack = callback
 
+    def getPosition(self):
+        return self.status
+
     def __lineIsPresent(self):
         """
         :return: Int, ammount of line can be read.
@@ -311,17 +314,20 @@ class PnpDriver:
         tabOut = {'C': value}
         self.moveAxis(moveData=tabOut, mode=mode, speedMode=speedMode)
 
+
+
     def moveAxis(self, moveData, speed=10, speedRot=None, mode='A', speedMode='P'):
         """ moveData must be an dict.
             Key must be 'X' , 'Y, 'Z' or 'C'.
             Value is displacement
             Mode is the mode of displacement, 'A' = absolute, 'R'= relative
+            C axis is always relative
             Speed must be 'P' for (parametric speed)G1 or 'H' (Hight speed)G0"""
 
         self.__setCoordMode(mode)
 
-        if self._relativeMode == 'A' and 'C' in moveData:
-            moveData['C'] = moveData['C'] + float(self.status['C'])
+        #if self._relativeMode == 'A' and 'C' in moveData:
+            #moveData['C'] = moveData['C'] + float(self.status['C'])
 
         if speedMode == 'P':
             line = 'G1 '

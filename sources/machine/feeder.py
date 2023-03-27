@@ -27,8 +27,6 @@ class Feeder:
             #Act like component was picked.
             self.prepareAfterPick()
 
-
-
     def getErrorScore(self):
         return self._errorScore
 
@@ -87,7 +85,7 @@ class Feeder:
         self.localBasePlate.saveInLxml(feederRoot)
         return feederRoot
 
-    errorCounter = property(fset=setErrorCounter, fget=setErrorCounter)
+    errorCounter = property(fset=setErrorCounter, fget=getErrorCounter)
     errorScore = property(fset=setErrorScore, fget=getErrorScore)
 
 

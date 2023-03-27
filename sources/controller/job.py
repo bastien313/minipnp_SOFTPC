@@ -309,7 +309,7 @@ class FeederGoToTask(MoveTask):
         return TaskStatus(status=TaskStatusEnum.END)
 
     def _releaseRotation(self):
-        self._moveCoord = {'C': 30.0}
+        self._moveCoord = {'C': 0}
         return TaskStatus(status=TaskStatusEnum.END)
 
 
@@ -415,7 +415,7 @@ class WaitPresureTask(SimpleTask):
             return TaskStatus(status=TaskStatusEnum.END)
         else:
             if (time.time() - self._timeCount) > self._timeOutS:
-                self._feeder.incrementErrorScore()
+                self._feeder.pressureErrorNotify()
                 self._status.status = TaskStatusEnum.ERROR
                 self._status.msg = 'Presure error {} on {} feeder'.format(presure, self._feeder.id)
                 return self._status
@@ -564,7 +564,7 @@ class PickAndPlaceJob(Job):
             correctorTask = SimpleTask()
 
         self._taskList = [
-            MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='{} Start Z lift.'.format(ref)),
+            MoveTask(self._driver, {'Z': zLift, 'C': 0.0}, speed=model.moveSpeed, name='{} Start Z lift.'.format(ref)),
             FeederBeforeCmdTask(feeder, name='{} Feeder before request.'.format(ref)),
             FeederGoToTask(feeder, self._driver, speed=model.moveSpeed,
                            name='{} Go to feeder.'.format(ref)),
@@ -628,7 +628,7 @@ class MechanicsCorrectorJob(Job):
             MoveTask(self._driver, {'X': self._correctorPos['X'], 'Y': self._correctorPos['Y'], 'C': 30.0},
                      speed=model.moveSpeed,
                      name='Cooector GO TO -'),
-            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight, 'C': -30.0},
+            MoveTask(self._driver, {'Z': self._correctorPos['Z'] + self._model.scanHeight, 'C': 0.0},
                      speed=model.moveSpeed,
                      name='Corector Z pos.'),
             MoveTask(self._driver, cornerHGPos, speed=model.moveSpeed,
@@ -694,8 +694,10 @@ class ThreadJobExecutor(threading.Thread):
                 if jobStatus.status == TaskStatusEnum.PAUSE:
                     self._inPause = True
                 elif jobStatus.status == TaskStatusEnum.ERROR:
+                    #We terminate thread on error
                     self._inPause = True
                     self._errorFunc(self._job.status)
+                    return
                 elif jobStatus.status == TaskStatusEnum.END:
                     self._stopSignal = True
             # time.sleep(0.02)
