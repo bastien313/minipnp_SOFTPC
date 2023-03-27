@@ -94,8 +94,8 @@ class ParamFrame(tk.Frame):
         tk.Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
         self.controller = controller
         self.controller.ihm = self
-        #checkEntryCmdDouble = self.register(checkDoubleEntry)
-        #checkEntryCmdInt = self.register(checkIntEntry)
+        # checkEntryCmdDouble = self.register(checkDoubleEntry)
+        # checkEntryCmdInt = self.register(checkIntEntry)
 
         self._machineConf = machineConf
         self._frameAxis = tk.LabelFrame(self, text="Axis", labelanchor='n', padx=10, pady=10)
@@ -1154,7 +1154,6 @@ class BoardFrame(tk.Frame):
         self.rootCmpFrame.componentHaveChanged(ref)
 
 
-
 class DtbFrame(tk.Frame):
     """Frame used for debug."""
 
@@ -1567,25 +1566,39 @@ class BoardTransformFrame(tk.Frame):
         self._controller.boardHorizontalMirror()
 
 
-class JobConfigurationFrame(tk.Frame):
+class JobConfigurationFrame(ttk.Frame):
     def __init__(self, fenetre, parameters, **kwargs):
-        tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
+        ttk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
 
         self._parameters = parameters
-        self._paramFrame = tk.Frame(self)
-        self._btnFrame = tk.Frame(self)
+        self._paramFrame = ttk.Frame(self)
+        self._btnFrame = ttk.Frame(self)
 
         self._paramFrame.grid(row=0, column=0)
         self._btnFrame.grid(row=1, column=0)
 
+        self._endErrorVar = tk.IntVar(self._paramFrame, int(self._parameters['JOB']['errorManagement']))
+
         self._homeCntNumber = CompleteEntry(frame=self._paramFrame, varType='int', traceFunc=self._homeCntNumberChange)
         self._homeCntNumber.var = self._parameters['JOB']['homeCmpCount']
-
-        tk.Label(self._paramFrame, text='Component before home').grid(row=0, column=0)
+        ttk.Label(self._paramFrame, text='Component before home').grid(row=0, column=0)
         self._homeCntNumber.grid(row=0, column=1)
 
-        self._applyRotateBtn = ttk.Button(self._btnFrame, text='Save', command=self._save)
-        self._applyRotateBtn.grid(row=0, column=0)
+        ttk.Separator(self._paramFrame, orient='horizontal').grid(row=1, column=0, columnspan=2, sticky='we',pady=10)
+        ttk.Label(self._paramFrame, text='Stop on:').grid(row=2, column=0, sticky='w')
+        ttk.Radiobutton(self._paramFrame, text='One feeder on first error', variable=self._endErrorVar,
+                        command=self._errorManagementChange, value=0).grid(row=3, column=0, sticky='w')
+        ttk.Radiobutton(self._paramFrame, text='One feeder on third error', variable=self._endErrorVar,
+                        command=self._errorManagementChange, value=1).grid(row=4, column=0, sticky='w')
+        ttk.Radiobutton(self._paramFrame, text='All feeder on third error', variable=self._endErrorVar,
+                        command=self._errorManagementChange, value=2).grid(row=5, column=0, sticky='w')
+        ttk.Separator(self._paramFrame, orient='horizontal').grid(row=6, column=0, columnspan=2, sticky='we', pady=10)
+
+        self._saveBtn = ttk.Button(self._btnFrame, text='Save', command=self._save)
+        self._saveBtn.grid(row=0, column=0)
+
+    def _errorManagementChange(self):
+        self._parameters['JOB']['errorManagement'] = str(self._endErrorVar.get())
 
     def _homeCntNumberChange(self):
         self._parameters['JOB']['homeCmpCount'] = str(self._homeCntNumber.var)

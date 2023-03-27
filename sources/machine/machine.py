@@ -1,4 +1,5 @@
 from utils import xmledit as xe
+from lxml import etree
 from .feeder import *
 from .basePlate import *
 from . import FeederNotFound

@@ -1,6 +1,6 @@
-<2023-03-25 03:32:20> Load machine configuration '../userdata/conf/machine.xml'
-<2023-03-25 03:32:24> Load machine configuration '..\userdata\conf\machine_geov5.xml'
-<2023-03-25 03:32:24> BT1 = X:-49.25936, Y:9.324720000000003, T:0.0, Val:CR2032, Mod:S8421-45R
+<2023-03-27 13:20:35> Load machine configuration '../userdata/conf/machine.xml'
+<2023-03-27 13:20:39> Load machine configuration '..\userdata\conf\machine_geov5.xml'
+<2023-03-27 13:20:39> BT1 = X:-49.25936, Y:9.324720000000003, T:0.0, Val:CR2032, Mod:S8421-45R
 C1 = X:-58.46639899999999, Y:87.494321, T:-180.0, Val:2.2uF 6.3V, Mod:C_0805_2012Metric
 C2 = X:-66.59439900000001, Y:88.256321, T:-90.0, Val:100nF, Mod:C_0805_2012Metric
 C3 = X:-66.848399, Y:71.746321, T:-180.0, Val:10nF, Mod:C_0805_2012Metric
@@ -302,30 +302,5 @@ U24 = X:-30.878999999999998, Y:82.40499999999999, T:-90.0, Val:OPA2333xxD, Mod:S
 Y1 = X:-52.88079899999999, Y:78.219521, T:-90.0, Val:12Mhz, Mod:Crystal_SMD_3225-4pin_3.2x2.5mm
 Y2 = X:-51.269999999999996, Y:32.606, T:0.0, Val:32.768KHz, Mod:Crystal_SMD_3215-2pin_3.2x1.5mm
 
-<2023-03-25 03:32:26> Build compleete.
-<2023-03-25 03:32:39> Ref R36 doesn't have feeder
-<2023-03-25 03:32:39> Build compleete.
-<2023-03-25 03:32:40> Ref R36 doesn't have feeder
-<2023-03-25 03:32:40> Build compleete.
-<2023-03-25 03:32:44> Ref R36 doesn't have feeder
-<2023-03-25 03:32:44> Build compleete.
-<2023-03-25 03:33:27> Job: 0/161 Pick and place C2
-<2023-03-25 03:33:28> Long job End: 0/161 Pick and place C2
-<2023-03-25 03:33:29> Ref R36 doesn't have feeder
-<2023-03-25 03:33:29> Build compleete.
-<2023-03-25 03:33:31> Ref R36 doesn't have feeder
-<2023-03-25 03:33:31> Build compleete.
-<2023-03-25 03:33:32> Job: 0/161 Pick and place C2
-<2023-03-25 03:33:33> Long job End: 0/161 Pick and place C2
-<2023-03-25 03:33:36> Ref R36 doesn't have feeder
-<2023-03-25 03:33:36> Build compleete.
-<2023-03-25 03:33:36> Job: 0/161 Pick and place C2
-<2023-03-25 03:33:42> Long job End: 0/161 Pick and place C2
-<2023-03-25 03:33:43> Ref R36 doesn't have feeder
-<2023-03-25 03:33:43> Build compleete.
-<2023-03-25 03:33:44> Ref R36 doesn't have feeder
-<2023-03-25 03:33:45> Build compleete.
-<2023-03-25 03:33:45> Job: 0/161 Pick and place C2
-<2023-03-25 03:33:47> Long job End: 0/161 Pick and place C2
-<2023-03-25 03:33:47> Ref R36 doesn't have feeder
-<2023-03-25 03:33:47> Build compleete.
+<2023-03-27 13:20:44> Ref C2, feeder 1 is in error
+<2023-03-27 13:20:44> Build Error.

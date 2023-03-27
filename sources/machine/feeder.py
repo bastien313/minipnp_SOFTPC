@@ -21,6 +21,7 @@ class Feeder:
 
     def incrementErrorScore(self):
         self._errorScore += 1
+        self._errorCounter += 1
 
     def getErrorScore(self):
         return self._errorScore
@@ -74,6 +75,8 @@ class Feeder:
         feederRoot = etree.SubElement(rootLxml, 'feeder_' + str(self.id))
         etree.SubElement(feederRoot, 'name').text = self.name
         etree.SubElement(feederRoot, 'type').text = self.type
+        etree.SubElement(feederRoot, 'errorCounter').text = str(self._errorCounter)
+        etree.SubElement(feederRoot, 'errorScore').text = str(self._errorScore)
         etree.SubElement(feederRoot, 'basePlateId').text = str(self.basePlateId)
         self.localBasePlate.saveInLxml(feederRoot)
         return feederRoot

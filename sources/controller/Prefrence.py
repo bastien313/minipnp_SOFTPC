@@ -29,6 +29,9 @@ class Preferences:
         if not 'homeCmpCount' in self._config['JOB']:
             self._config['JOB']['homeCmpCount'] = '100'
 
+        if not 'errorManagement' in self._config['JOB']:
+            self._config['JOB']['errorManagement'] = '0'
+
     def _readConf(self):
         try:
             self._config.read(self._path)

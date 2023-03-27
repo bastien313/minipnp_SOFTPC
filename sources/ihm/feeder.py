@@ -14,6 +14,7 @@ class CommonFeederFrame(tk.Frame):
     This class does not grit the top frame, the herited class must do it.
 
     """
+
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
         tk.Frame.__init__(self, fenetre, width=500, height=300, **kwargs)
         self._controller = controller
@@ -27,7 +28,7 @@ class CommonFeederFrame(tk.Frame):
         self._btnFrame = tk.LabelFrame(self, text="Command", labelanchor='n', padx=10, pady=10)
 
         leftIdFrame = tk.Frame(self._identificationFrame)
-        errorFrame = tk.Frame(self._identificationFrame,padx=50)
+        errorFrame = tk.Frame(self._identificationFrame, padx=50)
 
         leftIdFrame.grid(row=0, column=0)
         errorFrame.grid(row=0, column=1)
@@ -45,31 +46,27 @@ class CommonFeederFrame(tk.Frame):
         tk.Label(leftIdFrame, text="Name").grid(row=0, column=2)
         self.name.grid(row=1, column=2)
 
-
-        self._errStatus = CompleteEntry(errorFrame, lambda: None, varType='int')
-        self._errStatus.var = feederData.getErrorScore()
         self._errScore = CompleteEntry(errorFrame, lambda: None, varType='int')
-        self._errScore.var = feederData.getErrorCounter()
+        self._errScore.var = feederData.errorScore
+        self._errCounter = CompleteEntry(errorFrame, lambda: None, varType='int')
+        self._errCounter.var = feederData.errorCounter
         self._btnClearError = ttk.Button(errorFrame, text='Clear', command=self._errorClr)
 
-
-        tk.Label(errorFrame, text="Error status").grid(row=0, column=0)
-        self._errStatus.grid(row=0, column=1)
-        tk.Label(errorFrame, text="Error score").grid(row=1, column=0)
-        self._errScore.grid(row=1, column=1)
+        tk.Label(errorFrame, text="Error score").grid(row=0, column=0)
+        self._errScore.grid(row=0, column=1)
+        tk.Label(errorFrame, text="Error counter").grid(row=1, column=0)
+        self._errCounter.grid(row=1, column=1)
         self._btnClearError.grid(row=0, column=3, padx=10)
 
-
-
         self.pickId = CompleteEntry(self._testFrame, lambda: None, varType='int')
-        #self.stripId = CompleteEntry(self._testFrame, lambda: None, varType='int')
+        # self.stripId = CompleteEntry(self._testFrame, lambda: None, varType='int')
         self.pickId.var = 0
-        #self.stripId.var = 0
+        # self.stripId.var = 0
 
         tk.Label(self._testFrame, text="Cmp").grid(row=0, column=0)
         self.pickId.grid(row=0, column=1)
-        #tk.Label(self._testFrame, text="Cmp").grid(row=1, column=0)
-        #self.pickId.grid(row=1, column=1)
+        # tk.Label(self._testFrame, text="Cmp").grid(row=1, column=0)
+        # self.pickId.grid(row=1, column=1)
         ttk.Button(self._testFrame, command=self._pick, text='Pick').grid(row=0, column=2, padx=10, sticky='ew')
 
         self._btnSave = ttk.Button(self._btnFrame, text='Save', command=self._save)
@@ -96,7 +93,6 @@ class CommonFeederFrame(tk.Frame):
 
 class CompositeFeederFrame(CommonFeederFrame):
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
-
         CommonFeederFrame.__init__(self, fenetre, feederData, machine, logger, controller, **kwargs)
         parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
 
@@ -114,6 +110,8 @@ class CompositeFeederFrame(CommonFeederFrame):
 
     def _save(self):
         newFeeder = fdr.CompositeFeeder({'id': self.id.var, 'name': self.name.var,
+                                         'errorCounter': self._errCounter.var,
+                                         'errorScore': self._errScore.var,
                                          'feederList': self._machine.makeFilteredFeederList(self.feederDesc.var)},
                                         self._machine)
         self._machine.addFeeder(newFeeder)
@@ -123,7 +121,7 @@ class CompositeFeederFrame(CommonFeederFrame):
 
 class MechanicalFeederFrame(CommonFeederFrame):
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
-        CommonFeederFrame.__init__(self, fenetre, feederData, machine, logger, controller,  **kwargs)
+        CommonFeederFrame.__init__(self, fenetre, feederData, machine, logger, controller, **kwargs)
 
         parametersFrame = tk.LabelFrame(self, text="Parameters", labelanchor='n', padx=10, pady=10)
 
@@ -147,10 +145,10 @@ class MechanicalFeederFrame(CommonFeederFrame):
         ttk.Button(parametersFrame, command=self._xyzcGetPos, text='Get Pos.').grid(row=1, column=0, padx=10)
         ttk.Button(parametersFrame, command=self._leverGetPos, text='Get Pos.').grid(row=1, column=1, padx=10)
 
-
-
     def _save(self):
         newFeeder = fdr.MechanicalFeeder(paramList={'id': self.id.var, 'name': self.name.var,
+                                                    'errorCounter': self._errCounter.var,
+                                                    'errorScore': self._errScore.var,
                                                     'pickupPos': {'X': self._xyzcPickup.x, 'Y': self._xyzcPickup.y,
                                                                   'Z': self._xyzcPickup.z, 'C': self._xyzcPickup.c},
                                                     'leverLowPos': {'X': self._leverLowPos.x, 'Y': self._leverLowPos.y,
@@ -184,12 +182,9 @@ class MechanicalFeederFrame(CommonFeederFrame):
         self._save()
 
 
-
-
 class StripFeederFrame(CommonFeederFrame):
     def __init__(self, fenetre, feederData, machine, logger, controller, **kwargs):
-        CommonFeederFrame.__init__(self,fenetre, feederData, machine, logger, controller,  **kwargs)
-
+        CommonFeederFrame.__init__(self, fenetre, feederData, machine, logger, controller, **kwargs)
 
         basePlateFrame = tk.Frame(self, relief='sunken', borderwidth=3, padx=10, pady=10)
         self._basePlateDataFrame = tk.Frame(basePlateFrame)
@@ -217,10 +212,6 @@ class StripFeederFrame(CommonFeederFrame):
         self._basePlateName.grid(row=0, column=1)
         self._basePlateDataFrame.grid(row=1, column=0, columnspan=2)
 
-
-
-
-
         self.componentPerStrip = CompleteEntry(parametersFrame, trashFunc, varType='int')
         self.componentPerStrip.var = feederData.componentPerStrip
         self.cmpStep = CompleteEntry(parametersFrame, trashFunc, varType='float')
@@ -239,7 +230,6 @@ class StripFeederFrame(CommonFeederFrame):
         tk.Label(parametersFrame, text="Id strip in base plate").grid(row=0, column=3)
         self.idStripBp.grid(row=1, column=3)
 
-
     def __changeBasePlateTrace(self, *args):
         """
         Called when string of option menu change
@@ -251,6 +241,8 @@ class StripFeederFrame(CommonFeederFrame):
     def _save(self):
 
         newFeeder = fdr.StripFeeder(paramList={'id': self.id.var, 'name': self.name.var,
+                                               'errorCounter': self._errCounter.var,
+                                               'errorScore': self._errScore.var,
                                                'componentPerStrip': self.componentPerStrip.var,
                                                'stripIdInBasePlate': self.idStripBp.var,
                                                'componentStep': self.cmpStep.var, 'nextComponent': self.nextCmp.var,

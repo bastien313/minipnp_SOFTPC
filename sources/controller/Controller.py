@@ -293,6 +293,7 @@ class BoardController:
         self._parameters = parameters
         self.__littleJob = job.ThreadJobExecutor()
         self.__longJob = job.ThreadJobExecutor()
+        self._jobLastUsedRefList = None
 
     def panelizeBoard(self, countX, countY, offsetX, offsetY):
         self.board.panelize(countX, countY, offsetX, offsetY)
@@ -365,15 +366,32 @@ class BoardController:
         self.logger.printCout('Long job error: ' + self.__longJob.getStateDescription())
         # self.pauseJob() // reactivate when restar work
         self.stopJob()
-        for loop in range(5):
+
+        if int(self._parameters['JOB']['errorManagement']) == 0:
+            #One error mode, we stop on first error
+            for loop in range(5):
+                self.driver.ctrlPump(0)
+                self.driver.ctrlEv(0)
+                time.sleep(0.500)
+                self.driver.ctrlPump(1)
+                self.driver.ctrlEv(1)
+                time.sleep(0.500)
             self.driver.ctrlPump(0)
             self.driver.ctrlEv(0)
-            time.sleep(0.500)
-            self.driver.ctrlPump(1)
-            self.driver.ctrlEv(1)
-            time.sleep(0.500)
-        self.driver.ctrlPump(0)
-        self.driver.ctrlEv(0)
+        elif int(self._parameters['JOB']['errorManagement']) == 1:
+            # One feeder three error or all feeder three error.
+            # We try to rebuild and relunch if succes.
+            for loop in range(2):
+                self.driver.ctrlPump(0)
+                self.driver.ctrlEv(0)
+                time.sleep(0.500)
+                self.driver.ctrlPump(1)
+                self.driver.ctrlEv(1)
+                time.sleep(0.500)
+            self.driver.ctrlPump(0)
+            self.driver.ctrlEv(0)
+            if self.buildLongJob(self._jobLastUsedRefList):
+                self.startLongJob()
 
     def __endLongJob(self, status):
         self.logger.printCout('Long job End: ' + self.__longJob.getStateDescription())
@@ -406,7 +424,7 @@ class BoardController:
 
         for feeder in self.__machineConf.feederList:
             if feeder.isInError():
-                strError += b'{feeder.id}, '
+                strError += f'{feeder.id}, '
 
         if len(strError):
             strError = 'Feeder error: ' + strError
@@ -420,12 +438,14 @@ class BoardController:
         """
         if not refList:
             refList = [cmp.ref for cmp in self.ihm.rootCmpFrame.cmpDisplayList]
+        self._jobLastUsedRefList = refList
         longJob = job.Job(name='Standard Long job')
         cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
         for cmp in self.board.values():
             if cmp.isEnable and not cmp.isPlaced and cmp.ref in refList:
                 cmpJob = self.__buildPickAndPlaceJob(cmp.ref)
                 if cmpJob:
+                    print(cmp.ref)
                     cmpJob.append(job.ExternalCallTask(callBack=self.__isPlacedCallBack, param=cmp.ref,
                                                        name='Is placed callBack'))
                     cmpJob.jobConfigure()
@@ -434,6 +454,15 @@ class BoardController:
                     if not cmpNumber:
                         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
                         cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
+                else:
+                    if int(self._parameters['JOB']['errorManagement']) != 2:
+                        #One feeder one  error mode or one feeder three error mode, unbuild if an error occured.
+                        self.ihm.jobFrame.playButtonState(0)
+                        self.ihm.jobFrame.stopButtonState(0)
+                        self._displayFeederError()
+                        self.logger.printCout("Build Error.")
+                        return 0
+
 
         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
         longJob.jobConfigure()
@@ -446,6 +475,7 @@ class BoardController:
         self.ihm.jobFrame.stopButtonState(1)
         self.ihm.jobFrame.jobDescription(self.__longJob.getStateDescription())
         self._displayFeederError()
+        return 1
 
     def stopJob(self):
         self.ihm.rootCmpFrame.enableComponentButton()
@@ -538,13 +568,15 @@ class BoardController:
             self.logger.printCout("Ref {} doesn't have feeder".format(ref))
             return 0
 
-        if self.__machineConf.getFeederById(int(self.board[ref].feeder)).isInError():
-            self.logger.printCout("Ref {}, feeder {} is in error".format(ref, self.board[ref].feeder.id))
+        feeder = self.__machineConf.getFeederById(int(self.board[ref].feeder))
+
+        if feeder.isInError():
+            self.logger.printCout("Ref {}, feeder {} is in error".format(ref, feeder.id))
             return 0
 
         model = self.modList[self.modList.findModelWithAlias(self.board[ref].model)]
 
-        feeder = self.__machineConf.getFeederById(int(self.board[ref].feeder))
+
         cmpPos = self.board.getMachineCmpPos(ref)
         # cmpPos['Z'] = self.__machineConf.boardRefPosition['Z'] + model.height
         cmpJob = job.PickAndPlaceJob(pnpDriver=self.driver, feeder=feeder,
