@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="faa6c788-db86-4cfe-9ea4-818d311b32db" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/minipnp_SOFTPC.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/minipnp_SOFTPC.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/controller/Controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/controller/Prefrence.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Prefrence.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/ihm/IHM.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/IHM.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/ihm/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/feeder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sources/machine/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/feeder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/machine/machine.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/machine/machine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/board/GEOSEIS_V5.pnpp" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/board/GEOSEIS_V5.pnpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/conf.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/conf.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machine.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userdata/conf/machine_geov5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userdata/conf/machine_geov5.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,13 +31,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/projetLocal/minipnp/minipnp_SOFTPC"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/projetLocal/minipnp/minipnp_SOFTPC&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\projetlocal\minipnp_SOFTPC\sources" />
@@ -120,7 +109,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/machine/feeder.py</url>
-          <line>90</line>
+          <line>96</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

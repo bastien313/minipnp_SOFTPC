@@ -19,9 +19,15 @@ class Feeder:
     def setErrorScore(self, score):
         self._errorScore = score
 
-    def incrementErrorScore(self):
+    def pressureErrorNotify(self):
         self._errorScore += 1
         self._errorCounter += 1
+
+        if self._errorScore == 2:
+            #Act like component was picked.
+            self.prepareAfterPick()
+
+
 
     def getErrorScore(self):
         return self._errorScore
@@ -251,31 +257,6 @@ class StripFeeder(Feeder):
         etree.SubElement(feederRoot, 'nextComponent').text = str(self.nextComponent)
         etree.SubElement(feederRoot, 'stripIdInBasePlate').text = str(self.stripIdInBasePlate)
 
-    """
-        def __getCorrectedPositionLinear(self, cmpId):
-        xRamp = (self.endPos['X'] - self.pos['X']) / (self.componentPerStrip - 1)
-        yRamp = (self.endPos['Y'] - self.pos['Y']) / (self.componentPerStrip - 1)
-
-        correctedCmpPos = {}
-        correctedCmpPos['X'] = self.pos['X'] + cmpId * xRamp
-        correctedCmpPos['Y'] = self.pos['Y'] + cmpId * yRamp
-
-        theoreticalPosLastPoint = {'X': 0,
-                                   'Y': math.sqrt(xRamp * xRamp + yRamp * yRamp) * float(
-                                       self.componentPerStrip - 1)}  # Ramene la referance a 0
-        realPosLastPoint = {'X': self.endPos['X'] - self.pos['X'], 'Y': self.endPos['Y'] - self.pos['Y']}
-
-        # Get angle aof reference, real and theoretical
-        theoreticalAngleLastPoint = math.atan(theoreticalPosLastPoint['Y'] / (theoreticalPosLastPoint['X'] + 0.000001))
-        realAngleLastPoint = math.atan(realPosLastPoint['Y'] / (realPosLastPoint['X'] + 0.000001))
-
-        # compute angle offset of real referance position
-        angleOffset = realAngleLastPoint - theoreticalAngleLastPoint
-
-        correctedCmpPos['C'] = math.degrees(angleOffset)
-
-        return correctedCmpPos
-    """
 
     def getPositionById(self, cmpId):
         """
@@ -312,6 +293,7 @@ class StripFeeder(Feeder):
             self._machine.saveToXml()
             return 0 if self._haveComponent else 1
         return 1
+
 
     def reload(self):
         self.nextComponent = 0
