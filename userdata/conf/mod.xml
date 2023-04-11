@@ -11,7 +11,7 @@
       <placeSpeed>30.0</placeSpeed>
       <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
-      <moveSpeed>40.0</moveSpeed>
+      <moveSpeed>30.0</moveSpeed>
       <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>R_0805</A0>
@@ -28,7 +28,7 @@
       <placeSpeed>30.0</placeSpeed>
       <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
-      <moveSpeed>40.0</moveSpeed>
+      <moveSpeed>30.0</moveSpeed>
       <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>C_0805</A0>

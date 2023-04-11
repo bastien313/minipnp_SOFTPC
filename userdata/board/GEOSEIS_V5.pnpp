@@ -16,17 +16,17 @@
     <basePlate_0>
       <name>Noname</name>
       <type>BasePlate</type>
-      <ref0X>135.8015</ref0X>
-      <ref0Y>39.6387</ref0Y>
+      <ref0X>135.5024</ref0X>
+      <ref0Y>39.5384</ref0Y>
       <ref0Z>-30.2852</ref0Z>
-      <ref1X>187.4777</ref1X>
+      <ref1X>187.1759</ref1X>
       <ref1Y>170.4883</ref1Y>
       <ref1Z>-29.8071</ref1Z>
       <vectorX>52.136</vectorX>
       <vectorY>130.947</vectorY>
       <vectorZ>0.0</vectorZ>
       <zRamp>0.003392121549577494</zRamp>
-      <rotationOffset>0.003508900425606143</rotationOffset>
+      <rotationOffset>0.0035294907320717606</rotationOffset>
     </basePlate_0>
     <cmpList>
       <cmp data-id="0">
@@ -711,7 +711,7 @@
         <posX>-35.235</posX>
         <posY>9.746</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -725,7 +725,7 @@
         <posX>-23.678</posX>
         <posY>17.78</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -739,7 +739,7 @@
         <posX>-26.345</posX>
         <posY>1.613165996176851e-15</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -781,7 +781,7 @@
         <posX>-35.235</posX>
         <posY>4.158000000000002</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -837,7 +837,7 @@
         <posX>-31.203999999999997</posX>
         <posY>14.318000000000003</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -865,7 +865,7 @@
         <posX>-19.804499999999997</posX>
         <posY>34.163000000000004</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -893,7 +893,7 @@
         <posX>-35.235</posX>
         <posY>35.146</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -907,7 +907,7 @@
         <posX>-23.677999999999997</posX>
         <posY>43.179999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -921,7 +921,7 @@
         <posX>-26.345</posX>
         <posY>25.399999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -963,7 +963,7 @@
         <posX>-35.235</posX>
         <posY>29.558000000000003</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1019,7 +1019,7 @@
         <posX>-31.203999999999994</posX>
         <posY>39.718</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1047,7 +1047,7 @@
         <posX>-19.804499999999997</posX>
         <posY>59.563</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1075,7 +1075,7 @@
         <posX>-35.23499999999999</posX>
         <posY>60.546</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1089,7 +1089,7 @@
         <posX>-23.677999999999997</posX>
         <posY>68.58</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1103,7 +1103,7 @@
         <posX>-26.344999999999995</posX>
         <posY>50.800000000000004</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1145,7 +1145,7 @@
         <posX>-35.235</posX>
         <posY>54.958</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1201,7 +1201,7 @@
         <posX>-31.203999999999994</posX>
         <posY>65.117999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1229,7 +1229,7 @@
         <posX>-20.368915999999995</posX>
         <posY>84.020681</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1285,7 +1285,7 @@
         <posX>-34.81499999999999</posX>
         <posY>84.3377</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1299,7 +1299,7 @@
         <posX>-34.815999999999995</posX>
         <posY>78.722</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1341,7 +1341,7 @@
         <posX>-31.259999999999994</posX>
         <posY>88.88199999999999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1929,7 +1929,7 @@
         <posX>-73.54</posX>
         <posY>59.17400000000001</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1943,7 +1943,7 @@
         <posX>-62.230000000000004</posX>
         <posY>6.970000000000003</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -1957,7 +1957,7 @@
         <posX>-62.230000000000004</posX>
         <posY>4.430000000000003</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2097,7 +2097,7 @@
         <posX>-43.8456</posX>
         <posY>151.3332</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2195,7 +2195,7 @@
         <posX>-6.589999999999993</posX>
         <posY>114.46</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2321,7 +2321,7 @@
         <posX>-14.66603999999999</posX>
         <posY>132.83700000000002</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2363,7 +2363,7 @@
         <posX>-67.40004</posX>
         <posY>101.5135</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2405,7 +2405,7 @@
         <posX>-72.77264000000001</posX>
         <posY>93.7374</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2419,7 +2419,7 @@
         <posX>-60.665</posX>
         <posY>63.504000000000005</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2475,7 +2475,7 @@
         <posX>-6.9779160000000005</posX>
         <posY>1.1686810000000003</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2587,7 +2587,7 @@
         <posX>-23.932</posX>
         <posY>8.763000000000003</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2601,7 +2601,7 @@
         <posX>-21.773</posX>
         <posY>8.763000000000003</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2629,7 +2629,7 @@
         <posX>-19.868</posX>
         <posY>17.78</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2644,7 +2644,7 @@
         <posY>11.270000000000001</posY>
         <angle>90.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="187">
@@ -2657,7 +2657,7 @@
         <posX>-9.962</posX>
         <posY>11.328681</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2671,7 +2671,7 @@
         <posX>-27.394</posX>
         <posY>14.318000000000003</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2686,7 +2686,7 @@
         <posY>17.780000000000005</posY>
         <angle>-180.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="190">
@@ -2699,7 +2699,7 @@
         <posX>-6.977916</posX>
         <posY>14.503681</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2713,7 +2713,7 @@
         <posX>-12.057915999999999</posX>
         <posY>17.678681</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2727,7 +2727,7 @@
         <posX>-9.962</posX>
         <posY>13.868681000000002</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2741,7 +2741,7 @@
         <posX>-15.867916000000001</posX>
         <posY>12.598681000000001</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2755,7 +2755,7 @@
         <posX>-6.977915999999999</posX>
         <posY>26.568681</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2769,7 +2769,7 @@
         <posX>-6.977915999999999</posX>
         <posY>36.09368</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2783,7 +2783,7 @@
         <posX>-10.787915999999997</posX>
         <posY>26.568681</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2797,7 +2797,7 @@
         <posX>-16.502916</posX>
         <posY>26.568681</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2811,7 +2811,7 @@
         <posX>-22.217916</posX>
         <posY>25.399999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2839,7 +2839,7 @@
         <posX>-23.487915999999995</posX>
         <posY>29.209999</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2853,7 +2853,7 @@
         <posX>-30.188</posX>
         <posY>28.161000000000005</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2867,7 +2867,7 @@
         <posX>-23.931999999999995</posX>
         <posY>34.163000000000004</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2881,7 +2881,7 @@
         <posX>-21.772999999999996</posX>
         <posY>34.163000000000004</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2909,7 +2909,7 @@
         <posX>-19.867999999999995</posX>
         <posY>43.179999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2924,7 +2924,7 @@
         <posY>36.67</posY>
         <angle>90.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="207">
@@ -2937,7 +2937,7 @@
         <posX>-9.961999999999998</posX>
         <posY>36.728681</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2951,7 +2951,7 @@
         <posX>-27.393999999999995</posX>
         <posY>39.718</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2966,7 +2966,7 @@
         <posY>43.179999</posY>
         <angle>-180.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="210">
@@ -2979,7 +2979,7 @@
         <posX>-7.759999999999998</posX>
         <posY>22.900000000000002</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -2993,7 +2993,7 @@
         <posX>-12.057915999999999</posX>
         <posY>43.078681</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3007,7 +3007,7 @@
         <posX>-9.961999999999998</posX>
         <posY>39.268681</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3021,7 +3021,7 @@
         <posX>-15.867916</posX>
         <posY>37.99868</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3035,7 +3035,7 @@
         <posX>-6.977915999999997</posX>
         <posY>51.96868</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3049,7 +3049,7 @@
         <posX>-6.977915999999997</posX>
         <posY>61.493680000000005</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3063,7 +3063,7 @@
         <posX>-10.787915999999996</posX>
         <posY>51.96868</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3077,7 +3077,7 @@
         <posX>-16.502915999999995</posX>
         <posY>51.96868</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3091,7 +3091,7 @@
         <posX>-22.217915999999995</posX>
         <posY>50.800000000000004</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3119,7 +3119,7 @@
         <posX>-23.487915999999995</posX>
         <posY>54.61</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3133,7 +3133,7 @@
         <posX>-30.187999999999995</posX>
         <posY>53.560999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3147,7 +3147,7 @@
         <posX>-23.931999999999995</posX>
         <posY>59.563</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3161,7 +3161,7 @@
         <posX>-21.772999999999996</posX>
         <posY>59.563</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3189,7 +3189,7 @@
         <posX>-19.867999999999995</posX>
         <posY>68.58</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3204,7 +3204,7 @@
         <posY>62.069999</posY>
         <angle>90.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="227">
@@ -3217,7 +3217,7 @@
         <posX>-9.961999999999996</posX>
         <posY>62.12868100000001</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3231,7 +3231,7 @@
         <posX>-27.393999999999995</posX>
         <posY>65.117999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3246,7 +3246,7 @@
         <posY>68.58</posY>
         <angle>-180.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="230">
@@ -3259,7 +3259,7 @@
         <posX>-6.984999999999997</posX>
         <posY>39.6852</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3273,7 +3273,7 @@
         <posX>-12.057915999999997</posX>
         <posY>68.47868</posY>
         <angle>-90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3287,7 +3287,7 @@
         <posX>-9.961999999999996</posX>
         <posY>64.66868099999999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3301,7 +3301,7 @@
         <posX>-15.867915999999997</posX>
         <posY>63.398681</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3329,7 +3329,7 @@
         <posX>-10.970915999999994</posX>
         <posY>75.892681</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3343,7 +3343,7 @@
         <posX>-10.970915999999994</posX>
         <posY>78.43268099999999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3357,7 +3357,7 @@
         <posX>-30.244</posX>
         <posY>77.32499999999999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3385,7 +3385,7 @@
         <posX>-17.068799999999996</posX>
         <posY>77.5312</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3399,7 +3399,7 @@
         <posX>-17.068799999999996</posX>
         <posY>75.49919999999999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3414,7 +3414,7 @@
         <posY>85.83399999999999</posY>
         <angle>90.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="242">
@@ -3427,7 +3427,7 @@
         <posX>-27.449999999999992</posX>
         <posY>88.88199999999999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3456,7 +3456,7 @@
         <posY>91.92999999999999</posY>
         <angle>-180.0</angle>
         <placed>1</placed>
-        <enable>1</enable>
+        <enable>0</enable>
         <original>1</original>
       </cmp>
       <cmp data-id="245">
@@ -3469,7 +3469,7 @@
         <posX>-7.859999999999997</posX>
         <posY>48.45</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3483,7 +3483,7 @@
         <posX>-6.984999999999996</posX>
         <posY>65.1614</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3497,7 +3497,7 @@
         <posX>-7.410319999999995</posX>
         <posY>80.57172</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3511,7 +3511,7 @@
         <posX>-40.38999999999999</posX>
         <posY>120.96</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3525,7 +3525,7 @@
         <posX>-51.815999999999995</posX>
         <posY>88.7764</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3539,7 +3539,7 @@
         <posX>-47.90439999999999</posX>
         <posY>92.7388</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3553,7 +3553,7 @@
         <posX>-66.7004</posX>
         <posY>91.6536</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3567,7 +3567,7 @@
         <posX>-63.2968</posX>
         <posY>91.6536</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3581,7 +3581,7 @@
         <posX>-52.93359999999999</posX>
         <posY>85.76079999999999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3595,7 +3595,7 @@
         <posX>-69.24040000000001</posX>
         <posY>88.25</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3609,7 +3609,7 @@
         <posX>-59.84239999999999</posX>
         <posY>89.6216</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3623,7 +3623,7 @@
         <posX>-62.5348</posX>
         <posY>88.19919999999999</posY>
         <angle>90.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3637,7 +3637,7 @@
         <posX>-7.659999999999996</posX>
         <posY>73.64999999999999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3651,7 +3651,7 @@
         <posX>-7.7599999999999945</posX>
         <posY>87.64999999999999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3665,7 +3665,7 @@
         <posX>-7.959999999999993</posX>
         <posY>95.6</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3679,7 +3679,7 @@
         <posX>-13.209999999999996</posX>
         <posY>88.19999999999999</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3693,7 +3693,7 @@
         <posX>-16.509999999999994</posX>
         <posY>88.19999999999999</posY>
         <angle>0.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>
@@ -3707,7 +3707,7 @@
         <posX>-13.159999999999995</posX>
         <posY>91.5</posY>
         <angle>-180.0</angle>
-        <placed>0</placed>
+        <placed>1</placed>
         <enable>1</enable>
         <original>1</original>
       </cmp>

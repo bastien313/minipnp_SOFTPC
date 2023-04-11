@@ -564,7 +564,7 @@ class PickAndPlaceJob(Job):
             correctorTask = SimpleTask()
 
         self._taskList = [
-            MoveTask(self._driver, {'Z': zLift}, speed=model.moveSpeed, name='{} Start Z lift.'.format(ref)),
+            MoveTask(self._driver, {'Z': zLift, 'C': 0.0}, speed=model.moveSpeed, name='{} Start Z lift.'.format(ref)),
             FeederBeforeCmdTask(feeder, name='{} Feeder before request.'.format(ref)),
             FeederGoToTask(feeder, self._driver, speed=model.moveSpeed,
                            name='{} Go to feeder.'.format(ref)),
