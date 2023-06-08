@@ -43,6 +43,8 @@
       <feeder_0>
         <name>noname</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>1</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -71,6 +73,8 @@
       <feeder_1>
         <name>100n</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -99,6 +103,8 @@
       <feeder_2>
         <name>160pF</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -127,6 +133,8 @@
       <feeder_3>
         <name>20PF</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -155,6 +163,8 @@
       <feeder_4>
         <name>15PF</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -183,6 +193,8 @@
       <feeder_5>
         <name>11PF</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -211,6 +223,8 @@
       <feeder_6>
         <name>1R5</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -239,6 +253,8 @@
       <feeder_7>
         <name>10K</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -267,6 +283,8 @@
       <feeder_8>
         <name>1K</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -295,6 +313,8 @@
       <feeder_9>
         <name>470R</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -323,6 +343,8 @@
       <feeder_10>
         <name>1N</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -351,6 +373,8 @@
       <feeder_11>
         <name>2K7</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -379,6 +403,8 @@
       <feeder_12>
         <name>22N</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -407,6 +433,8 @@
       <feeder_13>
         <name>22K1</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -435,6 +463,8 @@
       <feeder_14>
         <name>47K5</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -463,6 +493,8 @@
       <feeder_15>
         <name>1u</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>3</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -491,6 +523,8 @@
       <feeder_16>
         <name>4.7u</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>3</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -519,6 +553,8 @@
       <feeder_17>
         <name>1K3</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -547,6 +583,8 @@
       <feeder_18>
         <name>43K</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -575,6 +613,8 @@
       <feeder_19>
         <name>2K</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>3</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -603,6 +643,8 @@
       <feeder_20>
         <name>2K8</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>3</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -631,6 +673,8 @@
       <feeder_21>
         <name>12K</name>
         <type>stripfeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>3</basePlateId>
         <basePlate_0>
           <name>Local</name>
@@ -659,6 +703,8 @@
       <feeder_22>
         <name>100n</name>
         <type>compositefeeder</type>
+        <errorCounter>0</errorCounter>
+        <errorScore>0</errorScore>
         <basePlateId>0</basePlateId>
         <basePlate_0>
           <name>Local</name>
