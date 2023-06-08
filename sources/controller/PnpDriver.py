@@ -122,6 +122,7 @@ class PnpDriver:
         self._queue = queue.Queue()
         self.status = {'X': '00', 'Y': '00', 'Z': '00', 'C': '00'}
         self._jobHaveControl = False
+        self._YrampCompensation = 0.0 # Ramp used for compensate X parallelism error. (Ymm/Xmm requested)
 
     def jobTakeControl(self):
         self._jobHaveControl = True
@@ -139,7 +140,8 @@ class PnpDriver:
         self.__statusPipeCallBack = callback
 
     def getPosition(self):
-        return self.status
+        return self._invertXparallelismCopensation(self.status)
+        #return
 
     def __lineIsPresent(self):
         """
@@ -314,6 +316,36 @@ class PnpDriver:
         tabOut = {'C': value}
         self.moveAxis(moveData=tabOut, mode=mode, speedMode=speedMode)
 
+    def _XparallelismCompensation(self, moveData):
+        """ Take the requested movement and transform it to compensate the X axis parallelism error
+            :param moveData: array of movement requested
+            :return the array corrected.
+        """
+        if 'X' in moveData:
+            if not 'Y' in moveData:
+                moveData['Y'] = 0.0
+
+            #Calculate Y movment produced if X axis realy move the excepted value.
+            YproducedByX = self._YrampCompensation * Xrequested
+            #Calculate new X distance, will be > Xrequested.
+            moveData['X'] = math.sqrt(moveData['X']*moveData['X'] + YproducedByX*YproducedByX)
+            #Remove extra Y movment produced by precedent calculation
+            moveData['Y'] -= YproducedByX
+        return moveData
+
+    def _invertXparallelismCopensation(self, positionDict):
+        """
+        Transform position guiven by electronics to take care of X parallelism error.
+        :param positionDict: array of machine position
+        :return the array corrected.
+        """
+
+        positionDict['X'] = math.sqrt((positionDict['X']*positionDict['X']) /
+                                      (1+self._YrampCompensation*self._YrampCompensation)
+                                      )
+        positionDict['Y'] += positionDict['X'] * self._YrampCompensation
+
+        return positionDict
 
 
     def moveAxis(self, moveData, speed=10, speedRot=None, mode='A', speedMode='P'):
@@ -324,6 +356,7 @@ class PnpDriver:
             C axis is always relative
             Speed must be 'P' for (parametric speed)G1 or 'H' (Hight speed)G0"""
 
+        moveData = self._XparallelismCompensation(moveData)
         self.__setCoordMode(mode)
 
         #if self._relativeMode == 'A' and 'C' in moveData:
