@@ -5,6 +5,7 @@ import serial
 import serial.tools.list_ports
 import time
 from deprecated import deprecated
+import math
 
 
 class SerialManager(threading.Thread):
@@ -122,7 +123,7 @@ class PnpDriver:
         self._queue = queue.Queue()
         self.status = {'X': '00', 'Y': '00', 'Z': '00', 'C': '00'}
         self._jobHaveControl = False
-        self._YrampCompensation = 0.0 # Ramp used for compensate X parallelism error. (Ymm/Xmm requested)
+        self._YrampCompensation = 0.001 # Ramp used for compensate X parallelism error. (Ymm/Xmm requested)
 
     def jobTakeControl(self):
         self._jobHaveControl = True
@@ -322,13 +323,15 @@ class PnpDriver:
             :return the array corrected.
         """
         if 'X' in moveData:
+            negate = -1.0 if moveData['X'] < 0.0 else 1.0
             if not 'Y' in moveData:
                 moveData['Y'] = 0.0
 
             #Calculate Y movment produced if X axis realy move the excepted value.
-            YproducedByX = self._YrampCompensation * Xrequested
+            YproducedByX = self._YrampCompensation * moveData['X']
             #Calculate new X distance, will be > Xrequested.
             moveData['X'] = math.sqrt(moveData['X']*moveData['X'] + YproducedByX*YproducedByX)
+            moveData['X'] *= negate
             #Remove extra Y movment produced by precedent calculation
             moveData['Y'] -= YproducedByX
         return moveData
@@ -339,11 +342,13 @@ class PnpDriver:
         :param positionDict: array of machine position
         :return the array corrected.
         """
-
+        #negate = -1.0 if positionDict['X'] < 0.0 else 1.0
         positionDict['X'] = math.sqrt((positionDict['X']*positionDict['X']) /
                                       (1+self._YrampCompensation*self._YrampCompensation)
                                       )
-        positionDict['Y'] += positionDict['X'] * self._YrampCompensation
+        #positionDict['X'] *= negate
+        positionDict['Y'] -= positionDict['X'] * self._YrampCompensation
+        #positionDict['Y'] -= positionDict['X'] * self._YrampCompensation
 
         return positionDict
 
