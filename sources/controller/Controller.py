@@ -351,6 +351,7 @@ class BoardController:
         self.enableSaveFunc('normal')
         self.initIHMcallBack()
 
+        
         if len(self.board.tableTopPath):
             self.changeAndLoadMachineConf(self.board.tableTopPath)
 
@@ -404,10 +405,10 @@ class BoardController:
         for loop in range(5):
             self.driver.ctrlPump(0)
             self.driver.ctrlEv(0)
-            time.sleep(500)
+            time.sleep(0.500)
             self.driver.ctrlPump(1)
             self.driver.ctrlEv(1)
-            time.sleep(500)
+            time.sleep(0.500)
         self.driver.ctrlPump(0)
         self.driver.ctrlEv(0)
 

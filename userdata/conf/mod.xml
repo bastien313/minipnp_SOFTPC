@@ -19,7 +19,7 @@
     </R_0805>
     <C_0805>
       <name>C_0805</name>
-      <correctorMode>Mechanical</correctorMode>
+      <correctorMode>Optical</correctorMode>
       <width>2.0</width>
       <length>1.2</length>
       <height>0.5</height>
@@ -121,17 +121,17 @@
     </C_1206>
     <R_1206>
       <name>R_1206</name>
-      <correctorMode>None</correctorMode>
-      <width>3.2</width>
-      <length>1.6</length>
+      <correctorMode>Mechanical</correctorMode>
+      <width>3.4</width>
+      <length>1.65</length>
       <height>0.55</height>
       <scanHeight>0.3</scanHeight>
       <pickupSpeed>30.0</pickupSpeed>
       <placeSpeed>40.0</placeSpeed>
-      <pickupDelay>300.0</pickupDelay>
+      <pickupDelay>3000.0</pickupDelay>
       <placeDelay>400.0</placeDelay>
       <moveSpeed>40.0</moveSpeed>
-      <pressureTarget>6.8</pressureTarget>
+      <pressureTarget>7.0</pressureTarget>
       <alias>
         <A0>R_1206</A0>
       </alias>
@@ -253,5 +253,39 @@
         <A0>LED_0603</A0>
       </alias>
     </LED_0603>
+    <SOT353>
+      <name>SOT353</name>
+      <correctorMode>Mechanical</correctorMode>
+      <width>2.1</width>
+      <length>2.0</length>
+      <height>0.95</height>
+      <scanHeight>0.45</scanHeight>
+      <pickupSpeed>30.0</pickupSpeed>
+      <placeSpeed>40.0</placeSpeed>
+      <pickupDelay>3000.0</pickupDelay>
+      <placeDelay>400.0</placeDelay>
+      <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>7.0</pressureTarget>
+      <alias>
+        <A0>SOT353</A0>
+      </alias>
+    </SOT353>
+    <F_1206>
+      <name>F_1206</name>
+      <correctorMode>None</correctorMode>
+      <width>3.42</width>
+      <length>1.63</length>
+      <height>1.0</height>
+      <scanHeight>0.5</scanHeight>
+      <pickupSpeed>30.0</pickupSpeed>
+      <placeSpeed>40.0</placeSpeed>
+      <pickupDelay>3000.0</pickupDelay>
+      <placeDelay>400.0</placeDelay>
+      <moveSpeed>40.0</moveSpeed>
+      <pressureTarget>7.0</pressureTarget>
+      <alias>
+        <A0>F_1206</A0>
+      </alias>
+    </F_1206>
   </model>
 </root>

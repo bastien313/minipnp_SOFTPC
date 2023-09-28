@@ -42,7 +42,7 @@ class Board:
     def __init__(self, name, logger):
         self.cmpDic = {}
         self.name = name
-        self.path = "userdata/board/" + self.name + ".pnpp"
+        self.path = "../userdata/board/" + self.name + ".pnpp"
         self.tableTopPath = ''
         self.xSize = 100.0
         self.ySize = 80.0

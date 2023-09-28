@@ -1659,7 +1659,7 @@ class PnpIHM:
         self._menuFile.add_command(label="Open ", command=self.importFromXml)
         self._menuFile.add_separator()
         self._menuFile.add_command(label="Save ", state='disabled', command=self.ctrl.boardCtrl.saveBoard)
-        self._menuFile.add_command(label="Save As ", state='disabled', command=self.ctrl.boardCtrl.saveAsBoard)
+        self._menuFile.add_command(label="Save As ", state='disabled', command=self.saveAsBoard_ihm)
         self._menuFile.add_command(label="Close ", state='disabled')
 
         self._menuTableTop.add_command(label="Parameters ", command=self.initParamMenu)
@@ -1816,3 +1816,7 @@ class PnpIHM:
 
     def setBind(self, event, key, calBack):
         self.mainWindow.bind("<{}-{}>".format(event, key), calBack)
+        
+    def saveAsBoard_ihm(self):
+        f = tkinter.filedialog.asksaveasfilename(title="Open file", filetypes=[('pnpp files', '.pnpp')])
+        self.ctrl.boardCtrl.saveAsBoard(f)

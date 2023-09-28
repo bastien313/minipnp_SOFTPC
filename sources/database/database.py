@@ -152,7 +152,7 @@ class ModDatabase:
         for mod in self.dicMod.values():
             mod.saveIntoXml(modRoot)
 
-        with open(self.pathFile, 'wb') as fileOut:
+        with open(self.pathFile, 'wb+') as fileOut:
             fileOut.write(etree.tostring(root, pretty_print=True))
 
     def __makeNewFile(self):
@@ -201,7 +201,7 @@ def boardSave(board, fileName):
     :param fileName:
     :return:
     """
-    fileOut = open(fileName, 'wb')
+    fileOut = open(fileName, 'wb+')
 
     root = etree.Element("root")
     brd = etree.SubElement(root, "board")
@@ -268,6 +268,8 @@ def boarLoad(path, logger):
     board.ref1 = xe.getXmlValue(brd, 'ref1', 'null')
     board.ref2 = xe.getXmlValue(brd, 'ref2', 'null')
     board.tableTopPath = xe.getXmlValue(brd, 'tableTopPath', '')
+    if board.tableTopPath is None:
+        board.tableTopPath = ''
 
     board.filter['value'] = xe.getXmlValue(brd, 'filtValue', '')
     board.filter['value'] = '' if board.filter['value'] is None else board.filter['value']
