@@ -206,7 +206,7 @@ def boardSave(board, fileName):
     root = etree.Element("root")
     brd = etree.SubElement(root, "board")
 
-    etree.SubElement(brd, "name").text = board.name
+    #etree.SubElement(brd, "name").text = board.name
     etree.SubElement(brd, "tableTopPath").text = board.tableTopPath
     etree.SubElement(brd, "ref1").text = board.ref1
     etree.SubElement(brd, "ref2").text = board.ref2
@@ -259,8 +259,8 @@ def boarLoad(path, logger):
     root = etree.parse(path).getroot()
     brd = root.find('board')
 
-    board = brr.Board(brd.find('name').text, logger)
-    board.path = path
+    board = brr.Board(path, logger)
+    #board.path = path
 
     board.xSize = float(xe.getXmlValue(brd, 'Xsize', 0.0))
     board.ySize = float(xe.getXmlValue(brd, 'Ysize', 0.0))

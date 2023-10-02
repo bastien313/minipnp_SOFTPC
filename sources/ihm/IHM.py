@@ -1578,6 +1578,7 @@ class JobConfigurationFrame(ttk.Frame):
         self._btnFrame.grid(row=1, column=0)
 
         self._endErrorVar = tk.IntVar(self._paramFrame, int(self._parameters['JOB']['errorManagement']))
+        self._sortByFeederVar = tk.IntVar(self._paramFrame, int(self._parameters['JOB']['placeSortByFeeder']))
 
         self._homeCntNumber = CompleteEntry(frame=self._paramFrame, varType='int', traceFunc=self._homeCntNumberChange)
         self._homeCntNumber.var = self._parameters['JOB']['homeCmpCount']
@@ -1594,6 +1595,12 @@ class JobConfigurationFrame(ttk.Frame):
                         command=self._errorManagementChange, value=2).grid(row=5, column=0, sticky='w')
         ttk.Separator(self._paramFrame, orient='horizontal').grid(row=6, column=0, columnspan=2, sticky='we', pady=10)
 
+
+        ttk.Checkbutton(self._paramFrame, text='Place sorted byu feeder', variable=self._sortByFeederVar,
+                                     command=self._placeByFeederChange).grid(row=7, column=0, sticky='w')
+        #ttk.Radiobutton(self._paramFrame, text='One feeder on first error', variable=self._sortByFeederVar,
+        #                command=self._placeByFeederChange, value=0)
+        ttk.Separator(self._paramFrame, orient='horizontal').grid(row=8, column=0, columnspan=2, sticky='we', pady=10)
         self._saveBtn = ttk.Button(self._btnFrame, text='Save', command=self._save)
         self._saveBtn.grid(row=0, column=0)
 
@@ -1602,6 +1609,9 @@ class JobConfigurationFrame(ttk.Frame):
 
     def _homeCntNumberChange(self):
         self._parameters['JOB']['homeCmpCount'] = str(self._homeCntNumber.var)
+
+    def _placeByFeederChange(self):
+        self._parameters['JOB']['placeSortByFeeder'] = str(self._sortByFeederVar.get())
 
     def _save(self):
         self._parameters.saveConf()

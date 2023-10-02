@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="faa6c788-db86-4cfe-9ea4-818d311b32db" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sources/controller/PnpDriver.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/PnpDriver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/controller/Controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/controller/Prefrence.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/controller/Prefrence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/database/Board.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/database/Board.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/database/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/database/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/ihm/IHM.py" beforeDir="false" afterPath="$PROJECT_DIR$/sources/ihm/IHM.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,12 +96,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>197</line>
+          <line>198</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/sources/ihm/feeder.py</url>
-          <line>290</line>
+          <line>291</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -113,6 +118,11 @@
           <url>file://$PROJECT_DIR$/sources/ihm/IHM.py</url>
           <line>755</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sources/ihm/IHM.py</url>
+          <line>1482</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

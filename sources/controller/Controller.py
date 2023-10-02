@@ -323,7 +323,7 @@ class BoardController:
         self.ihm.jobFrame.buildButtonState(1)
 
     def createFromCsv(self, name, pathFile, separator, startLine, dicConf):
-        self.board = brd.Board(name, self.logger)
+        self.board = brd.Board("../userdata/board/" + name + ".pnpp", self.logger)
 
         f = open(pathFile, "r")
         self.board.importFromCSV(f, separator, startLine, dicConf)
@@ -433,6 +433,56 @@ class BoardController:
         self.ihm.jobFrame.setErrorList(strError)
 
     def buildLongJob(self, refList=None):
+        if int(self._parameters['JOB']['placeSortByFeeder']) == 1:
+            self._buildLongByFeeder(refList)
+        else:
+            self._buildLongJobStd(refList)
+
+    def _buildLongByFeeder(self, refList=None):
+        if not refList:
+            refList = [cmp.ref for cmp in self.ihm.rootCmpFrame.cmpDisplayList]
+        self._jobLastUsedRefList = refList
+        longJob = job.Job(name='Standard Long job')
+        cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
+        for feeder in self.__machineConf.feederList:
+            for cmp in self.board.values():
+                if cmp.isEnable and not cmp.isPlaced and cmp.ref in refList and int(cmp.feeder) == int(feeder.id):
+                    cmpJob = self.__buildPickAndPlaceJob(cmp.ref)
+                    if cmpJob:
+                        cmpJob.append(job.ExternalCallTask(callBack=self.__isPlacedCallBack, param=cmp.ref,
+                                                           name='Is placed callBack'))
+                        cmpJob.jobConfigure()
+                        longJob.append(cmpJob)
+                        cmpNumber -= 1
+                        if not cmpNumber:
+                            longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
+                            cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
+                    else:
+                        if int(self._parameters['JOB']['errorManagement']) != 2:
+                            # One feeder one  error mode or one feeder three error mode, unbuild if an error occured.
+                            self.ihm.jobFrame.playButtonState(0)
+                            self.ihm.jobFrame.stopButtonState(0)
+                            self._displayFeederError()
+                            self.logger.printCout("Build Error.")
+                            return 0
+                    if cmp.ref in refList:
+                        refList.remove(cmp.ref)
+
+        longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
+        longJob.jobConfigure()
+        # print(longJob)
+        self.logger.printCout("Build compleete.")
+        self.__longJob = job.ThreadJobExecutor(job=longJob, driver=self.driver,
+                                               errorFunc=self.__longjobError, endFunc=self.__endLongJob,
+                                               notifyFunc=self.__jobNotify)
+        self.ihm.jobFrame.playButtonState(1)
+        self.ihm.jobFrame.stopButtonState(1)
+        self.ihm.jobFrame.jobDescription(self.__longJob.getStateDescription())
+        self._displayFeederError()
+        return 1
+
+
+    def _buildLongJobStd(self, refList=None):
         """p²
         Build long job and unluck button play and stop.
         :return:

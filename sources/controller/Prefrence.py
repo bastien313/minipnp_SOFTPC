@@ -32,6 +32,9 @@ class Preferences:
         if not 'errorManagement' in self._config['JOB']:
             self._config['JOB']['errorManagement'] = '0'
 
+        if not 'placeSortByFeeder' in self._config['JOB']:
+            self._config['JOB']['placeSortByFeeder'] = '0'
+
     def _readConf(self):
         try:
             self._config.read(self._path)

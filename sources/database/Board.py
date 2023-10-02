@@ -1,4 +1,6 @@
 import math
+import os.path
+
 from . import database as dtb
 from deprecated import deprecated
 import copy
@@ -39,10 +41,10 @@ class Component:
 
 
 class Board:
-    def __init__(self, name, logger):
+    def __init__(self, path, logger):
         self.cmpDic = {}
-        self.name = name
-        self.path = "../userdata/board/" + self.name + ".pnpp"
+        #self.name = name
+        self.path = path
         self.tableTopPath = ''
         self.xSize = 100.0
         self.ySize = 80.0
@@ -137,6 +139,10 @@ class Board:
         dtb.boardSave(self, self.path)
 
     def saveAs(self, path):
+        if not '.pnpp' in path:
+            path += '.pnpp'
+       # self.name = os.path.basename(path)
+        #self.name = os.path.splitext(self.name)[0]
         self.path = path
         self.save()
 
