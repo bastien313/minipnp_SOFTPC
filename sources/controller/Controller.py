@@ -7,6 +7,7 @@ from machine import machine as mch
 from deprecated import deprecated
 from . import job
 from utils import Gamepad as gp
+import copy
 
 
 class ParamCtrl:
@@ -434,19 +435,20 @@ class BoardController:
 
     def buildLongJob(self, refList=None):
         if int(self._parameters['JOB']['placeSortByFeeder']) == 1:
-            self._buildLongByFeeder(refList)
+            return self._buildLongByFeeder(refList)
         else:
-            self._buildLongJobStd(refList)
+            return self._buildLongJobStd(refList)
 
     def _buildLongByFeeder(self, refList=None):
         if not refList:
             refList = [cmp.ref for cmp in self.ihm.rootCmpFrame.cmpDisplayList]
         self._jobLastUsedRefList = refList
+        localRefList = copy.deepcopy(refList)
         longJob = job.Job(name='Standard Long job')
         cmpNumber = int(self._parameters['JOB']['homeCmpCount'])
         for feeder in self.__machineConf.feederList:
             for cmp in self.board.values():
-                if cmp.isEnable and not cmp.isPlaced and cmp.ref in refList and int(cmp.feeder) == int(feeder.id):
+                if cmp.isEnable and not cmp.isPlaced and cmp.ref in localRefList and int(cmp.feeder) == int(feeder.id):
                     cmpJob = self.__buildPickAndPlaceJob(cmp.ref)
                     if cmpJob:
                         cmpJob.append(job.ExternalCallTask(callBack=self.__isPlacedCallBack, param=cmp.ref,
@@ -465,8 +467,8 @@ class BoardController:
                             self._displayFeederError()
                             self.logger.printCout("Build Error.")
                             return 0
-                    if cmp.ref in refList:
-                        refList.remove(cmp.ref)
+                    if cmp.ref in localRefList:
+                        localRefList.remove(cmp.ref)
 
         longJob.append(job.HomingTask(pnpDriver=self.driver, name='Homing'))
         longJob.jobConfigure()

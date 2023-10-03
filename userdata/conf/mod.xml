@@ -19,7 +19,7 @@
     </R_0805>
     <C_0805>
       <name>C_0805</name>
-      <correctorMode>Optical</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>2.0</width>
       <length>1.2</length>
       <height>0.5</height>
@@ -272,7 +272,7 @@
     </SOT353>
     <F_1206>
       <name>F_1206</name>
-      <correctorMode>None</correctorMode>
+      <correctorMode>Mechanical</correctorMode>
       <width>3.42</width>
       <length>1.63</length>
       <height>1.0</height>
